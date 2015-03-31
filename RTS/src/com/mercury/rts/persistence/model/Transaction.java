@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -17,22 +16,14 @@ import javax.persistence.Table;
 @Entity
 @Table(name="rts_transaction")
 public class Transaction implements Serializable{
-	private String status,ttime;
-	private int tid,userid,qt;
+	private String status;
+	private String ttime;
+	private int tid;
+	private int qt;
 	private Ticket ticket;
+	private User user;
 	
-	public Transaction(){}
-	public Transaction(String status, String ttime, int tid, int userid,
-			int qt, Ticket ticket) {
-		this.status = status;
-		this.ttime = ttime;
-		this.tid = tid;
-		this.userid = userid;
-		this.qt = qt;
-		this.ticket = ticket;
-	}
-
-
+	public Transaction() {}
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq_tid")
@@ -65,15 +56,6 @@ public class Transaction implements Serializable{
 	}
 
 	@Column
-	public int getUserid() {
-		return userid;
-	}
-
-	public void setUserid(int userid) {
-		this.userid = userid;
-	}
-
-	@Column
 	public int getQt() {
 		return qt;
 	}
@@ -82,9 +64,8 @@ public class Transaction implements Serializable{
 		this.qt = qt;
 	}
 
-	
-	@ManyToOne(fetch = FetchType.LAZY,targetEntity=Ticket.class)
-	@JoinColumn(name="ticketid",insertable=false,updatable=false)
+	@ManyToOne
+	@JoinColumn(name = "ticketid", insertable = false, updatable = false)
 	public Ticket getTicket() {
 		return ticket;
 	}
@@ -92,8 +73,16 @@ public class Transaction implements Serializable{
 	public void setTicket(Ticket ticket) {
 		this.ticket = ticket;
 	}
-	
-	
+
+	@ManyToOne
+	@JoinColumn(name = "userid", insertable = false, updatable = false)
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
 	
 	
 }

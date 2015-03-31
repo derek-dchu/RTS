@@ -1,13 +1,16 @@
 package com.mercury.rts.persistence.model;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -27,7 +30,10 @@ public class User implements Serializable {
 	private Set<CreditCard> creditCards;
 	private Set<Transaction> transactions;
 	
-	public User() {}
+	public User() {
+		creditCards = new HashSet<CreditCard> ();
+		transactions = new HashSet<Transaction> ();
+	}
 
 	@Id
 	@SequenceGenerator(name = "seq_userid", sequenceName = "seq_userid", allocationSize = 1, initialValue = 1000000000)
@@ -88,7 +94,8 @@ public class User implements Serializable {
 		this.role = role;
 	}
 
-	@OneToMany(mappedBy = "user")
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "userid")
 	public Set<CreditCard> getCreditCards() {
 		return creditCards;
 	}
@@ -104,7 +111,9 @@ public class User implements Serializable {
 	public void removeCreditCard(CreditCard creditCard) {
 		creditCards.remove(creditCard);
 	}
-
+	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "userid")
 	public Set<Transaction> getTransactions() {
 		return transactions;
 	}
