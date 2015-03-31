@@ -8,14 +8,14 @@ import javax.persistence.*;
 @SuppressWarnings("serial")
 @Entity
 @Table(name="rts_credit")
-public class CreditCard implements Serializable{
+public class CreditCard implements Serializable {
 	private int cnum;
 	private int cid;
 	private String date;
 	private int userid;
 	
 	public CreditCard() {}
-	public  CreditCard(int cnum, int cid, String date, int userid ){
+	public CreditCard(int cnum, int cid, String date, int userid ){
 		this.cnum=cnum;
 		this.cid=cid;
 		this.date=date;

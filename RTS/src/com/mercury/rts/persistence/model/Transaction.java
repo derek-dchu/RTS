@@ -1,6 +1,6 @@
 package com.mercury.rts.persistence.model;
 
-import java.util.Set;
+import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,9 +13,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+@SuppressWarnings("serial")
 @Entity
 @Table(name="rts_transaction")
-public class Transaction {
+public class Transaction implements Serializable{
 	private String status,ttime;
 	private int tid,userid,qt;
 	private Ticket ticket;
