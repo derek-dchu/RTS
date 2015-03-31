@@ -12,15 +12,9 @@ public class CreditCard implements Serializable {
 	private int cnum;
 	private int cid;
 	private String date;
-	private int userid;
+	private User user;
 	
 	public CreditCard() {}
-	public CreditCard(int cnum, int cid, String date, int userid ){
-		this.cnum=cnum;
-		this.cid=cid;
-		this.date=date;
-		this.userid=userid;
-	}
 
 	@Id
 	@Column(name="cnum")
@@ -49,15 +43,15 @@ public class CreditCard implements Serializable {
 	public void setDate(String date) {
 		this.date = date;
 	}
-
-	@Column(name="userid")
-	public int getUserid() {
-		return userid;
+	
+	@ManyToOne
+	@JoinColumn(name = "userid")
+	public User getUser() {
+		return user;
 	}
 
-	public void setUserid(int userid) {
-		this.userid = userid;
+	public void setUser(User user) {
+		this.user = user;
 	}
-	
-	
+
 }

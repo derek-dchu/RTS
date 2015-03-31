@@ -5,11 +5,9 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -90,13 +88,12 @@ public class User implements Serializable {
 		this.role = role;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, targetEntity = CreditCard.class)
-	@JoinColumn(name="cnum", insertable =  false, updatable = false)
+	@OneToMany(mappedBy = "user")
 	public Set<CreditCard> getCreditCards() {
 		return creditCards;
 	}
 
-	public void setCreditcards(Set<CreditCard> creditCards) {
+	public void setCreditCards(Set<CreditCard> creditCards) {
 		this.creditCards = creditCards;
 	}
 	
@@ -108,8 +105,6 @@ public class User implements Serializable {
 		creditCards.remove(creditCard);
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, targetEntity = Transaction.class)
-	@JoinColumn(name="tid", insertable =  false, updatable = false)
 	public Set<Transaction> getTransactions() {
 		return transactions;
 	}
