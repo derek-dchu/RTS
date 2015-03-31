@@ -1,4 +1,4 @@
-package com.mercury.rts.presistence.model;
+package com.mercury.rts.persistence.model;
 
 import java.util.Set;
 
