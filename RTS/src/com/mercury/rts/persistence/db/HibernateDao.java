@@ -1,4 +1,4 @@
-package com.mercury.common.db;
+package com.mercury.rts.persistence.db;
 
 import java.io.Serializable;
 import java.util.ArrayList;

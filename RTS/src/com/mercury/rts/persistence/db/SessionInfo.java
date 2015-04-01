@@ -1,4 +1,4 @@
-package com.mercury.common.db;
+package com.mercury.rts.persistence.db;
 
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
