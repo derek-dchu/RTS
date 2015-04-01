@@ -30,4 +30,8 @@
         <property name="packagesToScan" value="com.mercury.demand.persistence.model"/>
     </bean>
     
+    <bean id="HibernateDao" class="com.mercury.rts.common.db.HibernateDao" abstract="true" scope="prototype"></bean>
+    <bean id="UserDaoImpl" parent="HibernateDao" scope="prototype">
+    	<constructor-arg value="com.mercury.rts.persistence.dao.impl.UserDaoImpl"></constructor-arg>
+    </bean>
 </beans>
