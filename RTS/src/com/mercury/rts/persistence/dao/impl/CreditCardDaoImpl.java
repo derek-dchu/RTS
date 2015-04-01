@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.mercury.rts.persistence.dao.CreditCardDao;
-import com.mercury.rts.persistence.db.HibernateDao;
+import com.mercury.rts.common.db.HibernateDao;
 import com.mercury.rts.persistence.model.CreditCard;
 
 public class CreditCardDaoImpl implements CreditCardDao {
