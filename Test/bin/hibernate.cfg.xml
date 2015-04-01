@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+    "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+	<session-factory>
+	    <property name="show_sql">true</property> 
+	    <property name="format_sql">true</property>
+        <property name="dialect">org.hibernate.dialect.OracleDialect</property>
+        <property name="connection.driver_class">
+            oracle.jdbc.driver.OracleDriver
+        </property>
+        <property name="connection.url">
+            jdbc:oracle:thin:@Victor:1521:XE
+        </property>
+        <property name="connection.username">rts</property>
+        <property name="connection.password">123456</property>
+
+		<mapping class="com.mercury.rts.persistence.model.Ticket"/>
+		<mapping class="com.mercury.rts.persistence.model.Transaction"/>
+		<mapping class="com.mercury.rts.persistence.model.CreditCard"/>
+		<mapping class="com.mercury.rts.persistence.model.User"/>
+    </session-factory>
+</hibernate-configuration>
