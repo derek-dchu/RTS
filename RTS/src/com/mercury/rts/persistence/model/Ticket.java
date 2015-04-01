@@ -1,12 +1,17 @@
 package com.mercury.rts.persistence.model;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -14,25 +19,22 @@ import javax.persistence.Table;
 @Entity
 @Table(name="rts_ticket")
 public class Ticket implements Serializable {
-	private int ticketid,total,sold,available,enable;
-	private String dep,des,dtime,atime,price;
+	private int ticketid;
+	private int total;
+	private int sold;
+	private int available;
+	private int enable;
+	private String dep;
+	private String des;
+	private String dtime;
+	private String atime;
+	private String price;
+	private Set<Transaction> transactions;
 	
-	public Ticket(){}
-
-	public Ticket(int ticketid, int total, int sold, int available, int enable,
-			String dep, String des, String dtime, String atime, String price) {
-		this.ticketid = ticketid;
-		this.total = total;
-		this.sold = sold;
-		this.available = available;
-		this.enable = enable;
-		this.dep = dep;
-		this.des = des;
-		this.dtime = dtime;
-		this.atime = atime;
-		this.price = price;
+	public Ticket() {
+		transactions = new HashSet<Transaction>();
 	}
-
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq_ticketid")
 	@SequenceGenerator(name ="seq_ticketid",sequenceName="seq_ticketid",allocationSize=1,initialValue=1)
@@ -124,6 +126,20 @@ public class Ticket implements Serializable {
 
 	public void setPrice(String price) {
 		this.price = price;
+	}
+	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "ticketid")
+	public Set<Transaction> getTransactions() {
+		return transactions;
+	}
+
+	public void setTransactions(Set<Transaction> transactions) {
+		this.transactions = transactions;
+	}
+	
+	public void addTransaction(Transaction transaction) {
+		transactions.add(transaction);
 	}
 	
 	

@@ -11,7 +11,7 @@ import javax.persistence.*;
 public class CreditCard implements Serializable {
 	private int cnum;
 	private int cid;
-	private String date;
+	private int cdate;
 	private User user;
 	
 	public CreditCard() {}
@@ -35,17 +35,17 @@ public class CreditCard implements Serializable {
 		this.cid = cid;
 	}
 
-	@Column(name="date")
-	public String getDate() {
-		return date;
+	@Column(name="cdate")
+	public int getCdate() {
+		return cdate;
 	}
 
-	public void setDate(String date) {
-		this.date = date;
+	public void setCdate(int cdate) {
+		this.cdate = cdate;
 	}
-	
+
 	@ManyToOne
-	@JoinColumn(name = "userid")
+	@JoinColumn(name = "userid", insertable = false, updatable = false)
 	public User getUser() {
 		return user;
 	}

@@ -1,4 +1,4 @@
-package com.mercury.util;
+package com.mercury.rts.persistence.util;
 
 import org.hibernate.*;
 import org.hibernate.cfg.*;
@@ -7,13 +7,13 @@ public class HibernateUtil {
 	private static final SessionFactory FACTORY;
 	static {
 		try {
-			FACTORY = new AnnotationConfiguration().configure().buildSessionFactory();
+			FACTORY = new Configuration().configure().buildSessionFactory();
 		} catch (Exception e) {
 			throw new RuntimeException(e.getMessage(), e);
 		}
 	}
 	
-//	return the shallow copy of Session
+	// return the shallow copy of Session
 	private static final ThreadLocal<Session> SESSION = new ThreadLocal<Session>() {
 		@Override
 		protected Session initialValue() {
