@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.hibernate.criterion.Order;
 
-public interface Dao<T, ID extends Serializable> {
+public interface GenericDao<T, ID extends Serializable> {
 
     T findById(ID id);
     void save(T object);

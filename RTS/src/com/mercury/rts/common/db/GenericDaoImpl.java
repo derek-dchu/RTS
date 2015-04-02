@@ -14,15 +14,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class HibernateDao<T, ID extends Serializable> implements Dao<T, ID> {
+public class GenericDaoImpl<T, ID extends Serializable> implements GenericDao<T, ID> {
 
     private Class<T> klass;
-    private static Logger log = Logger.getLogger(HibernateDao.class);
+    private static Logger log = Logger.getLogger(GenericDaoImpl.class);
 
     @Autowired
     private SessionFactory appSessionFactory;
 
-    public HibernateDao(Class<T> klass) {
+    public GenericDaoImpl(Class<T> klass) {
         this.klass = klass;
     }
 
@@ -119,10 +119,10 @@ public class HibernateDao<T, ID extends Serializable> implements Dao<T, ID> {
 
     protected SessionInfo getSessionInfo() {
         try {
-            return new SessionInfo(appSessionFactory.getCurrentSession(), false);
+            return new SessionInfo(appSessionFactory.getCurrentSession(), false, true);
         } catch (HibernateException he) {
             log.debug(he);
-            return new SessionInfo(appSessionFactory.openSession(), false);
+            return new SessionInfo(appSessionFactory.openSession(), false, true);
         }
     }
 

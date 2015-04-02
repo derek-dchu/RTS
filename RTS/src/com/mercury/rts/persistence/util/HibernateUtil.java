@@ -7,7 +7,7 @@ public class HibernateUtil {
 	private static final SessionFactory FACTORY;
 	static {
 		try {
-			FACTORY = new Configuration().configure().buildSessionFactory();
+			FACTORY = new Configuration().configure("main/resources/hibernate.cfg.xml").buildSessionFactory();
 		} catch (Exception e) {
 			throw new RuntimeException(e.getMessage(), e);
 		}

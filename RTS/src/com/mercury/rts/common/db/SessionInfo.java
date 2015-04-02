@@ -29,7 +29,9 @@ public class SessionInfo {
 
     public Session getSessionForWriting() {
         if (session.getTransaction() == null || !session.getTransaction().isActive()) {
+        	System.out.println("session = " + session.getTransaction() + session.getTransaction().isActive());
             tx = session.beginTransaction();
+            System.out.println("session = " + session.getTransaction() + session.getTransaction().isActive());
             needsTransaction = true;
         }
         return session;
@@ -37,7 +39,7 @@ public class SessionInfo {
 
     public void cleanup() {
         if (needsTransaction) {
-            try { tx.commit(); } catch (HibernateException he) { LOG.warn("Error commiting transaction", he); }
+            try { if(!tx.wasCommitted()) tx.commit(); } catch (HibernateException he) { System.out.println("he: " + he.getClass().getName() + " " + he.getMessage()); LOG.warn("Error commiting transaction", he); }
         }
         if (closeSession) {
             try { session.close(); } catch (HibernateException he) { LOG.warn("Error closing session", he); }
