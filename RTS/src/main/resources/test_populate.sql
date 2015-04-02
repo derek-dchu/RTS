@@ -9,10 +9,13 @@ insert into RTS_USER(userid, password, email, enable) values (2, '123', '2@2.com
 insert into RTS_CREDIT(cnum, cid, cdate, userid) values (100, 100, 100, 1);
 insert into RTS_CREDIT(cnum, cid, cdate, userid) values (200, 200, 200, 1);
 
-insert into RTS_TICKET(ticketid, total, sold, avaliable, enable, price) values (1, 1, 1, 1, 1, 1);
-insert into RTS_TICKET(ticketid, total, sold, avaliable, enable, price) values (2, 1, 1, 1, 1, 2);
+insert into RTS_TICKET(ticketid, total, sold, available, enable, price) values (1, 1, 1, 1, 1, 1);
+insert into RTS_TICKET(ticketid, total, sold, available, enable, price) values (2, 1, 1, 1, 1, 2);
 
 insert into RTS_TRANSACTION(tid, qt, userid, ticketid) values (1, 1, 2, 1);
 insert into RTS_TRANSACTION(tid, qt, userid, ticketid) values (2, 1, 2, 2);
 
 select * from RTS_USER;
+select * from RTS_CREDIT;
+select * from RTS_TICKET;
+select * from RTS_TRANSACTION;
