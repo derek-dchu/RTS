@@ -45,7 +45,7 @@ public class CreditCard implements Serializable {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "userid", insertable = false, updatable = false)
+	@JoinColumn(name = "userid", insertable = true, updatable = false)
 	public User getUser() {
 		return user;
 	}
