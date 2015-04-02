@@ -2,17 +2,15 @@ package com.mercury.rts.persistence.dao.impl;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-
-import com.mercury.rts.common.db.HibernateDao;
+import com.mercury.rts.common.db.GenericDaoImpl;
 import com.mercury.rts.persistence.dao.TicketDao;
 import com.mercury.rts.persistence.model.Ticket;
 
-public class TicketDaoImpl implements TicketDao {
-	@Autowired
-	@Qualifier("TicketDaoImpl")
-	private HibernateDao<Ticket, Integer> hd;
+public class TicketDaoImpl extends GenericDaoImpl<Ticket, Integer> implements TicketDao {
+
+	public TicketDaoImpl() {
+		super(Ticket.class);
+	}
 
 	@Override
 	public Ticket setTicketStatus(Ticket ticket, int status) {
@@ -23,17 +21,17 @@ public class TicketDaoImpl implements TicketDao {
 
 	@Override
 	public void saveTicket(Ticket ticket) {
-		hd.save(ticket);
+		save(ticket);
 	}
 
 	@Override
 	public List<Ticket> listAllEnableTickets() {
-		return hd.findAllBy("enable", 1);
+		return findAllBy("enable", 1);
 	}
 
 	@Override
 	public List<Ticket> listAllDisableTickets() {
-		return hd.findAllBy("enable", 0);
+		return findAllBy("enable", 0);
 	}
 
 }

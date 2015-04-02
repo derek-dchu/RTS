@@ -1,28 +1,23 @@
 package com.mercury.rts.persistence.dao.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-
+import com.mercury.rts.common.db.GenericDaoImpl;
 import com.mercury.rts.persistence.dao.CreditCardDao;
-import com.mercury.rts.common.db.HibernateDao;
 import com.mercury.rts.persistence.model.CreditCard;
 
-public class CreditCardDaoImpl implements CreditCardDao {
+public class CreditCardDaoImpl extends GenericDaoImpl<CreditCard,Integer> implements CreditCardDao {
 	
-	@Autowired
-	@Qualifier("HibernateDao")
-	private HibernateDao<CreditCard, Integer> hd;
+	public CreditCardDaoImpl() {
+		super(CreditCard.class);
+	}
+	
 	@Override
 	public void saveCreditCard(CreditCard creditcard) {
-		// TODO Auto-generated method stub
-		hd.save(creditcard); 
+		save(creditcard); 
 	}
 
 	@Override
 	public void removeCreditCard(CreditCard creditcard) {
-		// TODO Auto-generated method stub
-		hd.delete(creditcard);
-
+		delete(creditcard);
 	}
 
 }
