@@ -11,7 +11,7 @@ import com.mercury.rts.persistence.model.Ticket;
 
 public class TicketDaoImpl implements TicketDao {
 	@Autowired
-	@Qualifier("ticketHibernateDao")
+	@Qualifier("TicketDaoImpl")
 	private HibernateDao<Ticket, Integer> hd;
 
 	@Override
