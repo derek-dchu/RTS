@@ -9,7 +9,7 @@ import com.mercury.rts.persistence.model.Transaction;
 
 public class TransactionDaoImpl implements TransactionDao {
 	@Autowired
-	@Qualifier("transactionHibernateDao")
+	@Qualifier("TransactionDaoImpl")
 	private HibernateDao<Transaction, Integer> hd;
 	
 	@Override
