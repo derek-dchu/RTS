@@ -45,7 +45,7 @@ public class UserCreditCardRelationTest {
 		cc.setCdate(678);
 		cc.setUser(user);
 		user.addCreditCard(cc);
-		
+		session.save(user);
 		session.flush();
 	}
 
