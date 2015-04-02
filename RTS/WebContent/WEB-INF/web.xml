@@ -1,25 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
-  <display-name>Ticket</display-name>
-  
+  <display-name>RTS</display-name>
 
-  <welcome-file-list>
-    <welcome-file>/login.html</welcome-file>
-  </welcome-file-list>
-  
-  
-<!--  spring security -->
-  <filter>
-    <filter-name>springSecurityFilterChain</filter-name>
-    <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
-  </filter>
-  <filter-mapping>
-    <filter-name>springSecurityFilterChain</filter-name>
-    <url-pattern>/*</url-pattern>
-  </filter-mapping>
-  
-  
-  
   <listener>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
@@ -27,34 +9,31 @@
   <context-param>
     <param-name>contextConfigLocation</param-name>
   		<param-value>
-			/WEB-INF/ticket-*.xml			
+			/WEB-INF/rts-*.xml			
 		</param-value>
   </context-param>
   
-  
-  <!-- MVC  Dispatcher Servlet-->
-  <servlet>
-    <servlet-name>ticket</servlet-name>
-    <servlet-class>
-	        org.springframework.web.servlet.DispatcherServlet
-	    </servlet-class>
-    <load-on-startup>1</load-on-startup>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>ticket</servlet-name>
-    <url-pattern>*.html</url-pattern>
-  </servlet-mapping>
-  	
     
- <!-- spring rest  -->
-  <servlet>
+  <!-- MVC  Dispatcher Servlet-->
+    <servlet>
+  	<servlet-name>rts</servlet-name>
+  	<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+  	<load-on-startup>1</load-on-startup>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>rts</servlet-name>
+  	<url-pattern>*.html</url-pattern>
+  </servlet-mapping>
+  
+   <servlet>
    	  <servlet-name>Jersey REST Service</servlet-name>
   	  <servlet-class>
   			com.sun.jersey.spi.spring.container.servlet.SpringServlet
   	  </servlet-class>
    	  <init-param>
      	 <param-name>com.sun.jersey.config.property.packages</param-name>
-     	 <param-value>com.mercury.ticket.resources</param-value>
+     	 <param-value>com.mercury.rts.resources</param-value>
       </init-param>
  	  <load-on-startup>1</load-on-startup>
   </servlet>
@@ -63,37 +42,5 @@
   	  <url-pattern>/rest/*</url-pattern>
   </servlet-mapping>
   
-  
-	
-  
-   <!--
-  <error-page>
-    <error-code>401</error-code>
-    <location>/errorGeneral.jsp</location>
-  </error-page>
- 
-  <error-page>
-    <error-code>403</error-code>
-    <location>/errorGeneral.jsp</location>
-  </error-page>
-  <error-page>
-    <error-code>404</error-code>
-    <location>/errorGeneral.jsp</location>
-  </error-page>
-  <error-page>
-    <error-code>405</error-code>
-    <location>/errorMethod.jsp</location>
-  </error-page>
-  <error-page>
-    <error-code>500</error-code>
-    <location>/errorGeneral.jsp</location>
-  </error-page>
-  <error-page>
-    <error-code>503</error-code>
-    <location>/errorGeneral.jsp</location>
-  </error-page>
-  
-  Error Pages -->
-   
 </web-app>
     

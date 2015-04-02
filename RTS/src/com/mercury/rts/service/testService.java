@@ -8,23 +8,26 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mercury.rts.common.db.GenericDaoImpl;
 import com.mercury.rts.persistence.dao.impl.UserDaoImpl;
+import com.mercury.rts.persistence.model.CreditCard;
 import com.mercury.rts.persistence.model.User;
 
 @Service
 @Transactional
 public class testService {
 	@Autowired
-	@Qualifier("testUserDao")
-	private GenericDaoImpl<User, Integer> gd;
+	@Qualifier("UserDaoImpl")
+	private UserDaoImpl udi;
 	
 	public void testAdd(){
 		User u = new User();
 		u.setPassword("456");
 		u.setEmail("3@3.com");
 		u.setEnable(1);
-		System.out.println(u.getEmail());
-		gd.save(u);
-		System.out.println("service");
+		udi.saveUser(u);
+		CreditCard cc = new CreditCard();
+		cc.setCnum(3333);
+		u.addCreditCard(cc);
+		udi.saveUser(u);
 	}
 	
 	

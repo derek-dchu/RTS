@@ -11,11 +11,8 @@ import com.mercury.rts.service.testService;
 @Component
 @Path("/kkk")
 public class rrest {
+	@Autowired
 	private testService ts;
-	
-	public rrest(){
-		ts = new testService();
-	}
 	
 	@GET
 	public void test(){
