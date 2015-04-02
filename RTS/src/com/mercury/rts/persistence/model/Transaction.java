@@ -26,8 +26,8 @@ public class Transaction implements Serializable{
 	public Transaction() {}
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq_tid")
-	@SequenceGenerator(name ="seq_tid",sequenceName="seq_tid",allocationSize=1,initialValue=1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_tid")
+	@SequenceGenerator(name ="seq_tid", sequenceName = "seq_tid")
 	@Column(nullable=false)
 	public int getTid() {
 		return tid;
@@ -65,7 +65,7 @@ public class Transaction implements Serializable{
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "ticketid", insertable = false, updatable = false)
+	@JoinColumn(name = "ticketid", insertable = true, updatable = false)
 	public Ticket getTicket() {
 		return ticket;
 	}
@@ -75,7 +75,7 @@ public class Transaction implements Serializable{
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "userid", insertable = false, updatable = false)
+	@JoinColumn(name = "userid", insertable = true, updatable = false)
 	public User getUser() {
 		return user;
 	}
