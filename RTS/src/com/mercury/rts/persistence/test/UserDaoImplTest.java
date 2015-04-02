@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.mercury.rts.persistence.dao.impl.UserDaoImpl;
 import com.mercury.rts.persistence.model.User;
@@ -21,6 +22,7 @@ import com.mercury.rts.persistence.util.HibernateUtil;
 @ContextConfiguration(locations = "test-persistence.xml")
 @TransactionConfiguration(defaultRollback = false,
 	transactionManager = "transactionManager")
+@Transactional
 public class UserDaoImplTest {
 	@Autowired
 	private UserDaoImpl dao;
@@ -60,14 +62,6 @@ public class UserDaoImplTest {
 		dao.save(u);
 		//dao.flush();
 		System.out.println("id: " + u.getUserid());
-		
-		Session session = dao.getAppSessionFactory().openSession();
-		List<User> list = session.createQuery("from User").list();
-		for (User user : list) {
-			System.out.println(user.getPassword());
-		}
-		
-		assertEquals(3, list.size());
 		
 		u = dao.getUserByEmail("3@3.com");
 		assertEquals("456", u.getPassword());
