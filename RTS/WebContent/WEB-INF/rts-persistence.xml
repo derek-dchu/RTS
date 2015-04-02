@@ -37,5 +37,11 @@
     <bean id="CreditCardDaoImpl" parent="HibernateDao" scope="prototype">
     	<constructor-arg value="com.mercury.rts.persistence.dao.impl.CreditCardDaoImpl"></constructor-arg>
     </bean>
+    <bean id="TicketDaoImpl" parent="HibernateDao" scope="prototype">
+        <constructor-arg value="com.mercury.rts.persistence.dao.impl.TicketDaoImpl"></constructor-arg>
+    </bean>
+    <bean id="TransactionDaoImpl" parent="HibernateDao" scope="prototype">
+        <constructor-arg value="com.mercury.rts.persistence.dao.impl.TransactionDaoImpl"></constructor-arg>
+    </bean>
 
 </beans>
