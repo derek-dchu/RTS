@@ -44,6 +44,5 @@
     <bean id="UserDaoImpl" parent="GenericDaoImpl" class="com.mercury.rts.persistence.dao.impl.UserDaoImpl"></bean>
     <bean id="CreditCardDaoImpl" parent="GenericDaoImpl" class="com.mercury.rts.persistence.dao.impl.CreditCardDaoImpl"></bean>
 	<bean id="TransactionDaoImpl" parent="GenericDaoImpl" class="com.mercury.rts.persistence.dao.impl.TransactionDaoImpl"></bean>
-	<bean id="testUserDao" parent="GenericDaoImpl" class="com.mercury.rts.persistence.model.User" scope="prototype" ></bean>
 	<bean id="TicketDaoImpl" parent="GenericDaoImpl" class="com.mercury.rts.persistence.dao.impl.TicketDaoImpl"></bean>
 </beans>

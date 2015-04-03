@@ -6,8 +6,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class testc {
 
-	@RequestMapping("/right")
+	@RequestMapping("/admin")
 	public String goMain(){
-		return "right";
+		return "admin";
+	}
+	
+	@RequestMapping("/login")
+	public String goMain2(){
+		return "login";
+	}
+	
+	@RequestMapping("/user")
+	public String goMain3(){
+		return "user";
 	}
 }

@@ -12,6 +12,17 @@
 			/WEB-INF/rts-*.xml			
 		</param-value>
   </context-param>
+
+
+<!-- Spring Security -->
+  <filter>
+    <filter-name>springSecurityFilterChain</filter-name>
+    <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>springSecurityFilterChain</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>  
   
     
   <!-- MVC  Dispatcher Servlet-->
@@ -26,6 +37,7 @@
   	<url-pattern>*.html</url-pattern>
   </servlet-mapping>
   
+  <!-- RESTful -->
    <servlet>
    	  <servlet-name>Jersey REST Service</servlet-name>
   	  <servlet-class>
