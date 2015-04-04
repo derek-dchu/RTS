@@ -8,15 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-
-//import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.mercury.rts.persistence.dao.impl.UserDaoImpl;
 import com.mercury.rts.persistence.model.User;
+
 @Service
 @Transactional(readOnly = true)
 public class CustomUserDetailsService  implements UserDetailsService{
@@ -28,7 +28,6 @@ public class CustomUserDetailsService  implements UserDetailsService{
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		// TODO Auto-generated method stub
 		UserDetails user = null;  
 		try {
 			User u = udi.getUserByEmail(username);
@@ -43,10 +42,8 @@ public class CustomUserDetailsService  implements UserDetailsService{
 					true,
 					authorities 
 			);
-		System.out.println(u.getEmail()+" "+u.getPassword()+" "+u.getRole());
 		} catch (Exception e) {
-//			logger.error("Error in retrieving user" + e.getMessage());
-			e.printStackTrace();
+			logger.error("Error in retrieving user" + e.getMessage());
 			throw new UsernameNotFoundException("Error in retrieving user");
 		}
 		return user;
