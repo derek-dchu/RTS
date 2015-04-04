@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sec="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/security
+		http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+
+	<sec:global-method-security
+		pre-post-annotations="enabled" />
+	<sec:http use-expressions="true">
+		<sec:intercept-url pattern="/admin.html" access="hasRole('ROLE_ADMIN')" />
+		<sec:intercept-url pattern="/user.html" access="hasRole('ROLE_USER')" />
+		<sec:intercept-url pattern="/login.html" access="permitAll()" />
+		<sec:form-login login-page="/login.html"
+			authentication-success-handler-ref="postSuccessAuthHandler"
+			authentication-failure-url="/login.html?login_error=1" />
+		<sec:logout invalidate-session="true" logout-success-url="/login.html.html"
+			delete-cookies="JSESSIONID" /> 
+
+		<sec:remember-me key="remMeKey"
+			token-validity-seconds="20" />
+
+	</sec:http>
+
+	<bean id="authenticationFilter"
+		class="org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter">
+		<property name="authenticationManager" ref="authenticationManager" />
+		<property name="filterProcessesUrl" value="/j_spring_security_check" />
+	</bean>
+
+	<sec:authentication-manager alias="authenticationManager">
+		<sec:authentication-provider
+			user-service-ref="customUserDetailsService">
+			<!-- <sec:password-encoder hash="md5" /> -->
+		</sec:authentication-provider>
+	</sec:authentication-manager>
+
+	<!-- <bean id="encoder"
+		class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
+		<constructor-arg name="strength" value="10" />
+	</bean> -->
+
+
+	<bean id="postSuccessAuthHandler"
+		class="com.mercury.rts.security.PostSuccessfulAuthenticationHandler">
+		<!-- <property name="defaultTargetUrl" value="/main.html" /> <property 
+			name="alwaysUseDefaultTargetUrl" value="true" /> -->
+	</bean>
+
+	<bean id="customUserDetailsService" class="com.mercury.rts.service.CustomUserDetailsService" />
+
+
+</beans>

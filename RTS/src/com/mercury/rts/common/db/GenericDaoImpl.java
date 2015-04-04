@@ -11,6 +11,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -21,7 +22,7 @@ public class GenericDaoImpl<T, ID extends Serializable> implements GenericDao<T,
 
     @Autowired
     private SessionFactory appSessionFactory;
-
+    public GenericDaoImpl() {}
     public GenericDaoImpl(Class<T> klass) {
         this.klass = klass;
     }

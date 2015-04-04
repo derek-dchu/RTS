@@ -37,7 +37,7 @@ public class Ticket implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_ticketid")
-	@SequenceGenerator(name ="seq_ticketid", sequenceName = "seq_ticketid")
+	@SequenceGenerator(name ="seq_ticketid", sequenceName = "seq_ticketid",allocationSize=1,initialValue=1)
 	@Column(nullable=false)
 	public int getTicketid() {
 		return ticketid;
