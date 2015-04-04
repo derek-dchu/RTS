@@ -21,9 +21,8 @@ public class GenericDaoImpl<T, ID extends Serializable> implements GenericDao<T,
     private static Logger log = Logger.getLogger(GenericDaoImpl.class);
 
     @Autowired
-    @Qualifier("appSessionFactory")
     private SessionFactory appSessionFactory;
-    public GenericDaoImpl(){}
+    public GenericDaoImpl() {}
     public GenericDaoImpl(Class<T> klass) {
         this.klass = klass;
     }
