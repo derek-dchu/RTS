@@ -27,7 +27,8 @@
         </property>
     </bean>
     
-    <bean id="transactionManager" class="org.springframework.transaction.jta.JtaTransactionManager">
+    <!--  Tomcat does not have a built in JTA Transaction Manager to so use JOTM -->
+	<bean id="transactionManager" class="org.springframework.transaction.jta.JtaTransactionManager">
 	    <property name="userTransaction">
 	        <bean class="org.springframework.transaction.jta.JotmFactoryBean"/>
 	    </property>
@@ -40,7 +41,7 @@
         <property name="packagesToScan" value="com.mercury.rts.persistence.model"/>
     </bean>
     
-    <bean id="GenericDaoImpl" class="com.mercury.rts.common.db.GenericDaoImpl" abstract="true" scope="prototype"></bean>
+    <bean id="GenericDaoImpl" class="com.mercury.rts.common.db.GenericDaoImpl" abstract="true"></bean>
     <bean id="UserDaoImpl" parent="GenericDaoImpl" class="com.mercury.rts.persistence.dao.impl.UserDaoImpl"></bean>
     <bean id="CreditCardDaoImpl" parent="GenericDaoImpl" class="com.mercury.rts.persistence.dao.impl.CreditCardDaoImpl"></bean>
 	<bean id="TransactionDaoImpl" parent="GenericDaoImpl" class="com.mercury.rts.persistence.dao.impl.TransactionDaoImpl"></bean>
