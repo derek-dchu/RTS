@@ -31,10 +31,12 @@ public class UserService {
 	private TicketDaoImpl tdi;
 	
 	@Autowired
-	@Qualifier("TicketDaoImpl")
+	@Qualifier("TransactionDaoImpl")
 	private TransactionDaoImpl trdi;
 	
 	public String reg(User user){
+		user.setEnable(0);
+		user.setRole("ROLE_USER");
 		try{
 			udi.saveUser(user);
 			return null;
@@ -50,10 +52,6 @@ public class UserService {
 		
 		return tdi.findAllByMulti(property, value);
 	}
-	
-/*	public Transaction purchase(User user, Ticket ticket, int amount){
-		
-	}*/
 	
 	public String cancel(Transaction tx, int amount){
 		try {

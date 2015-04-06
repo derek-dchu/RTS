@@ -34,4 +34,9 @@ public class TicketDaoImpl extends GenericDaoImpl<Ticket, Integer> implements Ti
 		return findAllBy("enable", 0);
 	}
 
+	@Override
+	public List<Ticket> listAllTickets() {
+		return findAll();
+	}
+
 }

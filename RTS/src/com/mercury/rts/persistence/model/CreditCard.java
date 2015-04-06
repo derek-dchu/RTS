@@ -3,8 +3,9 @@ package com.mercury.rts.persistence.model;
 import java.io.Serializable;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
 
-
+@XmlRootElement
 @SuppressWarnings("serial")
 @Entity
 @Table(name="rts_credit")
