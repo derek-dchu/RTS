@@ -22,7 +22,7 @@ public class MailAppBeanTest {
 		String dear = "user";
 		String content = "Thank you for using our system.";
 		
-		mailApp.sendMail(to, dear, content);
+		mailApp.sendMail(to, null, dear, content);
 	}
 
 }
