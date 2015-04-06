@@ -37,6 +37,7 @@ public class UserService {
 	public String reg(User user){
 		user.setEnable(0);
 		user.setRole("ROLE_USER");
+		
 		try{
 			udi.saveUser(user);
 			return null;

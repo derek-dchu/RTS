@@ -20,4 +20,9 @@ public class controller {
 	public String goMain3(){
 		return "user";
 	}
+	
+	@RequestMapping("/reg")
+	public String userReg() {
+		return "reg";
+	}
 }
