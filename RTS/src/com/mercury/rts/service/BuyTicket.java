@@ -37,7 +37,7 @@ public class BuyTicket {
 	
 	public Transaction buyTicketEnqueue(String username,int tid,int quantity){
 		Date date = new Date();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy*MM*dd*hh*mm");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd hh:mm");
 		
 		User u = udi.getUserByEmail(username);
 		Ticket t = tdi.findById(tid);
@@ -64,12 +64,12 @@ public class BuyTicket {
 		String failSubject = "Booking failed";
 		String sucContent = " You have purchased "+quantity+" tickets from "+t.getDep()+" to "
 				+t.getDes()+" on "+t.getDtime()+".\n Please arrive the station on time.  The ticket can be refunded 30 mins before the departure time. Thank you.";
-		
 		String failContent = " The ticket(s) you booked from "+t.getDep()+" to "+t.getDes()+" on "+t.getDtime()+" are sold out.  Please Choose to some other ones.  Thank you for your understanding, we apology for that";
 		if(quantity<=available){
 			trans.setStatus("b");
 			t.setAvailable(available-quantity);
 			t.setSold(t.getSold()+quantity);
+			tdi.saveTicket(t);
 			trdi.saveTransaction(trans);
 			ss.sendEmail(u, sucSubject, sucContent);
 		}else{

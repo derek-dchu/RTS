@@ -8,7 +8,6 @@ import com.mercury.rts.common.db.GenericDaoImpl;
 import com.mercury.rts.persistence.dao.UserDao;
 import com.mercury.rts.persistence.model.User;
 
-@Repository
 public class UserDaoImpl extends GenericDaoImpl<User, Integer> implements UserDao {
 	public UserDaoImpl() {
 		super(User.class);

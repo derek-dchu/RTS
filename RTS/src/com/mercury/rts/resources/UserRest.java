@@ -17,22 +17,17 @@ import com.mercury.rts.service.UserService;
 @Path("/user")
 public class UserRest {
 	@Autowired
-	private UserService userServ;
+	private UserService us;
 
+	
 	@POST
-	@Path("/reg")
+	@Path("/reguser")
 	@Produces({MediaType.APPLICATION_JSON})
-	public String reg(
-			@FormParam("firstName") String firstName,
-			@FormParam("lastName") String lastName,
-			@FormParam("email") String email,
-			@FormParam("password") String password) {
+	public String reg(@FormParam("email") String email,@FormParam("psw") String password){
 		User u = new User();
-		u.setFirstName(firstName);
-		u.setLastName(lastName);
 		u.setEmail(email);
 		u.setPassword(password);
-		userServ.reg(u);
+		us.reg(u);
 		return null;
 	}
 }

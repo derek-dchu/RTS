@@ -131,7 +131,6 @@ public class Ticket implements Serializable {
 		this.price = price;
 	}
 	
-
 	@XmlTransient
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "ticketid")

@@ -65,7 +65,7 @@ public class Transaction implements Serializable{
 	public void setQt(int qt) {
 		this.qt = qt;
 	}
-	
+
 	@ManyToOne
 	@JoinColumn(name = "ticketid", insertable = true, updatable = false)
 	public Ticket getTicket() {
@@ -75,7 +75,7 @@ public class Transaction implements Serializable{
 	public void setTicket(Ticket ticket) {
 		this.ticket = ticket;
 	}
-	
+
 	@ManyToOne
 	@JoinColumn(name = "userid", insertable = true, updatable = false)
 	public User getUser() {

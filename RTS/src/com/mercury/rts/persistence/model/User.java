@@ -7,6 +7,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,6 +32,7 @@ public class User implements Serializable {
 	private String role;
 	
 	private Set<CreditCard> creditCards;
+	@XmlTransient 
 	private Set<Transaction> transactions;
 	
 	public User() {
@@ -117,8 +119,8 @@ public class User implements Serializable {
 	}
 	
 	@XmlTransient
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "userid")
+	@OneToMany(cascade = CascadeType.ALL,fetch=FetchType.EAGER,mappedBy="user")
+//	@JoinColumn(name = "userid")
 	public Set<Transaction> getTransactions() {
 		return transactions;
 	}
