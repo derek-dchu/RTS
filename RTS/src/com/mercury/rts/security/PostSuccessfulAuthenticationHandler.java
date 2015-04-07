@@ -67,7 +67,7 @@ public class PostSuccessfulAuthenticationHandler implements AuthenticationSucces
 	 
 	        if (isUser) {
 	  //      	us.sendLoginEmail(username,"USER: ");
-	            return "/user.html";
+	            return "/index.html";
 	        } else if (isAdmin) {
 	 //       	us.sendLoginEmail(username,"ADMIN: ");
 	            return "/admin.html";

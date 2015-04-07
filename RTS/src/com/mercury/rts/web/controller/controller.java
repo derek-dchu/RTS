@@ -9,15 +9,15 @@ public class controller {
 	public String index() {
 		return "index";
 	}
+	
+	@RequestMapping("/reg")
+	public String reg() {
+		return "reg";
+	}
 
 	@RequestMapping("/admin")
 	public String goMain(){
 		return "admin";
-	}
-	
-	@RequestMapping("/login")
-	public String goMain2(){
-		return "login";
 	}
 	
 	@RequestMapping("/user")

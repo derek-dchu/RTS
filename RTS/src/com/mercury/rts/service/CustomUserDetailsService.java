@@ -28,7 +28,6 @@ public class CustomUserDetailsService  implements UserDetailsService{
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		// TODO Auto-generated method stub
 		UserDetails user = null;  
 		try {
 			User u = udi.getUserByEmail(username);
@@ -45,7 +44,7 @@ public class CustomUserDetailsService  implements UserDetailsService{
 			);
 		System.out.println(u.getEmail()+" "+u.getPassword()+" "+u.getRole());
 		} catch (Exception e) {
-//			logger.error("Error in retrieving user" + e.getMessage());
+			logger.error("Error in retrieving user" + e.getMessage());
 			e.printStackTrace();
 			throw new UsernameNotFoundException("Error in retrieving user");
 		}

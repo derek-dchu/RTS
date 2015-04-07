@@ -12,12 +12,12 @@
 	<sec:http use-expressions="true">
 		<sec:intercept-url pattern="/admin.html" access="hasRole('ROLE_ADMIN')" />
 		<sec:intercept-url pattern="/user.html" access="hasRole('ROLE_USER')" />
-		<sec:intercept-url pattern="/login.html" access="permitAll()" />
-		<sec:intercept-url pattern="/user_transaction.html" access="permitAll()" />
-		<sec:form-login login-page="/login.html"
+		<sec:intercept-url pattern="/index.html" access="permitAll()" />
+		<sec:intercept-url pattern="/reg.html" access="permitAll()" />
+		<sec:form-login login-page="/index.html"
 			authentication-success-handler-ref="postSuccessAuthHandler"
-			authentication-failure-url="/login.html?login_error=1" />
-		<sec:logout invalidate-session="true" logout-success-url="/login.html.html"
+			authentication-failure-url="/index.html?login_error=1" />
+		<sec:logout invalidate-session="true" logout-success-url="/index.html"
 			delete-cookies="JSESSIONID" /> 
 
 		<sec:remember-me key="remMeKey"
@@ -34,7 +34,7 @@
 	<sec:authentication-manager alias="authenticationManager">
 		<sec:authentication-provider
 			user-service-ref="customUserDetailsService">
-			<!-- <sec:password-encoder ref="md5PasswordEncoder" /> -->
+			<sec:password-encoder ref="md5PasswordEncoder" />
 		</sec:authentication-provider>
 	</sec:authentication-manager>
 

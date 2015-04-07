@@ -55,7 +55,6 @@ public class AdminRest {
 	
 	@GET
 	@Path("/listticket")
-	@Transactional
 	@Produces({MediaType.APPLICATION_JSON})
 	public List<Ticket> listAllTicket(){
 		return as.listAllTicket();

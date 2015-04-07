@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <html>
 <head>
@@ -13,6 +14,7 @@
 	var app = angular.module("indexApp", []);
 	app.controller('mainController', ['$http', '$scope', function($http, $scope) {
 		var searchTicketUrl ="http://localhost:8080/RTS/rest/search/searchticket";
+		var buyticket = "http://localhost:8080/RTS/rest/buy";
 		
 		$scope.dep = "";
 		$scope.des = "";
@@ -20,6 +22,7 @@
 		$scope.timeType = "D";
 		$scope.tickets = [];
 		$scope.tableshow = false;
+		$scope.selectedTicketid = null;
 		
 		$scope.searchTicket = function() {
 			var dtime = null,
@@ -54,6 +57,19 @@
 			$scope.timeType = "D";
 			$scope.searchForm.$setPristine();
 		};
+		
+		$scope.buy = function(ticketid){
+			var username = document.getElementById("logedUsername").innerHTML ;
+			$http({
+			    method:'GET',
+			    url: buyticket,
+			    params: {
+			    	tid:ticketid,
+				    username:username,
+				    qt:$scope.ticketqt
+			    }
+			});
+		};
 	}]);
 
 
@@ -76,8 +92,12 @@ button {
 }
 </style>
 </head>
-<body ng-app="indexApp" ng-controller="mainController as mainCtrl">
+<body ng-app="indexApp" ng-controller="mainController">
 <h1><font color="blue">RTS</font></h1>
+
+<h1  id="logedUsername" ><sec:authentication property="name"/></h1>
+<c:url value="/j_spring_security_logout" var="logoutUrl"/>
+<button type="button"><a href="${logoutUrl}">Log Out</a></button>
 
 <!-- Login Form -->
 <div class="login-form hidden"></div>
@@ -136,6 +156,7 @@ button {
 	      <th>ArraiveTime</th>
 	      <th>Available</th>
 	      <th>Price</th>
+	      <th>Select</th>
 	    </tr>
 	  </thead>
 	  <tbody>
@@ -147,10 +168,16 @@ button {
 	      <td>{{ticket.atime}}</td>
 	      <td>{{ticket.total - ticket.sold}}</td>
 	      <td>{{ticket.price}}</td>
-	      <td><input type="radio"></td>
+	      <td><input type="radio" value="{{ticket.ticketid}}" ng-model="$parent.selectedTicketid"/></td>
 	    </tr>
 	  </tbody>
 	</table>
+</div>
+
+<div>
+	<span>{{selectedTicketid}}</span>
+	<input type="text" ng-model="ticketqt">
+	<button type="button" ng-click="buy(selectedTicketid)">Buy</button>
 </div>
 
 </body>

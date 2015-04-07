@@ -21,7 +21,7 @@ public class UserRest {
 
 	
 	@POST
-	@Path("/reguser")
+	@Path("/reg")
 	@Produces({MediaType.APPLICATION_JSON})
 	public String reg(@FormParam("email") String email,@FormParam("psw") String password){
 		User u = new User();
