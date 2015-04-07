@@ -133,10 +133,10 @@ public class GenericDaoImpl<T, ID extends Serializable> implements GenericDao<T,
 
     protected SessionInfo getSessionInfo() {
         try {
-            return new SessionInfo(appSessionFactory.getCurrentSession(), false, false);
+            return new SessionInfo(appSessionFactory.getCurrentSession(), false);
         } catch (HibernateException he) {
             log.debug(he);
-            return new SessionInfo(appSessionFactory.openSession(), false, false);
+            return new SessionInfo(appSessionFactory.openSession(), false);
         }
     }
 

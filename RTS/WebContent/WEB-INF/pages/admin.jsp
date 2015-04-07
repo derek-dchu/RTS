@@ -15,8 +15,9 @@
 	app.controller('myc',function($scope,$http){
 		var addticket ="http://localhost:8080/RTS/rest/admin/addticket";
 		var listticket = "http://localhost:8080/RTS/rest/admin/listticket";
-		
+
 		$scope.tableshow = false;
+		
 		$scope.createNewTicket = function(){
 			$http({
 			    method:'POST',
@@ -92,7 +93,8 @@ button {
 </style>
 </head>
 <body ng-app="app" ng-controller="myc">
-<h1>ADMIN</h1>
+
+<h1 style="display:none;" id="logedUsername" ><sec:authentication property="name"/></h1>
 <c:url value="/j_spring_security_logout" var="logoutUrl"/>
 <button type="button"><a href="${logoutUrl}">Log Out</a></button>
 

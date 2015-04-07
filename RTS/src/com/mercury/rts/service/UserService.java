@@ -1,8 +1,11 @@
 package com.mercury.rts.service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,23 +60,47 @@ public class UserService {
 		return tdi.findAllByMulti(property, value);
 	}
 	
-	public String cancel(Transaction tx, int amount){
+	public String cancel(int tx, int amount){
+		Date date = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd hh:mm");
+		
 		try {
-			Transaction transaction = trdi.findBy("tid", tx.getTid());
-			Ticket ticket = tx.getTicket();
-			ticket.setSold(ticket.getSold() - amount);
-			ticket.setAvailable(ticket.getAvailable() + amount);
-			tdi.saveTicket(ticket);
-			transaction.setStatus("C");
-			trdi.saveTransaction(transaction);
+			Transaction transaction = trdi.findBy("tid", tx);
+			Ticket ticket = transaction.getTicket();
+			
+			if(amount == transaction.getQt()){
+				ticket.setSold(ticket.getSold() - amount);
+				ticket.setAvailable(ticket.getAvailable() + amount);
+				tdi.saveTicket(ticket);
+				transaction.setStatus("c");
+				transaction.setTtime(sdf.format(date));
+				trdi.saveTransaction(transaction);
+			}else if(amount > transaction.getQt()){
+				
+			}else{
+				Transaction t = new Transaction();
+				t.setQt(amount);
+				t.setStatus("c");
+				ticket.setSold(ticket.getSold() - amount);
+				ticket.setAvailable(ticket.getAvailable() + amount);
+				t.setTicket(ticket);
+				t.setUser(transaction.getUser());
+				t.setTtime(sdf.format(date));
+				tdi.saveTicket(ticket);
+				trdi.saveTransaction(t);
+			}
 			return null;
 		} catch (HibernateException e) {
 			return "Cannot cancel ticket.";
 		}
 	}
 	
-	public List<Transaction> checkHistory(User user){
-		return trdi.findAllBy("userid", user.getUserid());
+	public Set<Transaction> checkHistory(User user){
+		return user.getTransactions();
+	}
+	
+	public User findUserByEmail(String username){
+		return udi.getUserByEmail(username);
 	}
 	
 	public String saveCreditCard(User user,CreditCard creditCard){

@@ -8,9 +8,8 @@ import com.mercury.rts.persistence.model.Transaction;
 
 public class TransactionQueue{
 		private static LinkedList<Transaction> q;
-		private TransactionQueue(){
-			
-		}
+		private TransactionQueue(){}
+		
 		public static LinkedList<Transaction> getTransactionQueue(){
 			if(q==null){
 				synchronized (Transaction.class){

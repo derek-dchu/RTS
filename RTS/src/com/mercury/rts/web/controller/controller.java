@@ -21,8 +21,9 @@ public class controller {
 		return "user";
 	}
 	
-	@RequestMapping("/reg")
-	public String userReg() {
-		return "reg";
+	@RequestMapping("/user_transaction")
+	public String goMain4(){
+		return "user_transaction";
 	}
 }
+

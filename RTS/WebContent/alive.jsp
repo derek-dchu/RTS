@@ -17,7 +17,7 @@
 	Map<String,String> connectionList = new TreeMap<String,String>();
 
 	/** START MODIFICAIONS HERE **/ 
-	connectionList.put("jdbc/rts","select 1 as result, sysdate from dual");
+	connectionList.put("jdbc/myoracle","select 1 as result, sysdate from dual");
 	/** END MODIFICAIONS HERE **/ 
 %>
 
