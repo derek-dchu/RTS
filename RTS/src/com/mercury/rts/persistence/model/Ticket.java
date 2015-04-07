@@ -7,7 +7,6 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,6 +15,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 @XmlRootElement
 @SuppressWarnings("serial")
@@ -131,7 +131,9 @@ public class Ticket implements Serializable {
 		this.price = price;
 	}
 	
-	@OneToMany(cascade = CascadeType.ALL,fetch=FetchType.EAGER)
+
+	@XmlTransient
+	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "ticketid")
 	public Set<Transaction> getTransactions() {
 		return transactions;

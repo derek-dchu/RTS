@@ -1,6 +1,5 @@
 package com.mercury.rts.service;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -40,7 +39,7 @@ public class UserService {
 		user.setRole("ROLE_USER");
 		Md5PasswordEncoder encoder = new Md5PasswordEncoder();
 		user.setPassword(encoder.encodePassword(user.getPassword(),null));
-		
+
 		try{
 			udi.saveUser(user);
 			return null;
@@ -76,7 +75,7 @@ public class UserService {
 		return trdi.findAllBy("userid", user.getUserid());
 	}
 	
-	public String saveCreditCard(User user,CreditCard creditCard){
+	public String saveCreditCard(User user, CreditCard creditCard){
 		try {
 			user.addCreditCard(creditCard);
 			udi.saveUser(user);
@@ -86,7 +85,7 @@ public class UserService {
 		}
 	}
 	
-	public String removeCreditCard(User user,CreditCard creditCard){
+	public String removeCreditCard(User user, CreditCard creditCard){
 		try {
 			user.removeCreditCard(creditCard);
 			udi.saveUser(user);

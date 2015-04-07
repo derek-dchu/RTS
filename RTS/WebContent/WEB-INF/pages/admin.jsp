@@ -2,7 +2,7 @@
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -12,10 +12,11 @@
 <script type="text/javascript">
 	var app = angular.module('app',[]);
 
-	app.controller('myc',function($scope,$http){
+	app.controller('myc',function($scope,$http) {
 		var addticket ="http://localhost:8080/RTS/rest/admin/addticket";
 		var listticket = "http://localhost:8080/RTS/rest/admin/listticket";
-		
+		var buyticket = "http://localhost:8080/RTS/rest/buy";
+
 		$scope.tableshow = false;
 		$scope.createNewTicket = function(){
 			$http({
@@ -70,6 +71,18 @@
 	    	$scope.price = selectTicket.price;
 	    	$scope.statu = selectTicket.enable;
 		};
+
+		$scope.buy = function(tid){
+			var username = document.getElementById("logedUsername").innerHTML ;
+			$http({
+			    method:'GET',
+			    url: buyticket,
+			    params: {
+			    		tid:tid,
+				    	username:username
+			    }
+			});
+		};
 	});
 
 </script>
@@ -92,7 +105,8 @@ button {
 </style>
 </head>
 <body ng-app="app" ng-controller="myc">
-<h1>ADMIN</h1>
+
+<h1 style="display:none;" id="logedUsername" ><sec:authentication property="name"/></h1>
 <c:url value="/j_spring_security_logout" var="logoutUrl"/>
 <button type="button"><a href="${logoutUrl}">Log Out</a></button>
 
@@ -188,6 +202,10 @@ button {
 			<button type="button" ng-click="createNewTicket()">Submit</button>
 		</div>
 	</form>
+
+	<div>
+		<button type="button" ng-click="buy(tid)">Buy</button>
+	</div>
 </div>
 </body>
 </html>

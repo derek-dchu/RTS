@@ -35,11 +35,11 @@ public class BuyTicket {
 	@Autowired
 	private SystemService ss;
 	
-	public Transaction buyTicketEnqueue(int userid,int tid,int quantity,int method){
+	public Transaction buyTicketEnqueue(String username,int tid,int quantity){
 		Date date = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy*MM*dd*hh*mm");
 		
-		User u = udi.findById(userid);
+		User u = udi.getUserByEmail(username);
 		Ticket t = tdi.findById(tid);
 		
 		Transaction ts = new Transaction();
@@ -47,6 +47,7 @@ public class BuyTicket {
 		ts.setTtime(sdf.format(date));
 		ts.setTicket(t);
 		ts.setUser(u);
+		ts.setStatus("p");
 		
 		TransactionQueue.add(ts);
 		return ts;
@@ -61,16 +62,14 @@ public class BuyTicket {
 		
 		String sucSubject = "You has booked the ticket successfully";
 		String failSubject = "Booking failed";
+		String sucContent = " You have purchased "+quantity+" tickets from "+t.getDep()+" to "
+				+t.getDes()+" on "+t.getDtime()+".\n Please arrive the station on time.  The ticket can be refunded 30 mins before the departure time. Thank you.";
 		
-		String sucContent = "Dear "+u.getEmail()+": You have purchased "+quantity+" tickets from "+t.getDep()+"to "
-				+t.getDes()+"on "+t.getDtime()+" Please arrive the station on time.  The ticket can be refunded 30 mins before the departure time. Thank you.";
-		
-		String failContent = "Dear "+u.getEmail()+": The ticket(s) you booked from "+t.getDep()+" to "+t.getDes()+" on "+t.getDtime()+" are sold out.  Please Choose to some other ones.  Thank you for your understanding, we apology for that";
+		String failContent = " The ticket(s) you booked from "+t.getDep()+" to "+t.getDes()+" on "+t.getDtime()+" are sold out.  Please Choose to some other ones.  Thank you for your understanding, we apology for that";
 		if(quantity<=available){
-			trans.setStatus("s");
+			trans.setStatus("b");
 			t.setAvailable(available-quantity);
 			t.setSold(t.getSold()+quantity);
-//			tdi.saveTicket(t);
 			trdi.saveTransaction(trans);
 			ss.sendEmail(u, sucSubject, sucContent);
 		}else{
