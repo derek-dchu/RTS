@@ -11,7 +11,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
+@XmlRootElement
 @SuppressWarnings("serial")
 @Entity
 @Table(name="rts_transaction")
@@ -63,7 +66,7 @@ public class Transaction implements Serializable{
 	public void setQt(int qt) {
 		this.qt = qt;
 	}
-
+	
 	@ManyToOne
 	@JoinColumn(name = "ticketid", insertable = true, updatable = false)
 	public Ticket getTicket() {
@@ -73,7 +76,7 @@ public class Transaction implements Serializable{
 	public void setTicket(Ticket ticket) {
 		this.ticket = ticket;
 	}
-
+	
 	@ManyToOne
 	@JoinColumn(name = "userid", insertable = true, updatable = false)
 	public User getUser() {

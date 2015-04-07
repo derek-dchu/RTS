@@ -9,4 +9,5 @@ public interface TicketDao{
 	public void saveTicket(Ticket ticket);
 	public List<Ticket> listAllEnableTickets();
 	public List<Ticket> listAllDisableTickets();
+	public List<Ticket> listAllTickets();
 }

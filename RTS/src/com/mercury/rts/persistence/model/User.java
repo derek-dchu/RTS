@@ -14,7 +14,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
+@XmlRootElement
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "rts_user")
@@ -94,6 +97,7 @@ public class User implements Serializable {
 		this.role = role;
 	}
 
+	@XmlTransient
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "userid")
 	public Set<CreditCard> getCreditCards() {
@@ -112,6 +116,7 @@ public class User implements Serializable {
 		creditCards.remove(creditCard);
 	}
 	
+	@XmlTransient
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "userid")
 	public Set<Transaction> getTransactions() {
