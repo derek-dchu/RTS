@@ -7,6 +7,7 @@ import java.util.List;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,6 +38,8 @@ public class UserService {
 	public String reg(User user){
 		user.setEnable(0);
 		user.setRole("ROLE_USER");
+		Md5PasswordEncoder encoder = new Md5PasswordEncoder();
+		user.setPassword(encoder.encodePassword(user.getPassword(),null));
 		
 		try{
 			udi.saveUser(user);

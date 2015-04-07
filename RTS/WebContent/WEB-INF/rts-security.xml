@@ -14,6 +14,7 @@
 		<sec:intercept-url pattern="/user.html" access="hasRole('ROLE_USER')" />
 		<sec:intercept-url pattern="/login.html" access="permitAll()" />
 		<sec:intercept-url pattern="/reg.html" access="permitAll()" />
+		<sec:intercept-url pattern="/transaction.html" access="permitAll()" />
 		<sec:form-login login-page="/login.html"
 			authentication-success-handler-ref="postSuccessAuthHandler"
 			authentication-failure-url="/login.html?login_error=1" />
@@ -34,10 +35,11 @@
 	<sec:authentication-manager alias="authenticationManager">
 		<sec:authentication-provider
 			user-service-ref="customUserDetailsService">
-			<!-- <sec:password-encoder hash="md5" /> -->
+			<sec:password-encoder ref="md5PasswordEncoder" />
 		</sec:authentication-provider>
 	</sec:authentication-manager>
 
+	<bean id="md5PasswordEncoder"  class="org.springframework.security.authentication.encoding.Md5PasswordEncoder"/>
 	<!-- <bean id="encoder"
 		class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
 		<constructor-arg name="strength" value="10" />
