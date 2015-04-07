@@ -3,6 +3,7 @@ package com.mercury.rts.common.db;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
@@ -52,12 +53,13 @@ public class GenericDaoImpl<T, ID extends Serializable> implements GenericDao<T,
     }
 
     @SuppressWarnings("unchecked")
-	public List<T> findAllByMulti(List<String> property, List<String> values){
+	public List<T> findAllByMulti(Map<String, Object> condition) {
     	 SessionInfo sessionInfo = getSessionInfo();
     	 Criteria criteria = sessionInfo.getSession().createCriteria(klass);
-    	 for(int i = 0;i<property.size();i++){
-    		 if(property.get(i) != null) {
-    			 criteria.add(Restrictions.eq(property.get(i), values.get(i)));
+    	 for(Map.Entry<String, Object> e : condition.entrySet()){
+    		 System.out.println(e.getKey());
+    		 if(e.getKey() != null) {
+    			 criteria.add(Restrictions.eq(e.getKey(), e.getValue()));
     		  } 
     	  }
     	  List<T> retval=(List<T>) criteria.list();

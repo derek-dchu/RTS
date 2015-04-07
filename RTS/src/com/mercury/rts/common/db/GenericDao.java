@@ -2,6 +2,7 @@ package com.mercury.rts.common.db;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.criterion.Order;
 
@@ -16,6 +17,7 @@ public interface GenericDao<T, ID extends Serializable> {
     List<T> findAllBy(String property, Object value, Order order);
     List<T> findAll();
     List<T> findAll(Order order);
+    List<T> findAllByMulti(Map<String, Object> condition);
     T findBy(String property, Object value);
     void delete(T object);
 }
