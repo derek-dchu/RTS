@@ -5,6 +5,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class controller {
+	@RequestMapping("/index")
+	public String index() {
+		return "index";
+	}
 
 	@RequestMapping("/admin")
 	public String goMain(){
@@ -24,5 +28,10 @@ public class controller {
 	@RequestMapping("/reg")
 	public String userReg() {
 		return "reg";
+	}
+	
+	@RequestMapping("/searchticket")
+	public String  searchTicket(){
+		return "searchticket";
 	}
 }

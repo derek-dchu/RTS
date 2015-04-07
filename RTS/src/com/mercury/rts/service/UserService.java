@@ -1,7 +1,8 @@
 package com.mercury.rts.service;
 
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,11 +50,26 @@ public class UserService {
 		}
 	}
 	
-	public List<Ticket> searchTicket(String dep, String des, String time) {
-		List<String> property = Arrays.asList(new String[]{"dep", "des", "time"});
-		List<String> value = Arrays.asList(new String[]{dep, des, time});
+	public List<Ticket> searchTicket(String dep, String des, String dtime, String atime) {
+		Map<String, Object> condition = new HashMap<String, Object>(0);
+		condition.put("dep", dep);
+		condition.put("des", des);
 		
-		return tdi.findAllByMulti(property, value);
+		if (!dtime.isEmpty()) {
+			condition.put("dtime", dtime);
+		}
+		
+		if (!atime.isEmpty()) {
+			condition.put("atime", atime);
+		}
+		System.out.println(condition.entrySet());
+		
+		try {
+			return tdi.findAllByMulti(condition);
+		} catch (HibernateException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	public String cancel(Transaction tx, int amount){
