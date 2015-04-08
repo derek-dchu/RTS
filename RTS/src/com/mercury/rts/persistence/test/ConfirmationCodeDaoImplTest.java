@@ -25,9 +25,10 @@ public class ConfirmationCodeDaoImplTest {
 
 	@Test
 	public void testGetConfirmationCodeByUserid() {
-		ConfirmationCode cc = ccdi.getConfirmationCodeByUserid(1);
+		String code = "123confirmationcode";
+		ConfirmationCode cc = ccdi.getConfirmationCodeByCode(code);
 		assertNotNull(cc);
-		assertEquals("123confirmationcode", cc.getCode());
+		assertEquals(1, cc.getUserid());
 	}
 
 }

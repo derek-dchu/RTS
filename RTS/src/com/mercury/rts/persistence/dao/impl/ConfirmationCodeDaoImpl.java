@@ -12,8 +12,8 @@ public class ConfirmationCodeDaoImpl extends
 	}
 
 	@Override
-	public ConfirmationCode getConfirmationCodeByUserid(int userid) {
-		return findBy("userid", userid);
+	public ConfirmationCode getConfirmationCodeByCode(String code) {
+		return findById(code);
 	}
 
 }
