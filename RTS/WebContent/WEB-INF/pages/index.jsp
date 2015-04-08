@@ -1,125 +1,83 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
+<!-- define variable -->
+<c:url value="/j_spring_security_logout" var="logoutUrl"/>
+
+<!DOCTYPE html>
 <html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>RTS | A simple yet effective rail-way ticket system</title>
-
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.js"></script>
-<script type="text/javascript">
-	var app = angular.module("indexApp", []);
-	app.controller('mainController', ['$http', '$scope', function($http, $scope) {
-		var searchTicketUrl ="http://localhost:8080/RTS/rest/search/searchticket";
-		var buyticket = "http://localhost:8080/RTS/rest/buy";
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+		<title>RTS | A simple yet effective rail-way ticket system</title>
+	
+		<link href="<c:url value="/resources/bower_components/bootstrap/dist/css/bootstrap.min.css" />" rel="stylesheet">
+		<!-- Include roboto.css to use the Roboto web font, material.css to include the theme and ripples.css to style the ripple effect -->
+		<link href="<c:url value="/resources/bower_components/bootstrap-material-design/dist/css/roboto.min.css" />" rel="stylesheet">
+		<link href="<c:url value="/resources/bower_components/bootstrap-material-design/dist/css/material.min.css" />" rel="stylesheet">
+		<link href="<c:url value="/resources/bower_components/bootstrap-material-design/dist/css/ripples.min.css" />" rel="stylesheet">
 		
-		$scope.dep = "";
-		$scope.des = "";
-		$scope.time = "";
-		$scope.timeType = "D";
-		$scope.tickets = [];
-		$scope.tableshow = false;
-		$scope.selectedTicketid = null;
+		<link href="<c:url value="/resources/css/index.css" />" rel="stylesheet">
+	</head>
+
+	<body ng-app="indexPage" ng-controller="mainController">
+	
+		<!-- nav -->
+		<div class="navbar navbar-default">
+    		<div class="navbar-header">
+        		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+            		<span class="icon-bar"></span>
+            		<span class="icon-bar"></span>
+            		<span class="icon-bar"></span>
+       			</button>
+        		<a class="navbar-brand" href="/RTS">RTS</a>
+    		</div>
+    		<div class="navbar-collapse collapse navbar-responsive-collapse">
+		        <form class="navbar-form navbar-left">
+		            <input type="text" class="form-control col-lg-8" placeholder="Search">
+		        </form>
+		        <ul class="nav navbar-nav navbar-right">
+		            <li><a href="javascript:void(0)" ng-click="openLoginForm()">Log In</a></li>
+		            <li><a href="${logoutUrl}">Log Out</a></li>
+		        </ul>
+    		</div>
+		</div>
 		
-		$scope.searchTicket = function() {
-			var dtime = null,
-				atime = null;
-			if ($scope.timeType === "D") {
-				dtime = $scope.time;
-			}
-			
-			if ($scope.timeType === "A") {
-				atime = $scope.time;
-			}
-			
-			$http({
-			    method:'POST',
-			    url: searchTicketUrl,
-			    data: $.param({
-			    		des:$scope.des,
-			    		dep:$scope.dep,
-			    		dtime:dtime,
-			    		atime:atime
-			    }),
-			    headers:{'Content-Type':'application/x-www-form-urlencoded'}
-			}).success(function(data){
-				$scope.tickets = [data.ticket];
-				$scope.tableshow = true;
-		})};
-		
-		$scope.resetForm = function(){
-			$scope.dep = "";
-			$scope.des = "";
-			$scope.time = "";
-			$scope.timeType = "D";
-			$scope.searchForm.$setPristine();
-		};
-		
-		$scope.buy = function(ticketid){
-			var username = document.getElementById("logedUsername").innerHTML ;
-			$http({
-			    method:'GET',
-			    url: buyticket,
-			    params: {
-			    	tid:ticketid,
-				    username:username,
-				    qt:$scope.ticketqt
-			    }
-			});
-		};
-	}]);
+		<!-- Login Form -->
+		<div class="container login-form">
+			<form name="f" action="<c:url value='j_spring_security_check'/>" method="POST" id="login-form" class="form-horizontal">
+		    	<fieldset>
+			        <legend>Log In</legend>
+			        <div class="form-group">
+			            <label for="inputEmail" class="col-lg-2 control-label">Email</label>
+			            <div class="col-lg-10">
+			                <input type="email" name="j_username" class="form-control" id="inputEmail" placeholder="Email">
+			            </div>
+			        </div>
+			        <div class="form-group">
+			            <label for="inputPassword" class="col-lg-2 control-label">Password</label>
+			            <div class="col-lg-10">
+			                <input type="password" name="j_password" class="form-control" id="inputPassword" placeholder="Password">
+			            </div>
+					</div>
+					<div class="form-group">
+            			<div class="col-lg-10 col-lg-offset-2">
+                			<button class="btn btn-default">Cancel</button>
+                			<button type="reset" class="btn">Clear</button>
+                			<button id="signin" type="submit" class="btn btn-primary">Submit</button>
+            			</div>
+        			</div>
+				</fieldset>
+			</form>
+		</div>
 
 
-</script>
-<style type="text/css">
-table, th, td {
-	border: 1px solid black;
-}
-
-.red{
-	color:red;
-}
-
-input {
-	font-size: 110%;
-}
-
-button {
-	font-size: 110%;
-}
-</style>
-</head>
-<body ng-app="indexApp" ng-controller="mainController">
 <h1><font color="blue">RTS</font></h1>
 
 <h1  id="logedUsername" ><sec:authentication property="name"/></h1>
-<c:url value="/j_spring_security_logout" var="logoutUrl"/>
-<button type="button"><a href="${logoutUrl}">Log Out</a></button>
 
-<!-- Login Form -->
-<div class="login-form hidden"></div>
-<form name="f" action="<c:url value='j_spring_security_check'/>" method="POST" id="login-form">
-	<table>
-		<tr>
-			<td>Username: </td>
-			<td><input type="text" name="j_username" id="j_username"/></td>
-		</tr>
-		<tr>
-			<td>Password: </td>
-			<td><input type="password" name="j_password" id="j_password"/></td>
-		</tr>
-		<tr>
-			<td></td>
-			<td>
-				<button type="reset">Clear</button>
-				<button id="signin" type="submit">Sign In</button>
-			</td>
-		</tr>
-	</table>		
-</form>
+
 
 <!-- Search Ticket Form -->
 <form name="searchForm">
@@ -180,5 +138,20 @@ button {
 	<button type="button" ng-click="buy(selectedTicketid)">Buy</button>
 </div>
 
+	<!-- load script here -->
+	<script src="<c:url value="/resources/bower_components/jquery/dist/jquery.min.js" />"></script>
+	<script src="<c:url value="/resources/bower_components/angularjs/angular.min.js" />"></script>
+	<script src="<c:url value="/resources/bower_components/bootstrap/dist/js/bootstrap.min.js" />"></script>
+    <script src="<c:url value="/resources/bower_components/bootstrap-material-design/dist/js/ripples.min.js" />"></script>
+	<script src="<c:url value="/resources/bower_components/bootstrap-material-design/dist/js/material.min.js" />"></script>
+	<script>
+		$(document).ready(function() {
+			// This command is used to initialize some elements and make them work properly
+			$.material.init();
+		});
+	</script>
+	
+	<script src="<c:url value="/resources/js/index.js" />"></script>
+	
 </body>
 </html>

@@ -23,6 +23,7 @@
                 <prop key="hibernate.format_sql">true</prop>
  				<prop key="hibernate.cache.use_second_level_cache">false</prop>
 				<prop key="hibernate.cache.use_query_cache">false</prop>
+				<prop key="hibernate.id.new_generator_mappings">true</prop>
             </props>
         </property>
     </bean>
