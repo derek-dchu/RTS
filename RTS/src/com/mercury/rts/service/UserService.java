@@ -7,9 +7,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
+import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +25,7 @@ import com.mercury.rts.persistence.model.User;
 @Service
 @Transactional
 public class UserService {
+	private static Logger logger = Logger.getLogger(UserService.class);
 	
 	@Autowired
 	private UserDaoImpl udi;
@@ -33,21 +35,6 @@ public class UserService {
 	
 	@Autowired
 	private TransactionDaoImpl trdi;
-	
-	public String reg(User user) {
-		user.setEnable(0);
-		user.setRole("ROLE_USER");
-		Md5PasswordEncoder encoder = new Md5PasswordEncoder();
-		user.setPassword(encoder.encodePassword(user.getPassword(),null));
-
-		try{
-			udi.saveUser(user);
-			return null;
-		}
-		catch (HibernateException e) {
-			return "can not find user";
-		}
-	}
 	
 	public List<Ticket> searchTicket(String dep, String des, String dtime, String atime) {
 		Map<String, Object> condition = new HashMap<String, Object>(0);
@@ -66,7 +53,7 @@ public class UserService {
 		try {
 			return tdi.findAllByMulti(condition);
 		} catch (HibernateException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 			return null;
 		}
 	}
@@ -102,11 +89,13 @@ public class UserService {
 			}
 			return null;
 		} catch (HibernateException e) {
+			logger.error(e.getMessage());
 			return "Cannot cancel ticket.";
 		}
 	}
 	
 	public Set<Transaction> checkHistory(User user){
+		Hibernate.initialize(user.getTransactions());
 		return user.getTransactions();
 	}
 	
@@ -120,6 +109,7 @@ public class UserService {
 			udi.saveUser(user);
 			return null;
 		} catch (HibernateException e) {
+			logger.error(e.getMessage());
 			return  "credit card save unsuccessfully";
 		}
 	}
@@ -130,8 +120,10 @@ public class UserService {
 			udi.saveUser(user);
 			return null;
 		} catch (HibernateException e) {
+			logger.error(e.getMessage());
 			return "not remove";
 		}
 	}
+	
 }
 

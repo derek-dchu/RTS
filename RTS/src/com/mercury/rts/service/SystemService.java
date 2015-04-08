@@ -1,18 +1,22 @@
 package com.mercury.rts.service;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
 import org.springframework.mail.MailParseException;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mercury.rts.mail.MailAppBean;
+import com.mercury.rts.persistence.dao.impl.ConfirmationCodeDaoImpl;
 import com.mercury.rts.persistence.dao.impl.TicketDaoImpl;
 import com.mercury.rts.persistence.dao.impl.UserDaoImpl;
+import com.mercury.rts.persistence.model.ConfirmationCode;
 import com.mercury.rts.persistence.model.Ticket;
 import com.mercury.rts.persistence.model.User;
 
@@ -27,9 +31,16 @@ public class SystemService {
 	UserDaoImpl userDao;
 	@Autowired
 	TicketDaoImpl ticketDao;
+	@Autowired
+	ConfirmationCodeDaoImpl confirmationCodeDao;
 	
 	public String sendEmail(User user, String subject, String content) {
-		String username = String.format("%s %s", user.getFirstName(), user.getLastName());
+		String firstName = "";
+		String lastName = "";
+		if (user.getFirstName() != null) { firstName = user.getFirstName(); }
+		if (user.getLastName() != null) { lastName = user.getLastName(); }
+		
+		String username = String.format("%s %s", firstName, lastName);
 		try {
 			mailApp.sendMail(user.getEmail(), subject, username, content);
 			return null;
@@ -59,5 +70,49 @@ public class SystemService {
 			logger.error(e.getMessage());
 			return null;
 		}
+	}
+	
+	public String reg(User user) {
+		user.setEnable(0);
+		user.setRole("ROLE_USER");
+		Md5PasswordEncoder encoder = new Md5PasswordEncoder();
+		user.setPassword(encoder.encodePassword(user.getPassword(),null));
+
+		try{
+			userDao.saveUser(user);
+			
+			String code = UUID.randomUUID().toString();
+			ConfirmationCode cc = new ConfirmationCode();
+			cc.setUserid(user.getUserid());
+			cc.setCode(code);
+			confirmationCodeDao.save(cc);
+			sendConfirmation(user, code);
+			return null;
+		}
+		catch (HibernateException e) {
+			logger.error(e.getMessage());
+			return "System Error: user cannot be saved.";
+		}
+	}
+	
+	public String sendConfirmation(User user, String code) {
+		String subject = "RTS Admin: please confirm your email";
+		String content = String.format(
+				"Confirm your email by clicking following link%n <a href=\"localhost:8080/RTS/sys/confirm.html?code=%s\">.", 
+				code);
+		return sendEmail(user, subject, content);
+	}
+	
+	public String confirmUser(String code) {
+		try {
+			ConfirmationCode cc = confirmationCodeDao.getConfirmationCodeByCode(code);
+			User user = userDao.getUserById(cc.getUserid());
+			userDao.setUserStatus(user, 1);
+			return null;
+		} catch (HibernateException e) {
+			logger.error(e.getMessage());
+			return "System Error: cannot confirm email.";
+		}
+		
 	}
 }
