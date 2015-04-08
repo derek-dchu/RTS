@@ -15,6 +15,8 @@ insert into RTS_TICKET(ticketid, total, sold, available, enable, price) values (
 insert into RTS_TRANSACTION(tid, qt, userid, ticketid) values (1, 1, 2, 1);
 insert into RTS_TRANSACTION(tid, qt, userid, ticketid) values (2, 1, 2, 2);
 
+insert into RTS_CONFIRM(code, userid) values ('123confirmationcode', 1);
+
 select * from RTS_USER;
 select * from RTS_CREDIT;
 select * from RTS_TICKET;

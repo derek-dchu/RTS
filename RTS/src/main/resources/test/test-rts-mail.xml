@@ -28,8 +28,9 @@
 		<property name="text">
 		<value>
 			<![CDATA[
-				Dear %s,
-				Mail Content : %s
+				Dear %s,%n
+				%n
+				%s
 			]]>
 		</value>
     </property>

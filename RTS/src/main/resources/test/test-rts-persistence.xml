@@ -59,4 +59,5 @@
     <bean id="CreditCardDaoImpl" parent="GenericDaoImpl" class="com.mercury.rts.persistence.dao.impl.CreditCardDaoImpl"></bean>
 	<bean id="TransactionDaoImpl" parent="GenericDaoImpl" class="com.mercury.rts.persistence.dao.impl.TransactionDaoImpl"></bean>
 	<bean id="TicketDaoImpl" parent="GenericDaoImpl" class="com.mercury.rts.persistence.dao.impl.TicketDaoImpl"></bean>
+	<bean id="ConfirmationCodeDaoImpl" parent="GenericDaoImpl" class="com.mercury.rts.persistence.dao.impl.ConfirmationCodeDaoImpl"></bean>
 </beans>
