@@ -1,0 +1,21 @@
+{
+  "name": "rts",
+  "version": "0.0.0",
+  "homepage": "https://github.com/derek-dchu/RTS",
+  "authors": [
+    "Derek Hu <derek.dchu@gmail.com>"
+  ],
+  "description": "Rail-way Ticket System",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "/",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap-material-design": "~0.3.0"
+  }
+}
