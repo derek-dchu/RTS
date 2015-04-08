@@ -14,6 +14,7 @@
 		<sec:intercept-url pattern="/user.html" access="hasRole('ROLE_USER')" />
 		<sec:intercept-url pattern="/index.html" access="permitAll()" />
 		<sec:intercept-url pattern="/reg.html" access="permitAll()" />
+		<sec:intercept-url pattern="/sys/confirm" access="permitAll()" />
 		<sec:form-login login-page="/index.html"
 			authentication-success-handler-ref="postSuccessAuthHandler"
 			authentication-failure-url="/index.html?login_error=1" />
