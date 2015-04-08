@@ -13,7 +13,7 @@
 	var app = angular.module('userReg',[]);
 
 	app.controller('mainController', ['$http', function($http){
-		var regUser = "http://localhost:8080/RTS/rest/user/reg";
+		var regUser = "http://localhost:8080/RTS/rest/sys/reg";
 		
 		this.regUser = function(){
 			$http({
