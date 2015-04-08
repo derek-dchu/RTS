@@ -29,7 +29,7 @@ public class Transaction implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_tid")
-	@SequenceGenerator(name ="seq_tid", sequenceName = "seq_tid",allocationSize=1,initialValue=1)
+	@SequenceGenerator(name ="seq_tid", sequenceName = "seq_tid", allocationSize = 1, initialValue = 1000000000)
 	@Column(nullable=false)
 	public int getTid() {
 		return tid;

@@ -41,7 +41,7 @@ public class User implements Serializable {
 	}
 
 	@Id
-	@SequenceGenerator(name = "seq_userid", sequenceName = "seq_userid",allocationSize=1,initialValue=1)
+	@SequenceGenerator(name = "seq_userid", sequenceName = "seq_userid", allocationSize = 1, initialValue = 1000000000)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_userid")
 	public int getUserid() {
 		return userid;
