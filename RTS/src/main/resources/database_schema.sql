@@ -58,3 +58,9 @@ create sequence seq_tid
 drop sequence seq_userid;
 drop sequence seq_ticketid;
 drop sequence seq_tid;
+
+-- confirmation code --
+create table rts_confirm (
+	code		varchar2(36)	primary key,
+	userid 		number(10)		references rts_user(userid)
+);
