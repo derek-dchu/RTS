@@ -19,7 +19,7 @@ import com.mercury.rts.persistence.dao.impl.UserDaoImpl;
 import com.mercury.rts.persistence.model.User;
 @Service
 @Transactional(readOnly = true)
-public class CustomUserDetailsService  implements UserDetailsService{
+public class CustomUserDetailsService implements UserDetailsService{
 	private Logger logger = Logger.getLogger(this.getClass());
 
 	@Autowired

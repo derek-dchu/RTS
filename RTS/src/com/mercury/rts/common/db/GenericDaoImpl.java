@@ -27,9 +27,6 @@ public class GenericDaoImpl<T, ID extends Serializable> implements GenericDao<T,
         this.klass = klass;
     }
 
-    /* (non-Javadoc)
-     * @see com.thg.db.Dao#findById(ID)
-     */
     @SuppressWarnings("unchecked")
     public T findById(ID id) {
         SessionInfo sessionInfo = getSessionInfo();

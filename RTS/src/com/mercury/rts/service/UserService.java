@@ -9,7 +9,6 @@ import java.util.Set;
 
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,18 +26,15 @@ import com.mercury.rts.persistence.model.User;
 public class UserService {
 	
 	@Autowired
-	@Qualifier("UserDaoImpl")
 	private UserDaoImpl udi;
 	
 	@Autowired
-	@Qualifier("TicketDaoImpl")
 	private TicketDaoImpl tdi;
 	
 	@Autowired
-	@Qualifier("TransactionDaoImpl")
 	private TransactionDaoImpl trdi;
 	
-	public String reg(User user){
+	public String reg(User user) {
 		user.setEnable(0);
 		user.setRole("ROLE_USER");
 		Md5PasswordEncoder encoder = new Md5PasswordEncoder();
@@ -75,7 +71,7 @@ public class UserService {
 		}
 	}
 	
-	public String cancel(int tx, int amount){
+	public String cancel(int tx, int amount) {
 		Date date = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd hh:mm");
 		

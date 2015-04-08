@@ -5,7 +5,6 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mail.MailException;
 import org.springframework.mail.MailParseException;
 import org.springframework.stereotype.Service;
@@ -25,10 +24,8 @@ public class SystemService {
 	@Autowired
 	MailAppBean mailApp;
 	@Autowired
-	@Qualifier("UserDaoImpl")
 	UserDaoImpl userDao;
 	@Autowired
-	@Qualifier("TicketDaoImpl")
 	TicketDaoImpl ticketDao;
 	
 	public String sendEmail(User user, String subject, String content) {
