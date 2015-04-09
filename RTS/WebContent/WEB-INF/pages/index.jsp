@@ -23,6 +23,11 @@
 
 	<body ng-app="indexPage" ng-controller="mainController">
 	
+		<!--Loading  -->
+		 <div class='dt-loading'>
+		 <div class='laying'></div>
+		 <div class='layout'></div>
+		 </div>
 		<!-- nav -->
 		<div class="navbar navbar-default">
     		<div class="navbar-header">
@@ -92,7 +97,7 @@
 	</fieldset>
 	<fieldset>
 		<label>Time</label>
-		<input type="text" ng-model="mainCtrl.time">
+		<input type="datetime-local" ng-model="mainCtrl.time">
 		<input type="radio" name="time" value="D" ng-model="timeType">Departure<br>
 		<input type="radio" name="time" value="A" ng-model="timeType">Arrive
 	</fieldset>
@@ -148,6 +153,9 @@
 	<script>
 		$(document).ready(function() {
 			$.material.init();
+			setTimeout(function() {
+				 $(".dt-loading").fadeOut('slow');
+				},3000);
 		});
 	</script>
 	

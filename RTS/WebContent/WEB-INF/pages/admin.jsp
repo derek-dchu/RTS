@@ -30,7 +30,7 @@
 <script type="text/javascript">
 	var app = angular.module('app',[]);
 
-	app.controller('myc',function($scope,$http){
+	app.controller('myc',function($scope,$http,$filter){
 		var addticket ="http://localhost:8080/RTS/rest/admin/addticket";
 		var listticket = "http://localhost:8080/RTS/rest/admin/listticket";
 		$scope.tableshow = false;
@@ -38,6 +38,9 @@
 		$scope.inputid = false;
 
 		$scope.createNewTicket = function(){
+			var dt = $filter('date')($scope.dtime,'yyyy/MM/dd HH:mm');
+			var at = $filter('date')($scope.atime,'yyyy/MM/dd HH:mm');
+			
 			$http({
 			    method:'POST',
 			    url: addticket,
@@ -45,8 +48,8 @@
 			    		tid:$scope.tid,
 				    	dep:$scope.dep,
 				    	des:$scope.des,
-				    	dtime:$scope.dtime,
-				    	atime:$scope.atime,
+				    	dtime:dt,
+				    	atime:at,
 				    	total:$scope.total,
 				    	sold:$scope.sold,
 				    	price:$scope.price,
@@ -86,13 +89,11 @@
 		$scope.radioSelect = function(data){
 			$scope.formshow = true;
 			$scope.inputid = true;
-
+			
 			var selectTicket = JSON.parse(data);
 			$scope.tid = selectTicket.ticketid;
 			$scope.dep = selectTicket.dep;
 			$scope.des = selectTicket.des;
-	    	$scope.dtime = selectTicket.dtime;
-	    	$scope.atime = selectTicket.atime;
 	    	$scope.total = selectTicket.total;
 	    	$scope.sold = selectTicket.sold;
 	    	$scope.price = selectTicket.price;
@@ -120,6 +121,11 @@ table{
 .table{
 	width: 80%;
 }
+
+.label{
+	font-size: 90%;
+}
+
 form {
 	font-size: 120%;
 }
@@ -200,52 +206,65 @@ button {
 		<div class="col-lg-3"></div>
 		<div class="col-lg-2">
 			<div ng-show="inputid" class="form-group">
-				<lable class="col-lg-8 control-label ">Ticket ID:</lable>
+				<div class="col-lg-4"></div>
+				<lable class="col-lg-4 label label-primary">Ticket ID:</lable>
 				<div class="col-lg-12"><input type="text" ng-model="tid" class="text-center form-control input-lg"></div>
 			</div>
 
 			<div class="form-group">
-				<lable class="col-lg-8 control-label">Departure:</lable>
+				<div class="col-lg-4"></div>
+				<lable class="col-lg-4 label label-primary">Departure:</lable>
 				<div class="col-lg-12"><input type="text" ng-model="dep" class="text-center form-control input-lg"></div>
 			</div>
 
 			<div class="form-group">
-				<lable class="col-lg-8 control-label">Destination:</lable>
+				<div class="col-lg-4"></div>
+				<lable class="col-lg-4 label label-primary">Destination:</lable>
 				<div class="col-lg-12"><input type="text" ng-model="des" class="text-center form-control input-lg"></div>
 			</div>
 		</div>
 
 		<div class="col-lg-2">
 			<div class="form-group">
-				<lable class="col-lg-8 control-label">DepartTime:</lable>
-				<div class="col-lg-12"><input type="text" ng-model="dtime" class="text-center form-control input-lg"></div>
+				<div class="col-lg-4"></div>
+				<lable class="col-lg-4 label label-primary">DepartTime:</lable>
+				<div class="col-lg-12">
+					<input type="datetime-local" ng-model="dtime" class="text-center form-control input-lg" placeholder="2015/01/01 00:00">
+				</div>
 			</div>
 
 			<div class="form-group">
-				<lable class="col-lg-8 control-label">ArraiveTime:</lable>
-				<div class="col-lg-12"><input type="text" ng-model="atime" class="text-center form-control input-lg"></div>
+				<div class="col-lg-4"></div>
+				<lable class="col-lg-4 label label-primary">ArraiveTime:</lable>
+				<div class="col-lg-12">
+					<input type="datetime-local" ng-model="atime" class="text-center form-control input-lg" placeholder="2015/01/01 00:00">
+				</div>
 			</div>
 
 
 			<div ng-show="inputid" class="form-group">
-				<lable class="col-lg-8 control-label">Status:</lable>
+				<div class="col-lg-4"></div>
+				<lable class="col-lg-4 label label-primary">Status:</lable>
 				<div class="col-lg-12"><input type="text" ng-model="statu" class="text-center form-control input-lg"></div>
 			</div>
 		</div>
 
 		<div class="col-lg-2">
 			<div class="form-group">
-				<lable class="col-lg-8 control-label">Total:</lable>
+				<div class="col-lg-4"></div>
+				<lable class="col-lg-4 label label-primary">Total:</lable>
 				<div class="col-lg-12"><input type="text" ng-model="total" class="text-center form-control input-lg"></div>
 			</div>
 			
 			<div ng-show="inputid" class="form-group">
-				<lable class="col-lg-8 control-label">Sold:</lable>
+				<div class="col-lg-4"></div>
+				<lable class="col-lg-4 label label-primary">Sold:</lable>
 				<div class="col-lg-12"><input type="text" ng-model="sold" class="text-center form-control input-lg"></div>
 			</div>
 
 			<div class="form-group">
-				<lable class="col-lg-8 control-label">Price:</lable>
+				<div class="col-lg-4"></div>
+				<lable class="col-lg-4 label label-primary">Price:</lable>
 				<div class="col-lg-12 input-group">
 					<span class="input-group-addon">$</span>
 					<input type="text" ng-model="price" class="form-control text-center input-lg">

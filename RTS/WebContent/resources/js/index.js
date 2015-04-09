@@ -1,5 +1,5 @@
 var app = angular.module("indexPage", []);
-	app.controller('mainController', ['$http', '$scope', function($http, $scope) {
+	app.controller('mainController', ['$http', '$scope', function($http,$filter,$scope) {
 		var searchTicketUrl ="http://localhost:8080/RTS/rest/search/searchticket";
 		var buyticket = "http://localhost:8080/RTS/rest/buy";
 		
@@ -14,12 +14,13 @@ var app = angular.module("indexPage", []);
 		$scope.searchTicket = function() {
 			var dtime = null,
 				atime = null;
+			
 			if ($scope.timeType === "D") {
-				dtime = $scope.time;
+				dtime = $filter('date')($scope.time,'yyyy/MM/dd HH:mm');
 			}
 			
 			if ($scope.timeType === "A") {
-				atime = $scope.time;
+				atime = $filter('date')($scope.time,'yyyy/MM/dd HH:mm');
 			}
 			
 			$http({
