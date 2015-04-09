@@ -1,17 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+		pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <!-- define variable -->
 <c:url value="/j_spring_security_logout" var="logoutUrl"/>
+<sec:authentication property="name" var="userName"/>
 
 <!DOCTYPE html>
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 		<title>RTS | A simple yet effective rail-way ticket system</title>
-	
+		
 		<link href="<c:url value="/resources/bower_components/bootstrap/dist/css/bootstrap.min.css" />" rel="stylesheet">
 		<!-- Include roboto.css to use the Roboto web font, material.css to include the theme and ripples.css to style the ripple effect -->
 		<link href="<c:url value="/resources/bower_components/bootstrap-material-design/dist/css/roboto.min.css" />" rel="stylesheet">
@@ -24,58 +25,77 @@
 	<body ng-app="indexPage" ng-controller="mainController">
 	
 		<!--Loading  -->
-		 <div class='dt-loading'>
-		 <div class='laying'></div>
-		 <div class='layout'></div>
-		 </div>
+		<!-- <div class='dt-loading'>
+			<div class='laying'></div>
+			<div class='layout'></div>
+		</div> -->
+		 
 		<!-- nav -->
 		<div class="navbar navbar-default">
-    		<div class="navbar-header">
-        		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
-            		<span class="icon-bar"></span>
-            		<span class="icon-bar"></span>
-            		<span class="icon-bar"></span>
-       			</button>
-        		<a class="navbar-brand" href="/RTS">RTS</a>
-    		</div>
-    		<div class="navbar-collapse collapse navbar-responsive-collapse">
-		        <form class="navbar-form navbar-left">
-		            <input type="text" class="form-control col-lg-8" placeholder="Search">
-		        </form>
-		        <ul class="nav navbar-nav navbar-right">
-		            <li><a href="javascript:void(0)" ng-click="openLoginForm()">Log In</a></li>
-		            <li><a href="${logoutUrl}">Log Out</a></li>
-		        </ul>
-    		</div>
+				<div class="navbar-header">
+						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+						</button>
+						<a class="navbar-brand" href="/RTS">RTS</a>
+				</div>
+				<div class="navbar-collapse collapse navbar-responsive-collapse">
+						<form class="navbar-form navbar-left">
+								<input type="text" class="form-control col-lg-8" placeholder="Search">
+						</form>
+						<ul class="nav navbar-nav navbar-right">
+							<sec:authorize access="isAuthenticated()">
+								<li><a>${userName}</a></li>
+							</sec:authorize>
+							<sec:authorize access="isAnonymous()">
+								<li><a href="javascript:void(0)" data-toggle="modal" data-target="#login-form">Log In</a></li>
+							</sec:authorize>
+							<li><a href="${logoutUrl}">Log Out</a></li>
+						</ul>
+				</div>
 		</div>
 		
 		<!-- Login Form -->
-		<div class="container login-form">
-			<form name="f" action="<c:url value='j_spring_security_check'/>" method="POST" id="login-form" class="form-horizontal">
-		    	<fieldset>
-			        <legend>Log In</legend>
-			        <div class="form-group">
-			            <label for="inputEmail" class="col-lg-2 control-label">Email</label>
-			            <div class="col-lg-10">
-			                <input type="email" name="j_username" class="form-control" id="inputEmail" placeholder="Email">
-			            </div>
-			        </div>
-			        <div class="form-group">
-			            <label for="inputPassword" class="col-lg-2 control-label">Password</label>
-			            <div class="col-lg-10">
-			                <input type="password" name="j_password" class="form-control" id="inputPassword" placeholder="Password">
-			            </div>
+		<div id="login-form" class="modal">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header clearfix">
+						<legend class="pull-left" style="width: inherit">Log In</legend>
+						<button type="button" class="close" data-dismiss="modal">
+							<i class="mdi-content-clear"></i>
+						</button>
 					</div>
-					<div class="form-group">
-            			<div class="col-lg-10 col-lg-offset-2">
-                			<button class="btn btn-default">Cancel</button>
-                			<button type="reset" class="btn">Clear</button>
-                			<button id="signin" type="submit" class="btn btn-primary">Submit</button>
-                			<input type="checkbox" name="_spring_security_remember_me">
-            			</div>
-        			</div>
-				</fieldset>
-			</form>
+					<div class="modal-body">
+						<form name="f" action="<c:url value='j_spring_security_check'/>" method="POST" id="login-form" class="form-horizontal">
+							<fieldset><div class="form-group">
+									<label for="inputEmail" class="col-lg-2 control-label">Email</label>
+									<div class="col-lg-10">
+											<input type="email" name="j_username" class="form-control" id="inputEmail" placeholder="Email">
+									</div>
+								</div>
+								<div class="form-group">
+									<label for="inputPassword" class="col-lg-2 control-label">Password</label>
+									<div class="col-lg-10">
+										<input type="password" name="j_password" class="form-control" id="inputPassword" placeholder="Password">
+										<div class="checkbox">
+											<label>
+												<input type="checkbox" name="_spring_security_remember_me">&nbsp;Remember me
+											</label>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="col-lg-10 col-lg-offset-2">
+										<button type="reset" class="btn btn-default btn-raised pull-left">Clear</button>
+										<button type="submit" class="btn btn-primary btn-raised pull-right">Go!</button>
+									</div>
+								</div>
+							</fieldset>
+						</form>
+					</div>
+				</div>
+			</div>
 		</div>
 
 
@@ -111,30 +131,30 @@
 <!-- Result Table -->
 <div >
 	<table>
-	  <thead>
-	    <tr>
-	      <th style="display:none;">ID</th>
-	      <th>Departure</th>
-	      <th>Destination</th>
-	      <th>DepartTime</th>
-	      <th>ArraiveTime</th>
-	      <th>Available</th>
-	      <th>Price</th>
-	      <th>Select</th>
-	    </tr>
-	  </thead>
-	  <tbody>
-	    <tr ng-repeat="ticket in tickets" >
-	      <td style="display:none;">{{ticket.ticketid}}</td>
-	      <td>{{ticket.dep}}</td>
-	      <td>{{ticket.des}}</td>
-	      <td>{{ticket.dtime}}</td>
-	      <td>{{ticket.atime}}</td>
-	      <td>{{ticket.total - ticket.sold}}</td>
-	      <td>{{ticket.price}}</td>
-	      <td><input type="radio" value="{{ticket.ticketid}}" ng-model="$parent.selectedTicketid"/></td>
-	    </tr>
-	  </tbody>
+		<thead>
+			<tr>
+				<th style="display:none;">ID</th>
+				<th>Departure</th>
+				<th>Destination</th>
+				<th>DepartTime</th>
+				<th>ArraiveTime</th>
+				<th>Available</th>
+				<th>Price</th>
+				<th>Select</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="ticket in tickets" >
+				<td style="display:none;">{{ticket.ticketid}}</td>
+				<td>{{ticket.dep}}</td>
+				<td>{{ticket.des}}</td>
+				<td>{{ticket.dtime}}</td>
+				<td>{{ticket.atime}}</td>
+				<td>{{ticket.total - ticket.sold}}</td>
+				<td>{{ticket.price}}</td>
+				<td><input type="radio" value="{{ticket.ticketid}}" ng-model="$parent.selectedTicketid"/></td>
+			</tr>
+		</tbody>
 	</table>
 </div>
 
@@ -148,7 +168,7 @@
 	<script src="<c:url value="/resources/bower_components/jquery/dist/jquery.min.js" />"></script>
 	<script src="<c:url value="/resources/bower_components/angularjs/angular.min.js" />"></script>
 	<script src="<c:url value="/resources/bower_components/bootstrap/dist/js/bootstrap.min.js" />"></script>
-    <script src="<c:url value="/resources/bower_components/bootstrap-material-design/dist/js/ripples.min.js" />"></script>
+		<script src="<c:url value="/resources/bower_components/bootstrap-material-design/dist/js/ripples.min.js" />"></script>
 	<script src="<c:url value="/resources/bower_components/bootstrap-material-design/dist/js/material.min.js" />"></script>
 	<script>
 		$(document).ready(function() {
