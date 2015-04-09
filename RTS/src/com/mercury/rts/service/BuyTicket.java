@@ -56,7 +56,7 @@ public class BuyTicket {
 	public String buyTicketDequeue(Transaction trans){
 		String s=null;
 		int quantity=trans.getQt();
-		Ticket t=trans.getTicket();
+		Ticket t=tdi.findById(trans.getTicket().getTicketid());
 		int available=t.getAvailable();
 		User u = trans.getUser();
 		

@@ -26,13 +26,21 @@ public class AdminRest {
 	@POST
 	@Path("/addticket")
 	@Produces({MediaType.APPLICATION_JSON})
-	public String addTicket(@FormParam("tid") int tid,@FormParam("dep") String dep,@FormParam("des") String des,@FormParam("dtime") String dtime,
-			@FormParam("atime") String atime,@FormParam("total") int total,@FormParam("sold") int sold,@FormParam("price") String price,@FormParam("status") int status) throws Exception{
+	public String addTicket(
+			@FormParam("tid") int tid,
+			@FormParam("dep") String dep,
+			@FormParam("des") String des,
+			@FormParam("dtime") String dtime,
+			@FormParam("atime") String atime,
+			@FormParam("total") int total,
+			@FormParam("sold") int sold,
+			@FormParam("price") String price,
+			@FormParam("status") int status) throws Exception {
 		Ticket ticket = new Ticket();
-		if(tid != 0 ) {
+		if (tid != 0 ) {
 			ticket.setTicketid(tid);
 			ticket.setEnable(status);
-		}else {
+		} else {
 			ticket.setEnable(0);
 		}
 		ticket.setDep(dep);
@@ -41,7 +49,7 @@ public class AdminRest {
 		ticket.setAtime(atime);
 		ticket.setTotal(total);
 		ticket.setPrice(price);
-		if(sold==0){
+		if (tid==0) {
 			ticket.setAvailable(total);
 			ticket.setSold(0);
 		}else {

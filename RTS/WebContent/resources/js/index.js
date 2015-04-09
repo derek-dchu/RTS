@@ -33,7 +33,7 @@ var app = angular.module("indexPage", []);
 			    }),
 			    headers:{'Content-Type':'application/x-www-form-urlencoded'}
 			}).success(function(data){
-				$scope.tickets = [data.ticket];
+				$scope.tickets = data;
 				$scope.tableshow = true;
 		})};
 		

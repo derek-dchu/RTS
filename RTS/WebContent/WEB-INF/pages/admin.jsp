@@ -1,23 +1,42 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <html>
 <head>
+<c:url value="/j_spring_security_logout" var="logoutUrl"/>
+
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Result Page</title>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script>
+<link href="<c:url value="/resources/bower_components/bootstrap/dist/css/bootstrap.min.css" />" rel="stylesheet">
+<!-- Include roboto.css to use the Roboto web font, material.css to include the theme and ripples.css to style the ripple effect -->
+<link href="<c:url value="/resources/bower_components/bootstrap-material-design/dist/css/roboto.min.css" />" rel="stylesheet">
+<link href="<c:url value="/resources/bower_components/bootstrap-material-design/dist/css/material.min.css" />" rel="stylesheet">
+<link href="<c:url value="/resources/bower_components/bootstrap-material-design/dist/css/ripples.min.css" />" rel="stylesheet">
+
+<script src="<c:url value="/resources/bower_components/jquery/dist/jquery.min.js" />"></script>
+<script src="<c:url value="/resources/bower_components/angularjs/angular.min.js" />"></script>
+<script src="<c:url value="/resources/bower_components/bootstrap/dist/js/bootstrap.min.js" />"></script>
+<script src="<c:url value="/resources/bower_components/bootstrap-material-design/dist/js/ripples.min.js" />"></script>
+<script src="<c:url value="/resources/bower_components/bootstrap-material-design/dist/js/material.min.js" />"></script>
+<script>
+	$(document).ready(function() {
+		// This command is used to initialize some elements and make them work properly
+		$.material.init();
+	});
+</script>
+		
 <script type="text/javascript">
 	var app = angular.module('app',[]);
 
 	app.controller('myc',function($scope,$http){
 		var addticket ="http://localhost:8080/RTS/rest/admin/addticket";
 		var listticket = "http://localhost:8080/RTS/rest/admin/listticket";
-
 		$scope.tableshow = false;
-		
+		$scope.formshow = false;
+		$scope.inputid = false;
+
 		$scope.createNewTicket = function(){
 			$http({
 			    method:'POST',
@@ -33,9 +52,11 @@
 				    	price:$scope.price,
 				    	status:$scope.statu
 			    }),
-			    headers:{'Content-Type':'application/x-www-form-urlencoded'}});
-			$scope.resetForm();
-			$scope.getAll();
+			    headers:{'Content-Type':'application/x-www-form-urlencoded'}
+			}).success(function(){
+				$scope.resetForm();
+				$scope.getAll();
+			});
 		};
 
 		$scope.resetForm = function(){
@@ -49,17 +70,23 @@
 	    	$scope.price = "";
 	    	$scope.statu = "";
 			$scope.ticketform.$setPristine();
+			$scope.radis = false;
+			$scope.formshow = false;
+			$scope.inputid = false;
 		};
 
 		$scope.getAll = function(){
 			$http.get(listticket)
 			.success(function(data){
-				$scope.tickets = data.ticket;
+				$scope.tickets = data;
 				$scope.tableshow = true;
 			});
 		};
 
 		$scope.radioSelect = function(data){
+			$scope.formshow = true;
+			$scope.inputid = true;
+
 			var selectTicket = JSON.parse(data);
 			$scope.tid = selectTicket.ticketid;
 			$scope.dep = selectTicket.dep;
@@ -71,18 +98,31 @@
 	    	$scope.price = selectTicket.price;
 	    	$scope.statu = selectTicket.enable;
 		};
+
+		$scope.showForm = function(){
+			$scope.formshow = true;
+			$scope.inputid = false;
+		};
 	});
 
 </script>
 <style type="text/css">
 table, th, td {
 	border: 1px solid black;
+	font-size: 110%;
 }
 
-.red{
-	color:red;
+table{
+	margin-left: auto;
+    margin-right: auto;
 }
 
+.table{
+	width: 80%;
+}
+form {
+	font-size: 120%;
+}
 input {
 	font-size: 110%;
 }
@@ -90,19 +130,36 @@ input {
 button {
 	font-size: 110%;
 }
+
 </style>
 </head>
 <body ng-app="app" ng-controller="myc">
-
-<h1 style="display:none;" id="logedUsername" ><sec:authentication property="name"/></h1>
-<c:url value="/j_spring_security_logout" var="logoutUrl"/>
-<button type="button"><a href="${logoutUrl}">Log Out</a></button>
-
+<h1 id="logedUsername" style="display: none;"> <sec:authentication property="name"/></h1>
+<!-- nav -->
+		<div class="navbar navbar-default">
+    		<div class="navbar-header">
+        		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+            		<span class="icon-bar"></span>
+            		<span class="icon-bar"></span>
+            		<span class="icon-bar"></span>
+       			</button>
+        		<a class="navbar-brand" href="/RTS">RTS</a>
+    		</div>
+    		<div class="navbar-collapse collapse navbar-responsive-collapse">
+		        <ul class="nav navbar-nav navbar-right">
+		            <li><a><sec:authentication property="name"/></a></li>
+		            <li><a href="${logoutUrl}">Log Out</a></li>
+		        </ul>
+    		</div>
+		</div>
+		
 <br>
 <br>
-<button type="button" ng-click="getAll()" id="getall">List All</button>
+<button  class="btn btn-primary btn-raised" type="button" ng-click="getAll()" >List All</button>
+<button  class="btn btn-warning btn-raised" type="button" ng-click="showForm()" ng-model="ant">Add New Ticket</button>
+
 <div ng-show="tableshow">
-	<table>
+	<table class="table table-striped table-hover table-center">
 	  <thead>
 	    <tr>
 	      <th>Ticket ID</th>
@@ -119,8 +176,8 @@ button {
 	    </tr>
 	  </thead>
 	  <tbody>
-	    <tr ng-repeat="ticket in tickets|filter:{ticketid:tid,dep:dep,des:des,dtime:dtime,atime:atime,total:total,sold:sold,price:price,enable:statu}" >
-	      <td ng-class='{red:ticket.enable==0}'>{{ticket.ticketid}}</td>
+	    <tr ng-class='{danger:ticket.enable==0}' ng-repeat="ticket in tickets|filter:{ticketid:tid,dep:dep,des:des,dtime:dtime,atime:atime,total:total,sold:sold,price:price,enable:statu} | orderBy:'-ticketid'" >
+	      <td>{{ticket.ticketid}}</td>
 	      <td>{{ticket.dep}}</td>
 	      <td>{{ticket.des}}</td>
 	      <td>{{ticket.dtime}}</td>
@@ -139,57 +196,69 @@ button {
 <br>
 <br>
 <div>
-	<form ng-submit="createNewTicket()" name="ticketform">
-		<div>
-			<lable>Ticket ID:</lable>
-			<div><input type="text" ng-model="tid"></div>
+	<form class="form-horizontal" ng-submit="createNewTicket()" name="ticketform" ng-show="formshow">
+		<div class="col-lg-3"></div>
+		<div class="col-lg-2">
+			<div ng-show="inputid" class="form-group">
+				<lable class="col-lg-8 control-label ">Ticket ID:</lable>
+				<div class="col-lg-12"><input type="text" ng-model="tid" class="text-center form-control input-lg"></div>
+			</div>
+
+			<div class="form-group">
+				<lable class="col-lg-8 control-label">Departure:</lable>
+				<div class="col-lg-12"><input type="text" ng-model="dep" class="text-center form-control input-lg"></div>
+			</div>
+
+			<div class="form-group">
+				<lable class="col-lg-8 control-label">Destination:</lable>
+				<div class="col-lg-12"><input type="text" ng-model="des" class="text-center form-control input-lg"></div>
+			</div>
 		</div>
 
-		<div>
-			<lable>Departure:</lable>
-			<div><input type="text" ng-model="dep"></div>
+		<div class="col-lg-2">
+			<div class="form-group">
+				<lable class="col-lg-8 control-label">DepartTime:</lable>
+				<div class="col-lg-12"><input type="text" ng-model="dtime" class="text-center form-control input-lg"></div>
+			</div>
+
+			<div class="form-group">
+				<lable class="col-lg-8 control-label">ArraiveTime:</lable>
+				<div class="col-lg-12"><input type="text" ng-model="atime" class="text-center form-control input-lg"></div>
+			</div>
+
+
+			<div ng-show="inputid" class="form-group">
+				<lable class="col-lg-8 control-label">Status:</lable>
+				<div class="col-lg-12"><input type="text" ng-model="statu" class="text-center form-control input-lg"></div>
+			</div>
 		</div>
 
-		<div>
-			<lable>Destination:</lable>
-			<div><input type="text" ng-model="des"></div>
-		</div>
+		<div class="col-lg-2">
+			<div class="form-group">
+				<lable class="col-lg-8 control-label">Total:</lable>
+				<div class="col-lg-12"><input type="text" ng-model="total" class="text-center form-control input-lg"></div>
+			</div>
+			
+			<div ng-show="inputid" class="form-group">
+				<lable class="col-lg-8 control-label">Sold:</lable>
+				<div class="col-lg-12"><input type="text" ng-model="sold" class="text-center form-control input-lg"></div>
+			</div>
 
-		<div>
-			<lable>DepartTime:</lable>
-			<div><input type="text" ng-model="dtime"></div>
+			<div class="form-group">
+				<lable class="col-lg-8 control-label">Price:</lable>
+				<div class="col-lg-12 input-group">
+					<span class="input-group-addon">$</span>
+					<input type="text" ng-model="price" class="form-control text-center input-lg">
+				</div>
+			</div>
 		</div>
-
-		<div>
-			<lable>ArraiveTime:</lable>
-			<div><input type="text" ng-model="atime"></div>
-		</div>
-
-		<div>
-			<lable>Total:</lable>
-			<div><input type="text" ng-model="total"></div>
-		</div>
-		
-		<div>
-			<lable>Sold:</lable>
-			<div><input type="text" ng-model="sold"></div>
-		</div>
-
-		<div>
-			<lable>Price:</lable>
-			<div><input type="text" ng-model="price"></div>
-		</div>
-
-		<div>
-			<lable>Status:</lable>
-			<div><input type="text" ng-model="statu"></div>
-		</div>
-
-		<div>
-			<button type="button" ng-click="resetForm()">Reset</button>
-			<button type="button" ng-click="createNewTicket()">Submit</button>
+			
+		<div class="col-lg-10 col-lg-offset-5">
+			<button type="button" class="btn btn-flat btn-primary" ng-click="resetForm()">Reset</button>
+			<button type="button" class="btn btn-flat btn-danger" ng-click="createNewTicket()">Submit</button>
 		</div>
 	</form>
+	
 </div>
 </body>
 </html>

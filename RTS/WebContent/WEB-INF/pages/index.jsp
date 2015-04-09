@@ -66,6 +66,7 @@
                 			<button class="btn btn-default">Cancel</button>
                 			<button type="reset" class="btn">Clear</button>
                 			<button id="signin" type="submit" class="btn btn-primary">Submit</button>
+                			<input type="checkbox" name="_spring_security_remember_me">
             			</div>
         			</div>
 				</fieldset>
@@ -146,12 +147,10 @@
 	<script src="<c:url value="/resources/bower_components/bootstrap-material-design/dist/js/material.min.js" />"></script>
 	<script>
 		$(document).ready(function() {
-			// This command is used to initialize some elements and make them work properly
 			$.material.init();
 		});
 	</script>
 	
 	<script src="<c:url value="/resources/js/index.js" />"></script>
-	
 </body>
 </html>

@@ -119,7 +119,7 @@ public class User implements Serializable {
 	}
 	
 	@XmlTransient
-	@OneToMany(cascade = CascadeType.ALL,fetch=FetchType.EAGER,mappedBy="user")
+	@OneToMany(cascade = CascadeType.ALL,fetch=FetchType.LAZY,mappedBy="user")
 //	@JoinColumn(name = "userid")
 	public Set<Transaction> getTransactions() {
 		return transactions;

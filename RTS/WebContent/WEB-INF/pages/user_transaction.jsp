@@ -8,7 +8,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Result Page</title>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script>
+<script src="<c:url value="/resources/bower_components/angularjs/angular.min.js" />"></script>
 <script type="text/javascript">
 	var app = angular.module('app',[]);
 	app.controller('myc',function($scope,$http){
@@ -27,7 +27,9 @@
 				username:username
 			}
 		}).success(function(data){
-			$scope.transactions = data.transaction;
+			/* $scope.transactions = data; */
+			/* var returndata = JSON.parse(data); */
+				$scope.transactions= data;		
 		});
 
 		$scope.radioSelect = function(data){
@@ -57,7 +59,7 @@
 						username:username
 					}
 				}).success(function(data){
-					$scope.transactions = data.transaction;
+					$scope.transactions = data;
 					$scope.$apply();
 				})
 			});
@@ -102,9 +104,9 @@ button {
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="tr in transactions|orderBy:'-ttime'">
-				<td>{{tr.ticket.des}}</td>
+			<tr ng-repeat="tr in transactions| orderBy:'-ttime'">
 				<td>{{tr.ticket.dep}}</td>
+				<td>{{tr.ticket.des}}</td>
 				<td>{{tr.qt}}</td>
 				<td ng-class="{red:tr.status=='c'}">{{tr.status}}</td>
 				<td>{{tr.ttime}}</td>

@@ -27,10 +27,7 @@
 		<property name="subject" value="Rail-way System Admin" />
 		<property name="text">
 		<value>
-			<![CDATA[
-				Dear %s,
-				Mail Content : %s
-			]]>
+			<![CDATA[Dear %s%n%n%s]]>
 		</value>
     </property>
 </bean>
