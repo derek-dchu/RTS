@@ -30,13 +30,9 @@
 			<div class='laying'></div>
 			<div class='layout'></div>
 		</div> -->
-		 
-		<!-- background image -->
-		<div class="bg-img">
-		  <img src="<c:url value="/resources/img/bg-large.jpg" />" alt="backgroud image" />
-		</div>
-		 
-		<div class="hero-container">
+
+		<!-- Header -->
+		<header>
 			<!-- nav -->
 			<div class="navbar navbar-default bg-transparent">
 				<div class="navbar-header">
@@ -56,51 +52,68 @@
 							<li><a>${userName}</a></li>
 						</sec:authorize>
 						<sec:authorize access="isAnonymous()">
-							<li><a href="javascript:void(0)" data-toggle="modal" data-target="#login-form">Log In</a></li>
+							<li><a href="javascript:void(0)" data-toggle="modal" data-target="#login_form">Log In</a></li>
 						</sec:authorize>
 						<li><a href="${logoutUrl}">Log Out</a></li>
 					</ul>
 				</div>
 			</div>
+		</header>
+		
+		<div class="index-container">
+			<!-- background image -->
+			<div class="bg-img">
+				<img src="<c:url value="/resources/img/bg-large.jpg" />" alt="backgroud image" />
+			</div>
 
-			<!-- Title -->
-        <div class="container title-container">
-	        <div class="title">
-	          <div>
-	              <h1>Railway Ticket System</h1>
-	              <p>Simple Yet Effective</p>
-	          </div>
-	        </div>
-        </div>
-		</div>
-
-		<!-- Ticket Search Form -->
-		<div class="col-xs-12 pull-left">
-			<form name="searchForm" class="form-inline">
-				<fieldset class="form-group">
-					<input type="text" ng-model="dep" placeholder="Departure">
-				</fieldset>
-				<fieldset>
-					<label>Destination Station</label>
-					<input type="text" ng-model="des">
-				</fieldset>
-				<fieldset>
-					<label>Time</label>
-					<input type="datetime-local" ng-model="mainCtrl.time">
-					<input type="radio" name="time" value="D" ng-model="timeType">Departure<br>
-					<input type="radio" name="time" value="A" ng-model="timeType">Arrive
-				</fieldset>
+			<!-- Introduction Area -->
+			<div class="intro-container darken">
 				
-				<div>
-					<button type="button" ng-click="resetForm()">Reset</button>
-					<button type="button" ng-click="searchTicket()">Submit</button>
+
+      	<!-- Title -->
+				<div class="col-xs-12 title">
+            <h1>RAILWAY TICKET SYSTEM</h1>
+            <p>Simple Yet Effective</p>
+        </div>
+
+        <!-- Ticket Search Form -->
+				<div class="col-xs-12 text-center search-form-container">
+					<form name="searchForm" class="form-inline clearfix" id="search_form">
+						<fieldset class="form-group pull-left">
+							<label class="sr-only">Departure Station</label>
+							<input id="from" type="text" ng-model="dep" placeholder="From">
+						</fieldset>
+						<fieldset class="form-group pull-left">
+							<label class="sr-only">Destination Station</label>
+							<input id="to" type="text" ng-model="des" placeholder="To">
+						</fieldset>
+						<fieldset class="form-group pull-left">
+							<label class="sr-only">Time</label>
+							<input id="time" type="datetime-local" ng-model="mainCtrl.time">
+						</fieldset>
+						<fieldset class="form-group pull-left">
+							<select id="time_type" name="time" ng-model="timeType">
+								<option value="D">Depart At</option>
+								<option value="A">Arrive by</option>
+							</select>
+						</fieldset>
+						
+						<div class="form-group pull-left">
+							<button type="button" class="form-inline btn btn-danger" id="submit_search" ng-click="searchTicket()">Search</button>
+						</div>
+					</form>
 				</div>
-			</form>
+			</div>
+
+
+
 		</div>
+		
+		
 		
 
 		<!-- Login Form -->
-		<div id="login-form" class="modal">
+		<div class="modal" id="login_form">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header clearfix">
@@ -110,17 +123,17 @@
 						</button>
 					</div>
 					<div class="modal-body">
-						<form name="f" action="<c:url value='j_spring_security_check'/>" method="POST" id="login-form" class="form-horizontal">
+						<form name="f" action="<c:url value='j_spring_security_check'/>" method="POST" class="form-horizontal">
 							<fieldset><div class="form-group">
 									<label for="inputEmail" class="col-lg-2 control-label">Email</label>
 									<div class="col-lg-10">
-											<input type="email" name="j_username" class="form-control" id="inputEmail" placeholder="Email">
+											<input type="email" name="j_username" class="form-control" id="input_email" placeholder="Email">
 									</div>
 								</div>
 								<div class="form-group">
 									<label for="inputPassword" class="col-lg-2 control-label">Password</label>
 									<div class="col-lg-10">
-										<input type="password" name="j_password" class="form-control" id="inputPassword" placeholder="Password">
+										<input type="password" name="j_password" class="form-control" id="input_password" placeholder="Password">
 										<div class="checkbox">
 											<label>
 												<input type="checkbox" name="_spring_security_remember_me">&nbsp;Remember me
