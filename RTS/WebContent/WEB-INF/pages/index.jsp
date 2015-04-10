@@ -11,6 +11,7 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>RTS | A simple yet effective rail-way ticket system</title>
 		
 		<link href="<c:url value="/resources/bower_components/bootstrap/dist/css/bootstrap.min.css" />" rel="stylesheet">
@@ -30,32 +31,74 @@
 			<div class='layout'></div>
 		</div> -->
 		 
-		<!-- nav -->
-		<div class="navbar navbar-default">
+		<!-- background image -->
+		<div class="bg-img">
+		  <img src="<c:url value="/resources/img/bg-large.jpg" />" alt="backgroud image" />
+		</div>
+		 
+		<div class="hero-container">
+			<!-- nav -->
+			<div class="navbar navbar-default bg-transparent">
 				<div class="navbar-header">
-						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
-								<span class="icon-bar"></span>
-								<span class="icon-bar"></span>
-								<span class="icon-bar"></span>
-						</button>
-						<a class="navbar-brand" href="/RTS">RTS</a>
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="/RTS">RTS</a>
 				</div>
 				<div class="navbar-collapse collapse navbar-responsive-collapse">
-						<form class="navbar-form navbar-left">
-								<input type="text" class="form-control col-lg-8" placeholder="Search">
-						</form>
-						<ul class="nav navbar-nav navbar-right">
-							<sec:authorize access="isAuthenticated()">
-								<li><a>${userName}</a></li>
-							</sec:authorize>
-							<sec:authorize access="isAnonymous()">
-								<li><a href="javascript:void(0)" data-toggle="modal" data-target="#login-form">Log In</a></li>
-							</sec:authorize>
-							<li><a href="${logoutUrl}">Log Out</a></li>
-						</ul>
+					<form class="navbar-form navbar-left">
+						<input type="text" class="form-control col-lg-8" placeholder="Search">
+					</form>
+					<ul class="nav navbar-nav navbar-right">
+						<sec:authorize access="isAuthenticated()">
+							<li><a>${userName}</a></li>
+						</sec:authorize>
+						<sec:authorize access="isAnonymous()">
+							<li><a href="javascript:void(0)" data-toggle="modal" data-target="#login-form">Log In</a></li>
+						</sec:authorize>
+						<li><a href="${logoutUrl}">Log Out</a></li>
+					</ul>
 				</div>
+			</div>
+
+			<!-- Title -->
+        <div class="container title-container">
+	        <div class="title">
+	          <div>
+	              <h1>Railway Ticket System</h1>
+	              <p>Simple Yet Effective</p>
+	          </div>
+	        </div>
+        </div>
+		</div>
+
+		<!-- Ticket Search Form -->
+		<div class="col-xs-12 pull-left">
+			<form name="searchForm" class="form-inline">
+				<fieldset class="form-group">
+					<input type="text" ng-model="dep" placeholder="Departure">
+				</fieldset>
+				<fieldset>
+					<label>Destination Station</label>
+					<input type="text" ng-model="des">
+				</fieldset>
+				<fieldset>
+					<label>Time</label>
+					<input type="datetime-local" ng-model="mainCtrl.time">
+					<input type="radio" name="time" value="D" ng-model="timeType">Departure<br>
+					<input type="radio" name="time" value="A" ng-model="timeType">Arrive
+				</fieldset>
+				
+				<div>
+					<button type="button" ng-click="resetForm()">Reset</button>
+					<button type="button" ng-click="searchTicket()">Submit</button>
+				</div>
+			</form>
 		</div>
 		
+
 		<!-- Login Form -->
 		<div id="login-form" class="modal">
 			<div class="modal-dialog">
@@ -98,35 +141,9 @@
 			</div>
 		</div>
 
+        
+        
 
-<h1><font color="blue">RTS</font></h1>
-
-<h1  id="logedUsername" ><sec:authentication property="name"/></h1>
-
-
-
-<!-- Search Ticket Form -->
-<form name="searchForm">
-	<fieldset>
-		<label>Departure Station</label>
-		<input type="text" ng-model="dep">
-	</fieldset>
-	<fieldset>
-		<label>Destination Station</label>
-		<input type="text" ng-model="des">
-	</fieldset>
-	<fieldset>
-		<label>Time</label>
-		<input type="datetime-local" ng-model="mainCtrl.time">
-		<input type="radio" name="time" value="D" ng-model="timeType">Departure<br>
-		<input type="radio" name="time" value="A" ng-model="timeType">Arrive
-	</fieldset>
-	
-	<div>
-		<button type="button" ng-click="resetForm()">Reset</button>
-		<button type="button" ng-click="searchTicket()">Submit</button>
-	</div>
-</form>
 
 <!-- Result Table -->
 <div >

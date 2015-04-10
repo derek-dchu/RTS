@@ -1,39 +1,103 @@
-	.dt-loading{background:rgba(0,0,0,1);width:100%;height:100%;z-index:101;text-align:center;position:fixed;top:0;bottom:0;left:0;right:0;padding:20% 0}
-	.laying{background-color:rgba(0,0,0,0);border:5px solid rgba(97,225,255,0.9);opacity:.9;border-right:5px solid rgba(0,0,0,0);border-left:5px solid rgba(0,0,0,0);border-radius:50px;box-shadow:0 0 35px #187BD8;width:50px;height:50px;margin:0 auto;-moz-animation:spinPulse 1s infinite ease-in-out;-webkit-animation:spinPulse 1s infinite ease-in-out;-o-animation:spinPulse 1s infinite ease-in-out;animation:spinPulse 1s infinite ease-in-out}
-	.layout{background-color:rgba(0,0,0,0);border:5px solid rgba(97,145,255,0.9);opacity:.9;border-left:5px solid rgba(0,0,0,0);border-right:5px solid rgba(0,0,0,0);border-radius:50px;box-shadow:0 0 15px #187BD8;width:30px;height:30px;margin:0 auto;position:relative;top:-40px;-moz-animation:spinoffPulse 1s infinite linear;-webkit-animation:spinoffPulse 1s infinite linear;-o-animation:spinoffPulse 1s infinite linear;animation:spinoffPulse 1s infinite linear}
-	@-moz-keyframes spinPulse{
-		0{-moz-transform:rotate(160deg);opacity:0;box-shadow:0 0 1px #187BD8}
-		50%{-moz-transform:rotate(145deg);opacity:1}
-		100%{-moz-transform:rotate(-320deg);opacity:0}
-	}
-	@-moz-keyframes spinoffPulse{
-		0{-moz-transform:rotate(0)}
-		100%{-moz-transform:rotate(360deg)}
-	}
-	@-webkit-keyframes spinPulse{
-		0{-webkit-transform:rotate(160deg);opacity:0;box-shadow:0 0 1px #187BD8}
-		50%{-webkit-transform:rotate(145deg);opacity:1}
-		100%{-webkit-transform:rotate(-320deg);opacity:0}
-	}
-	@-webkit-keyframes spinoffPulse{
-		0{-webkit-transform:rotate(0)}
-		100%{-webkit-transform:rotate(360deg)}
-	}
-	@-o-keyframes spinPulse{
-		0{-o-transform:rotate(160deg);opacity:0;box-shadow:0 0 1px #187BD8}
-		50%{-o-transform:rotate(145deg);opacity:1}
-		100%{-o-transform:rotate(-320deg);opacity:0}
-	}
-	@-o-keyframes spinoffPulse{
-		0{-o-transform:rotate(0)}
-		100%{-o-transform:rotate(360deg)}
-	}
-	@keyframes spinPulse{
-		0{transform:rotate(160deg);opacity:0;box-shadow:0 0 1px #187BD8}
-		50%{transform:rotate(145deg);opacity:1}
-		100%{transform:rotate(-320deg);opacity:0}
-	}
-	@keyframes spinoffPulse{
-		0{transform:rotate(0)}
-		100%{transform:rotate(360deg)}
-	}
+body {
+	font-size: 18px;
+}
+
+.bg-img {
+	position: fixed; 
+	top: -50%; 
+	left: -50%; 
+	width: 200%; 
+	height: 200%;
+	z-index: -999;
+}
+
+.bg-img img {
+	position: absolute;
+	top: 0; 
+	left: 0; 
+	right: 0; 
+	bottom: 0; 
+	margin: auto; 
+	min-width: 50%;
+	min-height: 50%;
+	
+	-webkit-filter: blur(5px);
+    filter: blur(5px);
+}
+
+.hero-container {
+	position: relative;
+	height: 600px;
+}
+	
+.title-container {
+	display: table;
+	position: relative;
+	width: 100%;
+	height: 100%;
+}	
+
+.title {
+	display: table-cell;
+	vertical-align: middle;
+	color: white;
+	text-align: center;
+}
+
+/* Following snippet fix popup scrollbar problem */
+/*-----------------------------------------------*/
+html {
+	overflow-y: scroll;
+}
+body, login-form {
+	padding-right: 0!important;
+}
+/*-----------------------------------------------*/
+
+.bg-transparent {
+	background-color: transparent!important;
+}
+	
+	
+	
+	
+	
+.dt-loading{background:rgba(0,0,0,1);width:100%;height:100%;z-index:101;text-align:center;position:fixed;top:0;bottom:0;left:0;right:0;padding:20% 0}
+.laying{background-color:rgba(0,0,0,0);border:5px solid rgba(97,225,255,0.9);opacity:.9;border-right:5px solid rgba(0,0,0,0);border-left:5px solid rgba(0,0,0,0);border-radius:50px;box-shadow:0 0 35px #187BD8;width:50px;height:50px;margin:0 auto;-moz-animation:spinPulse 1s infinite ease-in-out;-webkit-animation:spinPulse 1s infinite ease-in-out;-o-animation:spinPulse 1s infinite ease-in-out;animation:spinPulse 1s infinite ease-in-out}
+.layout{background-color:rgba(0,0,0,0);border:5px solid rgba(97,145,255,0.9);opacity:.9;border-left:5px solid rgba(0,0,0,0);border-right:5px solid rgba(0,0,0,0);border-radius:50px;box-shadow:0 0 15px #187BD8;width:30px;height:30px;margin:0 auto;position:relative;top:-40px;-moz-animation:spinoffPulse 1s infinite linear;-webkit-animation:spinoffPulse 1s infinite linear;-o-animation:spinoffPulse 1s infinite linear;animation:spinoffPulse 1s infinite linear}
+@-moz-keyframes spinPulse{
+	0{-moz-transform:rotate(160deg);opacity:0;box-shadow:0 0 1px #187BD8}
+	50%{-moz-transform:rotate(145deg);opacity:1}
+	100%{-moz-transform:rotate(-320deg);opacity:0}
+}
+@-moz-keyframes spinoffPulse{
+	0{-moz-transform:rotate(0)}
+	100%{-moz-transform:rotate(360deg)}
+}
+@-webkit-keyframes spinPulse{
+	0{-webkit-transform:rotate(160deg);opacity:0;box-shadow:0 0 1px #187BD8}
+	50%{-webkit-transform:rotate(145deg);opacity:1}
+	100%{-webkit-transform:rotate(-320deg);opacity:0}
+}
+@-webkit-keyframes spinoffPulse{
+	0{-webkit-transform:rotate(0)}
+	100%{-webkit-transform:rotate(360deg)}
+}
+@-o-keyframes spinPulse{
+	0{-o-transform:rotate(160deg);opacity:0;box-shadow:0 0 1px #187BD8}
+	50%{-o-transform:rotate(145deg);opacity:1}
+	100%{-o-transform:rotate(-320deg);opacity:0}
+}
+@-o-keyframes spinoffPulse{
+	0{-o-transform:rotate(0)}
+	100%{-o-transform:rotate(360deg)}
+}
+@keyframes spinPulse{
+	0{transform:rotate(160deg);opacity:0;box-shadow:0 0 1px #187BD8}
+	50%{transform:rotate(145deg);opacity:1}
+	100%{transform:rotate(-320deg);opacity:0}
+}
+@keyframes spinoffPulse{
+	0{transform:rotate(0)}
+	100%{transform:rotate(360deg)}
+}
