@@ -20,6 +20,7 @@
 <script src="<c:url value="/resources/bower_components/bootstrap/dist/js/bootstrap.min.js" />"></script>
 <script src="<c:url value="/resources/bower_components/bootstrap-material-design/dist/js/ripples.min.js" />"></script>
 <script src="<c:url value="/resources/bower_components/bootstrap-material-design/dist/js/material.min.js" />"></script>
+<script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.12.1.js"></script>
 <script>
 	$(document).ready(function() {
 		// This command is used to initialize some elements and make them work properly
@@ -28,7 +29,7 @@
 </script>
 		
 <script type="text/javascript">
-	var app = angular.module('app',[]);
+	var app = angular.module('app',['ui.bootstrap']);
 
 	app.controller('myc',function($scope,$http,$filter){
 		var addticket ="http://localhost:8080/RTS/rest/admin/addticket";
@@ -36,7 +37,10 @@
 		$scope.tableshow = false;
 		$scope.formshow = false;
 		$scope.inputid = false;
-
+		
+		$scope.itemsPerPage = 3;
+		$scope.currentPage = 1;
+		
 		$scope.createNewTicket = function(){
 			var dt = $filter('date')($scope.dtime,'yyyy/MM/dd HH:mm');
 			var at = $filter('date')($scope.atime,'yyyy/MM/dd HH:mm');
@@ -79,11 +83,17 @@
 		};
 
 		$scope.getAll = function(){
-			$http.get(listticket)
-			.success(function(data){
-				$scope.tickets = data;
-				$scope.tableshow = true;
-			});
+			if( $scope.tableshow == true ){
+				$scope.tableshow = false;
+			}else{
+				$http.get(listticket)
+				.success(function(data){
+					$scope.tickets = data;
+					$scope.tableshow = true;
+					$scope.tickets = $filter('orderBy')($scope.tickets,'-ticketid',false);
+					$scope.figureOutTodosToDisplay($scope.tickets);
+				});
+			}
 		};
 
 		$scope.radioSelect = function(data){
@@ -101,9 +111,19 @@
 		};
 
 		$scope.showForm = function(){
-			$scope.formshow = true;
+			if($scope.formshow == false){
+				$scope.formshow = true;
+			}else{
+				$scope.formshow = false;
+			}
 			$scope.inputid = false;
 		};
+		
+		$scope.figureOutTodosToDisplay = function(data) {
+		    var begin = (($scope.currentPage - 1) * $scope.itemsPerPage);
+		    var end = begin + $scope.itemsPerPage;
+		    $scope.paget = data.slice(begin, end);
+		  };
 	});
 
 </script>
@@ -182,7 +202,7 @@ button {
 	    </tr>
 	  </thead>
 	  <tbody>
-	    <tr ng-class='{danger:ticket.enable==0}' ng-repeat="ticket in tickets|filter:{ticketid:tid,dep:dep,des:des,dtime:dtime,atime:atime,total:total,sold:sold,price:price,enable:statu} | orderBy:'-ticketid'" >
+	    <tr ng-class='{danger:ticket.enable==0}' ng-repeat="ticket in paget|filter:{ticketid:tid,dep:dep,des:des,dtime:dtime,atime:atime,total:total,sold:sold,price:price,enable:statu}" >
 	      <td>{{ticket.ticketid}}</td>
 	      <td>{{ticket.dep}}</td>
 	      <td>{{ticket.des}}</td>
@@ -197,7 +217,16 @@ button {
 	    </tr>
 	  </tbody>
 	</table>
+	<div>
+	<pagination class="pagination"  
+    items-per-page="itemsPerPage"
+    total-items="tickets.length" 
+    ng-model="currentPage" 
+    ng-change="figureOutTodosToDisplay(tickets)"></pagination>
 </div>
+</div>
+
+
 
 <br>
 <br>
