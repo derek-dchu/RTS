@@ -20,6 +20,7 @@
 <script src="<c:url value="/resources/bower_components/bootstrap/dist/js/bootstrap.min.js" />"></script>
 <script src="<c:url value="/resources/bower_components/bootstrap-material-design/dist/js/ripples.min.js" />"></script>
 <script src="<c:url value="/resources/bower_components/bootstrap-material-design/dist/js/material.min.js" />"></script>
+<script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.12.1.js"></script>
 <script>
 	$(document).ready(function() {
 		// This command is used to initialize some elements and make them work properly
@@ -28,7 +29,7 @@
 </script>
 		
 <script type="text/javascript">
-	var app = angular.module('app',[]);
+	var app = angular.module('app',['ui.bootstrap']);
 
 	app.controller('myc',function($scope,$http,$filter){
 		var addticket ="http://localhost:8080/RTS/rest/admin/addticket";
@@ -36,7 +37,10 @@
 		$scope.tableshow = false;
 		$scope.formshow = false;
 		$scope.inputid = false;
-
+		
+		$scope.itemsPerPage = 3;
+		$scope.currentPage = 1;
+		
 		$scope.createNewTicket = function(){
 			var dt = $filter('date')($scope.dtime,'yyyy/MM/dd HH:mm');
 			var at = $filter('date')($scope.atime,'yyyy/MM/dd HH:mm');
@@ -79,11 +83,17 @@
 		};
 
 		$scope.getAll = function(){
-			$http.get(listticket)
-			.success(function(data){
-				$scope.tickets = data;
-				$scope.tableshow = true;
-			});
+			if( $scope.tableshow ){
+				$scope.tableshow = false;
+			}else{
+				$http.get(listticket)
+				.success(function(data){
+					$scope.tickets = data;
+					$scope.tableshow = true;
+					$scope.tickets = $filter('orderBy')($scope.tickets,'-ticketid',false);
+					$scope.figureOutTodosToDisplay($scope.tickets);
+				});
+			}
 		};
 
 		$scope.radioSelect = function(data){
@@ -101,9 +111,19 @@
 		};
 
 		$scope.showForm = function(){
-			$scope.formshow = true;
+			if($scope.formshow){
+				$scope.formshow = false;
+			}else{
+				$scope.formshow = true;
+			}
 			$scope.inputid = false;
 		};
+		
+		$scope.figureOutTodosToDisplay = function(data) {
+		    var begin = (($scope.currentPage - 1) * $scope.itemsPerPage);
+		    var end = begin + $scope.itemsPerPage;
+		    $scope.paget = data.slice(begin, end);
+		  };
 	});
 
 </script>
@@ -165,7 +185,7 @@ button {
 <button  class="btn btn-warning btn-raised" type="button" ng-click="showForm()" ng-model="ant">Add New Ticket</button>
 
 <div ng-show="tableshow">
-	<table class="table table-striped table-hover table-center">
+	<table class="table table-hover table-center">
 	  <thead>
 	    <tr>
 	      <th>Ticket ID</th>
@@ -182,7 +202,7 @@ button {
 	    </tr>
 	  </thead>
 	  <tbody>
-	    <tr ng-class='{danger:ticket.enable==0}' ng-repeat="ticket in tickets|filter:{ticketid:tid,dep:dep,des:des,dtime:dtime,atime:atime,total:total,sold:sold,price:price,enable:statu} | orderBy:'-ticketid'" >
+	    <tr ng-class='{danger:ticket.enable==0}' ng-repeat="ticket in paget|filter:{ticketid:tid,dep:dep,des:des,dtime:dtime,atime:atime,total:total,sold:sold,price:price,enable:statu}" >
 	      <td>{{ticket.ticketid}}</td>
 	      <td>{{ticket.dep}}</td>
 	      <td>{{ticket.des}}</td>
@@ -197,12 +217,21 @@ button {
 	    </tr>
 	  </tbody>
 	</table>
+	<div>
+	<pagination class="pagination"  
+    items-per-page="itemsPerPage"
+    total-items="tickets.length" 
+    ng-model="currentPage" 
+    ng-change="figureOutTodosToDisplay(tickets)"></pagination>
 </div>
+</div>
+
+
 
 <br>
 <br>
 <div>
-	<form class="form-horizontal" ng-submit="createNewTicket()" name="ticketform" ng-show="formshow">
+	<form class="form-horizontal" ng-submit="createNewTicket()" name="ticketform" ng-show="formshow" novalidate>
 		<div class="col-lg-3"></div>
 		<div class="col-lg-2">
 			<div ng-show="inputid" class="form-group">
@@ -214,13 +243,21 @@ button {
 			<div class="form-group">
 				<div class="col-lg-4"></div>
 				<lable class="col-lg-4 label label-primary">Departure:</lable>
-				<div class="col-lg-12"><input type="text" ng-model="dep" class="text-center form-control input-lg"></div>
+				<div class="col-lg-12 input-group">
+					<input type="text" name="dep" ng-model="dep" class="text-center form-control input-lg" required>
+					<span class="input-group-addon" ng-show="ticketform.dep.$invalid">
+      				<i class="mdi-content-report"></i></span>
+				</div>
 			</div>
 
 			<div class="form-group">
 				<div class="col-lg-4"></div>
 				<lable class="col-lg-4 label label-primary">Destination:</lable>
-				<div class="col-lg-12"><input type="text" ng-model="des" class="text-center form-control input-lg"></div>
+				<div class="col-lg-12 input-group">
+					<input type="text" name="des" ng-model="des" class="text-center form-control input-lg" required>
+					<span class="input-group-addon" ng-show="ticketform.des.$invalid">
+      				<i class="mdi-content-report"></i></span>
+				</div>
 			</div>
 		</div>
 
@@ -253,7 +290,11 @@ button {
 			<div class="form-group">
 				<div class="col-lg-4"></div>
 				<lable class="col-lg-4 label label-primary">Total:</lable>
-				<div class="col-lg-12"><input type="text" ng-model="total" class="text-center form-control input-lg"></div>
+				<div class="col-lg-12 input-group">
+					<input type="text" name="total" ng-model="total" class="text-center form-control input-lg" required>
+					<span class="input-group-addon" ng-show="ticketform.total.$invalid">
+      				<i class="mdi-content-report"></i></span>
+				</div>
 			</div>
 			
 			<div ng-show="inputid" class="form-group">
@@ -267,17 +308,18 @@ button {
 				<lable class="col-lg-4 label label-primary">Price:</lable>
 				<div class="col-lg-12 input-group">
 					<span class="input-group-addon">$</span>
-					<input type="text" ng-model="price" class="form-control text-center input-lg">
+					<input type="text" name="price" ng-model="price" class="form-control text-center input-lg" required>
+					<span class="input-group-addon" ng-show="ticketform.price.$invalid">
+      				<i class="mdi-content-report"></i></span>
 				</div>
 			</div>
 		</div>
 			
 		<div class="col-lg-10 col-lg-offset-5">
 			<button type="button" class="btn btn-flat btn-primary" ng-click="resetForm()">Reset</button>
-			<button type="button" class="btn btn-flat btn-danger" ng-click="createNewTicket()">Submit</button>
+			<button type="button" class="btn btn-flat btn-danger" ng-click="createNewTicket()" ng-disabled="ticketform.dep.$error.required || ticketform.des.$error.required || ticketform.total.$error.required ||ticketform.price.$error.required">Submit</button>
 		</div>
 	</form>
-	
 </div>
 </body>
 </html>
