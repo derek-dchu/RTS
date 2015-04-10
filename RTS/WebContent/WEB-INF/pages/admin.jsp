@@ -165,7 +165,7 @@ button {
 <button  class="btn btn-warning btn-raised" type="button" ng-click="showForm()" ng-model="ant">Add New Ticket</button>
 
 <div ng-show="tableshow">
-	<table class="table table-striped table-hover table-center">
+	<table class="table table-hover table-center">
 	  <thead>
 	    <tr>
 	      <th>Ticket ID</th>
@@ -202,7 +202,7 @@ button {
 <br>
 <br>
 <div>
-	<form class="form-horizontal" ng-submit="createNewTicket()" name="ticketform" ng-show="formshow">
+	<form class="form-horizontal" ng-submit="createNewTicket()" name="ticketform" ng-show="formshow" novalidate>
 		<div class="col-lg-3"></div>
 		<div class="col-lg-2">
 			<div ng-show="inputid" class="form-group">
@@ -214,13 +214,21 @@ button {
 			<div class="form-group">
 				<div class="col-lg-4"></div>
 				<lable class="col-lg-4 label label-primary">Departure:</lable>
-				<div class="col-lg-12"><input type="text" ng-model="dep" class="text-center form-control input-lg"></div>
+				<div class="col-lg-12 input-group">
+					<input type="text" name="dep" ng-model="dep" class="text-center form-control input-lg" required>
+					<span class="input-group-addon" ng-show="ticketform.dep.$invalid">
+      				<i class="mdi-content-report"></i></span>
+				</div>
 			</div>
 
 			<div class="form-group">
 				<div class="col-lg-4"></div>
 				<lable class="col-lg-4 label label-primary">Destination:</lable>
-				<div class="col-lg-12"><input type="text" ng-model="des" class="text-center form-control input-lg"></div>
+				<div class="col-lg-12 input-group">
+					<input type="text" name="des" ng-model="des" class="text-center form-control input-lg" required>
+					<span class="input-group-addon" ng-show="ticketform.des.$invalid">
+      				<i class="mdi-content-report"></i></span>
+				</div>
 			</div>
 		</div>
 
@@ -253,7 +261,11 @@ button {
 			<div class="form-group">
 				<div class="col-lg-4"></div>
 				<lable class="col-lg-4 label label-primary">Total:</lable>
-				<div class="col-lg-12"><input type="text" ng-model="total" class="text-center form-control input-lg"></div>
+				<div class="col-lg-12 input-group">
+					<input type="text" name="total" ng-model="total" class="text-center form-control input-lg" required>
+					<span class="input-group-addon" ng-show="ticketform.total.$invalid">
+      				<i class="mdi-content-report"></i></span>
+				</div>
 			</div>
 			
 			<div ng-show="inputid" class="form-group">
@@ -267,17 +279,18 @@ button {
 				<lable class="col-lg-4 label label-primary">Price:</lable>
 				<div class="col-lg-12 input-group">
 					<span class="input-group-addon">$</span>
-					<input type="text" ng-model="price" class="form-control text-center input-lg">
+					<input type="text" name="price" ng-model="price" class="form-control text-center input-lg" required>
+					<span class="input-group-addon" ng-show="ticketform.price.$invalid">
+      				<i class="mdi-content-report"></i></span>
 				</div>
 			</div>
 		</div>
 			
 		<div class="col-lg-10 col-lg-offset-5">
 			<button type="button" class="btn btn-flat btn-primary" ng-click="resetForm()">Reset</button>
-			<button type="button" class="btn btn-flat btn-danger" ng-click="createNewTicket()">Submit</button>
+			<button type="button" class="btn btn-flat btn-danger" ng-click="createNewTicket()" ng-disabled="ticketform.dep.$error.required || ticketform.des.$error.required || ticketform.total.$error.required ||ticketform.price.$error.required">Submit</button>
 		</div>
 	</form>
-	
 </div>
 </body>
 </html>
