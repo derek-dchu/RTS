@@ -83,7 +83,7 @@
 		};
 
 		$scope.getAll = function(){
-			if( $scope.tableshow == true ){
+			if( $scope.tableshow ){
 				$scope.tableshow = false;
 			}else{
 				$http.get(listticket)
@@ -111,10 +111,10 @@
 		};
 
 		$scope.showForm = function(){
-			if($scope.formshow == false){
-				$scope.formshow = true;
-			}else{
+			if($scope.formshow){
 				$scope.formshow = false;
+			}else{
+				$scope.formshow = true;
 			}
 			$scope.inputid = false;
 		};
