@@ -60,21 +60,20 @@
 			</div>
 		</header>
 		
-		<div class="index-container">
+		<sectoin class="landing-page">
 			<!-- background image -->
-			<div class="bg-img">
+			<!-- <div class="bg-img">
 				<img src="<c:url value="/resources/img/bg-large.jpg" />" alt="backgroud image" />
-			</div>
+			</div> -->
 
 			<!-- Introduction Area -->
 			<div class="intro-container darken">
 				
-
-      	<!-- Title -->
+				<!-- Title -->
 				<div class="col-xs-12 title">
-            <h1>RAILWAY TICKET SYSTEM</h1>
-            <p>Simple Yet Effective</p>
-        </div>
+					<h1>RAILWAY TICKET SYSTEM</h1>
+					<p>Simple Yet Effective</p>
+				</div>
 
         <!-- Ticket Search Form -->
 				<div class="col-xs-12 text-center search-form-container">
@@ -104,14 +103,8 @@
 					</form>
 				</div>
 			</div>
-
-
-
-		</div>
+		</section>
 		
-		
-		
-
 		<!-- Login Form -->
 		<div class="modal" id="login_form">
 			<div class="modal-dialog">
@@ -149,9 +142,16 @@
 								</div>
 							</fieldset>
 						</form>
+						<br />
+						<
 					</div>
 				</div>
 			</div>
+		</div>
+
+		<!--Registration Form -->
+		<div class="modal" id="reg_form">
+			<div class="modal-header clearfix"></div>
 		</div>
 
         
