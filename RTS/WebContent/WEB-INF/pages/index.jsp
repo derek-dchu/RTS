@@ -149,7 +149,7 @@
 							<td>{{ticket.atime}}</td>
 							<td>{{ticket.total - ticket.sold}}</td>
 							<td>{{ticket.price}}</td>
-							<td><input type="radio" value="{{ ticket }}" ng-model="mainCtrl.selectedTicket" /></td>
+							<td><input type="radio" value="{{ ticket }}" ng-model="mainCtrl.selectedTicket" ng-change="mainCtrl.drawChart(ticket.sold,ticket.available)"/></td>
 						</tr>
 					</tbody>
 				</table>
@@ -170,6 +170,11 @@
 				</div>
 			</div>
 		</section>
+
+		
+		<!-- Google Chart -->
+		<div id="chart_div"></div>
+		<div id="chart"></div>
 		
 		<!-- Login Form -->
 		<div class="modal" id="login_form">

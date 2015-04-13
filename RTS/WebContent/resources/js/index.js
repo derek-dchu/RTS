@@ -45,8 +45,9 @@ app.controller('mainController',
 		}).success(function(data) {
 			that.tickets = data;
 			that.tableshow = true;
+			$.drawStuff(that.tickets);
 		});
-		
+
 		if ($location.path() !== '/tickets') $location.hash('tickets');
 		anchorSmoothScroll.scrollTo('ticket_page');
 	};
@@ -73,6 +74,11 @@ app.controller('mainController',
 		    }
 		});
 	};
+
+	this.drawChart = function(s,v){
+		$.drawChart(s,v);
+	};
+
 }]);
 
 app.service('anchorSmoothScroll', function() {
