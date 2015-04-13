@@ -42,8 +42,8 @@
 		$scope.currentPage = 1;
 		
 		$scope.createNewTicket = function(){
-			var dt = $filter('date')($scope.dtime,'yyyy/MM/dd HH:mm a');
-			var at = $filter('date')($scope.atime,'yyyy/MM/dd HH:mm a');
+			var dt = $filter('date')($scope.dtime,'yyyy/MM/dd HH:mm');
+			var at = $filter('date')($scope.atime,'yyyy/MM/dd HH:mm');
 			
 			$http({
 			    method:'POST',
@@ -62,6 +62,7 @@
 			    headers:{'Content-Type':'application/x-www-form-urlencoded'}
 			}).success(function(){
 				$scope.resetForm();
+				$scope.tableshow = false;
 				$scope.getAll();
 			});
 		};
@@ -161,7 +162,7 @@ button {
 </head>
 <body ng-app="app" ng-controller="myc">
 <h1 id="logedUsername" style="display: none;"> <sec:authentication property="name"/></h1>
-<!-- nav -->
+nav
 		<div class="navbar navbar-default">
     		<div class="navbar-header">
         		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
@@ -184,6 +185,7 @@ button {
 <button  class="btn btn-primary btn-raised" type="button" ng-click="getAll()" >List All</button>
 <button  class="btn btn-warning btn-raised" type="button" ng-click="showForm()" ng-model="ant">Add New Ticket</button>
 
+<!-- Tickets Table -->
 <div ng-show="tableshow">
 	<table class="table table-hover table-center">
 	  <thead>
@@ -226,10 +228,9 @@ button {
 </div>
 </div>
 
-
-
 <br>
 <br>
+<!-- Ticket Form -->
 <div>
 	<form class="form-horizontal" ng-submit="createNewTicket()" name="ticketform" ng-show="formshow" novalidate>
 		<div class="col-lg-3"></div>
