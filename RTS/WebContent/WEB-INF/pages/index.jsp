@@ -23,7 +23,7 @@
 		<link href="<c:url value="/resources/css/index.css" />" rel="stylesheet">
 	</head>
 
-	<body ng-app="indexPage" ng-controller="mainController">
+	<body ng-app="indexPage" ng-controller="mainController as mainCtrl">
 	
 		<!--Loading  -->
 		<!-- <div class='dt-loading'>
@@ -49,18 +49,22 @@
 					</form>
 					<ul class="nav navbar-nav navbar-right">
 						<sec:authorize access="isAuthenticated()">
-							<li><a>${userName}</a></li>
+							<li><a><span id="user_name">${userName}</span></a></li>
+							<li><a href="${logoutUrl}">Log Out</a></li>
 						</sec:authorize>
 						<sec:authorize access="isAnonymous()">
-							<li><a href="javascript:void(0)" data-toggle="modal" data-target="#login_form">Log In</a></li>
+							<ul class="breadcrumb bg-transparent">
+								<li><a href="javascript:void(0)" data-toggle="modal" data-target="#login_form">Log In</a></li>
+								<li><a href="javascript:void(0)" data-toggle="modal" data-target="#reg_form">Reg</a></li>
+							</ul>
 						</sec:authorize>
-						<li><a href="${logoutUrl}">Log Out</a></li>
 					</ul>
 				</div>
 			</div>
 		</header>
 		
-		<sectoin class="landing-page">
+		<!-- Landing Page -->
+		<section id="landing_page">
 			<!-- background image -->
 			<!-- <div class="bg-img">
 				<img src="<c:url value="/resources/img/bg-large.jpg" />" alt="backgroud image" />
@@ -80,28 +84,63 @@
 					<form name="searchForm" class="form-inline clearfix" id="search_form">
 						<fieldset class="form-group pull-left">
 							<label class="sr-only">Departure Station</label>
-							<input id="from" type="text" ng-model="dep" placeholder="From">
+							<input id="from" type="text" ng-model="mainCtrl.dep" placeholder="From" required>
 						</fieldset>
 						<fieldset class="form-group pull-left">
 							<label class="sr-only">Destination Station</label>
-							<input id="to" type="text" ng-model="des" placeholder="To">
+							<input id="to" type="text" ng-model="mainCtrl.des" placeholder="To" required>
 						</fieldset>
 						<fieldset class="form-group pull-left">
 							<label class="sr-only">Time</label>
 							<input id="time" type="datetime-local" ng-model="mainCtrl.time">
 						</fieldset>
 						<fieldset class="form-group pull-left">
-							<select id="time_type" name="time" ng-model="timeType">
-								<option value="D">Depart At</option>
-								<option value="A">Arrive by</option>
+							<select id="time_type" ng-model="mainCtrl.timeType" ng-options="type.label for type in mainCtrl.timeTypes">
 							</select>
 						</fieldset>
 						
 						<div class="form-group pull-left">
-							<button type="button" class="form-inline btn btn-danger" id="submit_search" ng-click="searchTicket()">Search</button>
+							<button type="button" class="form-inline btn btn-danger" id="submit_search" ng-click="mainCtrl.searchTicket()">Search</button>
 						</div>
 					</form>
 				</div>
+			</div>
+		</section>
+
+		<!-- Ticket list page -->
+		<section id="ticket_page">
+			<div
+			<table class="table table-striped table-hover">
+				<thead>
+					<tr>
+						<th style="display:none;">ID</th>
+						<th>Departure</th>
+						<th>Destination</th>
+						<th>DepartTime</th>
+						<th>ArraiveTime</th>
+						<th>Available</th>
+						<th>Price</th>
+						<th>Select</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="ticket in mainCtrl.tickets" >
+						<td style="display:none;">{{ticket.ticketid}}</td>
+						<td>{{ticket.dep}}</td>
+						<td>{{ticket.des}}</td>
+						<td>{{ticket.dtime}}</td>
+						<td>{{ticket.atime}}</td>
+						<td>{{ticket.total - ticket.sold}}</td>
+						<td>{{ticket.price}}</td>
+						<td><input type="radio" value="{{ticket.ticketid}}" ng-model="mainCtrl.selectedTicketid"/></td>
+					</tr>
+				</tbody>
+			</table>
+
+			<div>
+				<span>{{selectedTicketid}}</span>
+				<input type="text" ng-model="mainCtrl.ticketqt">
+				<button type="button" ng-click="mainCtrl.buy(selectedTicketid)">Buy</button>
 			</div>
 		</section>
 		
@@ -116,17 +155,18 @@
 						</button>
 					</div>
 					<div class="modal-body">
-						<form name="f" action="<c:url value='j_spring_security_check'/>" method="POST" class="form-horizontal">
-							<fieldset><div class="form-group">
-									<label for="inputEmail" class="col-lg-2 control-label">Email</label>
+						<form name="login_form" action="<c:url value='j_spring_security_check'/>" method="POST" class="form-horizontal" novalidate>
+							<fieldset>
+								<div class="form-group" ng-class="{'has-error': login_form.j_username.$error}">
+									<label for="login_email" class="col-lg-2 control-label">Email</label>
 									<div class="col-lg-10">
-											<input type="email" name="j_username" class="form-control" id="input_email" placeholder="Email">
+										<input type="email" name="j_username" class="form-control" id="login_email" placeholder="Email" required>
 									</div>
 								</div>
 								<div class="form-group">
-									<label for="inputPassword" class="col-lg-2 control-label">Password</label>
+									<label for="login_password" class="col-lg-2 control-label">Password</label>
 									<div class="col-lg-10">
-										<input type="password" name="j_password" class="form-control" id="input_password" placeholder="Password">
+										<input type="password" name="j_password" class="form-control" id="login_password" placeholder="Password" required>
 										<div class="checkbox">
 											<label>
 												<input type="checkbox" name="_spring_security_remember_me">&nbsp;Remember me
@@ -143,7 +183,6 @@
 							</fieldset>
 						</form>
 						<br />
-						<
 					</div>
 				</div>
 			</div>
@@ -158,54 +197,23 @@
         
 
 
-<!-- Result Table -->
-<div >
-	<table>
-		<thead>
-			<tr>
-				<th style="display:none;">ID</th>
-				<th>Departure</th>
-				<th>Destination</th>
-				<th>DepartTime</th>
-				<th>ArraiveTime</th>
-				<th>Available</th>
-				<th>Price</th>
-				<th>Select</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr ng-repeat="ticket in tickets" >
-				<td style="display:none;">{{ticket.ticketid}}</td>
-				<td>{{ticket.dep}}</td>
-				<td>{{ticket.des}}</td>
-				<td>{{ticket.dtime}}</td>
-				<td>{{ticket.atime}}</td>
-				<td>{{ticket.total - ticket.sold}}</td>
-				<td>{{ticket.price}}</td>
-				<td><input type="radio" value="{{ticket.ticketid}}" ng-model="$parent.selectedTicketid"/></td>
-			</tr>
-		</tbody>
-	</table>
-</div>
 
-<div>
-	<span>{{selectedTicketid}}</span>
-	<input type="text" ng-model="ticketqt">
-	<button type="button" ng-click="buy(selectedTicketid)">Buy</button>
-</div>
+
 
 	<!-- load script here -->
-	<script src="<c:url value="/resources/bower_components/jquery/dist/jquery.min.js" />"></script>
-	<script src="<c:url value="/resources/bower_components/angularjs/angular.min.js" />"></script>
+	<script src="<c:url value="/resources/bower_components/jquery/dist/jquery.js" />"></script>
+	<script src="<c:url value="/resources/bower_components/angularjs/angular.js" />"></script>
 	<script src="<c:url value="/resources/bower_components/bootstrap/dist/js/bootstrap.min.js" />"></script>
 		<script src="<c:url value="/resources/bower_components/bootstrap-material-design/dist/js/ripples.min.js" />"></script>
 	<script src="<c:url value="/resources/bower_components/bootstrap-material-design/dist/js/material.min.js" />"></script>
 	<script>
 		$(document).ready(function() {
+			// Initialize material-design-boostrap
 			$.material.init();
+
 			setTimeout(function() {
 				 $(".dt-loading").fadeOut('slow');
-				},3000);
+				}, 3000);
 		});
 	</script>
 	

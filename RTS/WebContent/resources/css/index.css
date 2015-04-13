@@ -3,14 +3,18 @@ body {
 }
 
 header {
-	position: fixed;
+	position: absolute;
 	top: 0;
 	left: 0;
 	width: 100%;
 	z-index: 1000;
 }
 
-.landing-page {
+section {
+	min-height: 675px;
+}
+
+#landing_page {
 	display: table;
 	position: relative;
 	width: 100%;
@@ -66,7 +70,7 @@ header {
 	left: 0;
 	right: 0;
 	bottom: 0;
-	width: 740px;
+	width: 760px;
 	height: 44px;
 	margin: auto;
 }
@@ -90,7 +94,7 @@ header {
 	border-bottom-left-radius: 2px;
 }
 #time {
-	width: 230px;
+	width: 250px;
 }
 #submit_search {
 	height: 44px;
@@ -99,7 +103,7 @@ header {
 	border-bottom-left-radius: 0;
 }
 
-/* Following snippet fix popup scrollbar problem */
+/* Fix popup scrollbar problem */
 /*-----------------------------------------------*/
 html {
 	overflow-y: scroll;
@@ -116,7 +120,18 @@ body, login-form {
 .darken {
 	background: rgba(20,25,32,0.35);
 }
-	
+
+/* Fix breadcrumb in navbar */
+.nav .breadcrumb {
+    margin-bottom: 7px;
+}
+@media (min-width: 768px) {
+    .nav .breadcrumb {
+        float: left;
+        margin: 10px 10px;
+    }
+}
+/*---------------------------*/
 	
 	
 .dt-loading{background:rgba(0,0,0,1);width:100%;height:100%;z-index:101;text-align:center;position:fixed;top:0;bottom:0;left:0;right:0;padding:20% 0}

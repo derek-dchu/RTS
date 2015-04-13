@@ -1,65 +1,128 @@
-var app = angular.module("indexPage", []);
-	app.controller('mainController', ['$http', '$scope', function($http,$filter,$scope) {
-		var searchTicketUrl ="http://localhost:8080/RTS/rest/search/searchticket";
-		var buyticket = "http://localhost:8080/RTS/rest/buy";
+var app = angular.module('indexPage', []);
+	
+app.controller('mainController', 
+		['$http', '$filter', '$location', 'anchorSmoothScroll',
+		 function($http, $filter, $location, anchorSmoothScroll) {
+	var searchTicketUrl ="/RTS/rest/search/searchticket";
+	var buyTicketUrl = "/RTS/rest/buy";
+	
+	this.timeTypes = [
+		{label: "Any Time", value: null},
+		{label: "Depart At", value: "D"},
+		{label: "Arrive By", value: "A"}
+	];
+	
+	this.dep = "";
+	this.des = "";
+	this.time = "";
+	this.timeType = this.timeTypes[0];
+	this.tickets = [];
+	this.tableshow = false;
+	this.selectedTicketid = null;
+	
+	this.searchTicket = function() {
+		var dtime = null,
+			atime = null;
+		if (this.timeType.value === "D") {
+			dtime = $filter('date')(this.time,'yyyy/MM/dd hh:mm a');
+		}
 		
-		$scope.dep = "";
-		$scope.des = "";
-		$scope.time = "";
-		$scope.timeType = "D";
-		$scope.tickets = [];
-		$scope.tableshow = false;
-		$scope.selectedTicketid = null;
+		if (this.timeType.value === "A") {
+			atime = $filter('date')(this.time,'yyyy/MM/dd hh:mm a');
+		}
 		
-		$scope.searchTicket = function() {
-			var dtime = null,
-				atime = null;
-			
-			if ($scope.timeType === "D") {
-				dtime = $filter('date')($scope.time,'yyyy/MM/dd HH:mm');
-			}
-			
-			if ($scope.timeType === "A") {
-				atime = $filter('date')($scope.time,'yyyy/MM/dd HH:mm');
-			}
-			
-			$http({
-			    method:'POST',
-			    url: searchTicketUrl,
-			    data: $.param({
-			    		des:$scope.des,
-			    		dep:$scope.dep,
-			    		dtime:dtime,
-			    		atime:atime
-			    }),
-			    headers:{'Content-Type':'application/x-www-form-urlencoded'}
-			}).success(function(data){
-				$scope.tickets = data;
-				$scope.tableshow = true;
-		})};
+		$http({
+			method:'POST',
+			url: searchTicketUrl,
+			headers:{'Content-Type':'application/x-www-form-urlencoded'},
+			data: $.param({
+				des: this.des,
+				dep: this.dep,
+				dtime: dtime,
+				atime: atime
+			})
+		}).success(function(data) {
+			this.tickets = data;
+			this.tableshow = true;
+		});
 		
-		$scope.resetForm = function(){
-			$scope.dep = "";
-			$scope.des = "";
-			$scope.time = "";
-			$scope.timeType = "D";
-			$scope.searchForm.$setPristine();
-		};
-		
-		$scope.buy = function(ticketid){
-			var username = document.getElementById("logedUsername").innerHTML ;
-			$http({
-			    method:'GET',
-			    url: buyticket,
-			    params: {
-			    	tid:ticketid,
-				    username:username,
-				    qt:$scope.ticketqt
-			    }
-			});
-		};
-		
-		$scope.openLoginForm = function() {
-			alert("open!");
-		};
-	}]);
+		if ($location.path() !== '/tickets') $location.hash('tickets');
+		anchorSmoothScroll.scrollTo('ticket_page');
+	};
+	
+	this.resetForm = function(){
+		this.dep = "";
+		this.des = "";
+		this.time = "";
+		this.timeType = this.timeTypes[0];
+		this.searchForm.$setPristine();
+	};
+	
+	this.buy = function(ticketid){
+		var username = $("#user_name").text();
+		console.log("current user: ", username);
+		$http({
+		    method:'GET',
+		    url: buyticket,
+		    params: {
+		    	tid: ticketid,
+			    username: username,
+			    qt:this.ticketqt
+		    }
+		});
+	};
+}]);
+
+app.service('anchorSmoothScroll', function() {
+    
+    this.scrollTo = function(eID) {
+
+        // This scrolling function 
+        // is from http://www.itnewb.com/tutorial/Creating-the-Smooth-Scroll-Effect-with-JavaScript
+        
+        var startY = currentYPosition();
+        var stopY = elmYPosition(eID);
+        var distance = stopY > startY ? stopY - startY : startY - stopY;
+        if (distance < 100) {
+            scrollTo(0, stopY); return;
+        }
+        var speed = Math.round(distance / 100);
+        if (speed >= 20) speed = 20;
+        var step = Math.round(distance / 25);
+        var leapY = stopY > startY ? startY + step : startY - step;
+        var timer = 0;
+        if (stopY > startY) {
+            for ( var i=startY; i<stopY; i+=step ) {
+                setTimeout("window.scrollTo(0, "+leapY+")", timer * speed);
+                leapY += step; if (leapY > stopY) leapY = stopY; timer++;
+            } return;
+        }
+        for ( var i=startY; i>stopY; i-=step ) {
+            setTimeout("window.scrollTo(0, "+leapY+")", timer * speed);
+            leapY -= step; if (leapY < stopY) leapY = stopY; timer++;
+        }
+        
+        function currentYPosition() {
+            // Firefox, Chrome, Opera, Safari
+            if (self.pageYOffset) return self.pageYOffset;
+            // Internet Explorer 6 - standards mode
+            if (document.documentElement && document.documentElement.scrollTop)
+                return document.documentElement.scrollTop;
+            // Internet Explorer 6, 7 and 8
+            if (document.body.scrollTop) return document.body.scrollTop;
+            return 0;
+        }
+        
+        function elmYPosition(eID) {
+            var elm = document.getElementById(eID);
+            var y = elm.offsetTop;
+            var node = elm;
+            while (node.offsetParent && node.offsetParent != document.body) {
+                node = node.offsetParent;
+                y += node.offsetTop;
+            } return y;
+        }
+
+    };
+    
+});
