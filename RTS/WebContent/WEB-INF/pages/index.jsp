@@ -22,6 +22,16 @@
 		<link href="<c:url value="/resources/css/simple-sidebar.css" />" rel="stylesheet">
 
 		<link href="<c:url value="/resources/css/index.css" />" rel="stylesheet">
+
+		<!-- Set section height onload -->
+		<script type="text/javascript">
+		window.onload = function() {
+			console.log("window height: ", $( window ).height());
+			$.each($('section'), function() {
+				$(this).height( $( window ).height() );
+			});
+		};
+		</script>
 	</head>
 
 	<body ng-app="indexPage" ng-controller="mainController as mainCtrl">
@@ -117,7 +127,7 @@
 					</li>
 				</ul>
 			</div>
-			<div class="page-content-wrapper ticktes">
+			<div class="page-content-wrapper ticket-list">
 				<table class="table table-striped table-hover">
 					<thead>
 						<tr>
@@ -143,21 +153,21 @@
 						</tr>
 					</tbody>
 				</table>
-			</div>
-			
 
-			<div id="buy_form">
-				<p>{{ mainCtrl.selectedTicket }}</p>
-				<form name="buy_form" class="form-horizontal" novalidate>
-					<fieldset>
-						<div class="form-group" ng-class="{'has-error': buy_form.ticket_quantity.$error}">
-							<label for="ticket_quantity" class="control-label">Quantity</label>
-							<input type="number" name="ticket_quantity" id="ticket_quantity" class="form-control" ng-model="ticketQuantity" min="0" max="{{ mainCtrl.selectedTicket.total - mainCtrl.selectedTicket.sold }}" required>
-						</div>
-					</fieldset>
-					
-					<button type="button" ng-click="mainCtrl.buy(selectedTicket.ticketid, ticketQuantity)">Buy</button>
-				</form>
+				<div id="buy_form">
+					<p>{{ mainCtrl.selectedTicket }}</p>
+					<p>{{buy_form.ticket_quantity.$error}}</p>
+					<form name="buy_form" class="form-horizontal" novalidate>
+						<fieldset>
+							<div class="form-group" ng-class="{'has-error': buy_form.ticket_quantity.$error.required || buy_form.ticket_quantity.$error.number || buy_form.ticket_quantity.$error.min || buy_form.ticket_quantity.$error.max}">
+								<label for="ticket_quantity" class="control-label">Quantity</label>
+								<input type="number" name="ticket_quantity" id="ticket_quantity" class="form-control" ng-model="ticketQuantity" min="0" max="{{ mainCtrl.selectedTicket.total - mainCtrl.selectedTicket.sold }}" required>
+							</div>
+						</fieldset>
+						
+						<button type="button" ng-click="mainCtrl.buy(selectedTicket.ticketid, ticketQuantity)">Buy</button>
+					</form>
+				</div>
 			</div>
 		</section>
 		
