@@ -238,6 +238,11 @@
 	<script src="<c:url value="/resources/bower_components/bootstrap/dist/js/bootstrap.min.js" />"></script>
 		<script src="<c:url value="/resources/bower_components/bootstrap-material-design/dist/js/ripples.min.js" />"></script>
 	<script src="<c:url value="/resources/bower_components/bootstrap-material-design/dist/js/material.min.js" />"></script>
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+	<script type="text/javascript">
+		google.load('visualization', '1.0', {'packages':['corechart']});
+		google.load("visualization", "1.0", {'packages':['bar']});
+	</script>
 	<script>
 		$(document).ready(function() {
 			// Initialize material-design-boostrap
@@ -248,7 +253,8 @@
 				}, 3000);
 		});
 	</script>
-	
+
+	<script src="<c:url value="/resources/js/Google-Chart-1.js" />"></script>
 	<script src="<c:url value="/resources/js/index.js" />"></script>
 </body>
 </html>
