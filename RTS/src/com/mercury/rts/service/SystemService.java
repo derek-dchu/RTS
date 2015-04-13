@@ -35,7 +35,7 @@ public class SystemService {
 	ConfirmationCodeDaoImpl confirmationCodeDao;
 	
 	public String sendEmail(User user, String subject, String content) {
-		String firstName = "";
+		String firstName = "customer";
 		String lastName = "";
 		if (user.getFirstName() != null) { firstName = user.getFirstName(); }
 		if (user.getLastName() != null) { lastName = user.getLastName(); }

@@ -42,8 +42,8 @@
 		$scope.currentPage = 1;
 		
 		$scope.createNewTicket = function(){
-			var dt = $filter('date')($scope.dtime,'yyyy/MM/dd HH:mm');
-			var at = $filter('date')($scope.atime,'yyyy/MM/dd HH:mm');
+			var dt = $filter('date')($scope.dtime,'yyyy/MM/dd HH:mm a');
+			var at = $filter('date')($scope.atime,'yyyy/MM/dd HH:mm a');
 			
 			$http({
 			    method:'POST',

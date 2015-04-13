@@ -4,7 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,59 +20,59 @@ import com.mercury.rts.util.TransactionQueue;
 public class BuyTicket {
 
 	@Autowired
-	@Qualifier("TicketDaoImpl")
 	private TicketDaoImpl tdi;
 	
 	@Autowired
-	@Qualifier("UserDaoImpl")
 	private UserDaoImpl udi;
 	
 	@Autowired
-	@Qualifier("TransactionDaoImpl")
 	private TransactionDaoImpl trdi;
 	
 	@Autowired
 	private SystemService ss;
 	
-	public Transaction buyTicketEnqueue(String username,int tid,int quantity){
+	public Transaction buyTicketEnqueue(String username, int tid, int quantity){
 		Date date = new Date();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd hh:mm");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd hh:mm a");
 		
-		User u = udi.getUserByEmail(username);
-		Ticket t = tdi.findById(tid);
+		User user = udi.getUserByEmail(username);
+		Ticket ticket = tdi.findById(tid);
 		
-		Transaction ts = new Transaction();
-		ts.setQt(quantity);
-		ts.setTtime(sdf.format(date));
-		ts.setTicket(t);
-		ts.setUser(u);
-		ts.setStatus("p");
+		Transaction tx = new Transaction();
+		tx.setQt(quantity);
+		tx.setTtime(sdf.format(date));
+		tx.setTicket(ticket);
+		tx.setUser(user);
+		tx.setStatus("P");
 		
-		TransactionQueue.add(ts);
-		return ts;
+		TransactionQueue.add(tx);
+		return tx;
 	}
 	
-	public String buyTicketDequeue(Transaction trans){
-		String s=null;
-		int quantity=trans.getQt();
-		Ticket t=tdi.findById(trans.getTicket().getTicketid());
-		int available=t.getAvailable();
-		User u = trans.getUser();
+	public String buyTicketDequeue(Transaction tx){
+		String s = null;
+		int quantity = tx.getQt();
+		Ticket ticket = tdi.findById(tx.getTicket().getTicketid());
+		int available = ticket.getAvailable();
+		User user = tx.getUser();
 		
-		String sucSubject = "You has booked the ticket successfully";
+		String successSubject = "You has booked the ticket successfully";
 		String failSubject = "Booking failed";
-		String sucContent = " You have purchased "+quantity+" tickets from "+t.getDep()+" to "
-				+t.getDes()+" on "+t.getDtime()+".\n Please arrive the station on time.  The ticket can be refunded 30 mins before the departure time. Thank you.";
-		String failContent = " The ticket(s) you booked from "+t.getDep()+" to "+t.getDes()+" on "+t.getDtime()+" are sold out.  Please Choose to some other ones.  Thank you for your understanding, we apology for that";
-		if(quantity<=available){
-			trans.setStatus("b");
-			t.setAvailable(available-quantity);
-			t.setSold(t.getSold()+quantity);
-			tdi.saveTicket(t);
-			trdi.saveTransaction(trans);
-			ss.sendEmail(u, sucSubject, sucContent);
-		}else{
-			ss.sendEmail(u, failSubject, failContent);
+		String successContent = "You have purchased "+quantity+" tickets from "+ticket.getDep()+" to "
+				+ticket.getDes()+" on "+ticket.getDtime()+".\n Please arrive the station on time. " +
+				"The ticket can be refunded 30 mins before the departure time. Thank you.";
+		String failContent = "The ticket(s) you booked from "+ticket.getDep()+" to "
+				+ticket.getDes()+" on "+ticket.getDtime()+" are sold out. " +
+				"Please Choose to some other ones.  Thank you for your understanding, we apology for that";
+		if(quantity <= available) {
+			tx.setStatus("B");
+			ticket.setAvailable(available-quantity);
+			ticket.setSold(ticket.getSold()+quantity);
+			tdi.saveTicket(ticket);
+			trdi.saveTransaction(tx);
+			ss.sendEmail(user, successSubject, successContent);
+		} else {
+			ss.sendEmail(user, failSubject, failContent);
 		}
 		return s;
 	}

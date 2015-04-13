@@ -2,6 +2,7 @@ package com.mercury.rts.resources;
 
 import java.util.List;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -23,7 +24,7 @@ public class SearchRest {
 	@POST
 	@Path("/searchticket")
 	@Produces({MediaType.APPLICATION_JSON})
-	public List<Ticket> Searchticket(
+	public List<Ticket> searchTicket(
 			@FormParam("des") String des,
 			@FormParam("dep") String dep,
 			@FormParam("dtime") String dtime,

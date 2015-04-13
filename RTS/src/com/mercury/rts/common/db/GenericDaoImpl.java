@@ -51,17 +51,16 @@ public class GenericDaoImpl<T, ID extends Serializable> implements GenericDao<T,
 
     @SuppressWarnings("unchecked")
 	public List<T> findAllByMulti(Map<String, Object> condition) {
-    	 SessionInfo sessionInfo = getSessionInfo();
-    	 Criteria criteria = sessionInfo.getSession().createCriteria(klass);
-    	 for(Map.Entry<String, Object> e : condition.entrySet()){
-    		 System.out.println(e.getKey());
-    		 if(e.getKey() != null) {
-    			 criteria.add(Restrictions.eq(e.getKey(), e.getValue()));
-    		  } 
-    	  }
-    	  List<T> retval=(List<T>) criteria.list();
-    	  sessionInfo.cleanup();
-    	  return retval;
+    	SessionInfo sessionInfo = getSessionInfo();
+    	Criteria criteria = sessionInfo.getSession().createCriteria(klass);
+    	for(Map.Entry<String, Object> e : condition.entrySet()) {
+    		if(e.getKey() != null) {
+    		criteria.add(Restrictions.eq(e.getKey(), e.getValue()));
+    		}
+    	}
+    	List<T> retval=(List<T>) criteria.list();
+    	sessionInfo.cleanup();
+		return retval;
     }
     public List<T> findAllBy(String property, List<?> values) {
 //        SessionInfo sessionInfo = getSessionInfo();

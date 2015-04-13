@@ -38,6 +38,7 @@ public class UserService {
 	
 	public List<Ticket> searchTicket(String dep, String des, String dtime, String atime) {
 		Map<String, Object> condition = new HashMap<String, Object>(0);
+		condition.put("enable", 1);
 		condition.put("dep", dep);
 		condition.put("des", des);
 		
@@ -48,9 +49,9 @@ public class UserService {
 		if (!atime.isEmpty()) {
 			condition.put("atime", atime);
 		}
-		System.out.println(condition.entrySet());
 		
 		try {
+			logger.debug(String.format("Search for tickets: %s", condition.entrySet()));
 			return tdi.findAllByMulti(condition);
 		} catch (HibernateException e) {
 			logger.error(e.getMessage());
