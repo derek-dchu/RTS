@@ -103,6 +103,10 @@ section {
 	border-bottom-left-radius: 0;
 }
 
+#buy_form {
+	padding: 20px;
+}
+
 /* Fix popup scrollbar problem */
 /*-----------------------------------------------*/
 html {

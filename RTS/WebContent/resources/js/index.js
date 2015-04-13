@@ -1,8 +1,9 @@
 var app = angular.module('indexPage', []);
 	
 app.controller('mainController', 
-		['$http', '$filter', '$location', 'anchorSmoothScroll',
-		 function($http, $filter, $location, anchorSmoothScroll) {
+		['$http', '$filter', '$location', 'anchorSmoothScroll', '$scope',
+		 function($http, $filter, $location, anchorSmoothScroll, $scope) {
+	var that = this;
 	var searchTicketUrl ="/RTS/rest/search/searchticket";
 	var buyTicketUrl = "/RTS/rest/buy";
 	
@@ -18,17 +19,17 @@ app.controller('mainController',
 	this.timeType = this.timeTypes[0];
 	this.tickets = [];
 	this.tableshow = false;
-	this.selectedTicketid = null;
+	this.selectedTicket = null;
 	
 	this.searchTicket = function() {
 		var dtime = null,
 			atime = null;
-		if (this.timeType.value === "D") {
-			dtime = $filter('date')(this.time,'yyyy/MM/dd hh:mm a');
+		if (that.timeType.value === "D") {
+			dtime = $filter('date')(that.time,'yyyy/MM/dd hh:mm a');
 		}
 		
-		if (this.timeType.value === "A") {
-			atime = $filter('date')(this.time,'yyyy/MM/dd hh:mm a');
+		if (that.timeType.value === "A") {
+			atime = $filter('date')(that.time,'yyyy/MM/dd hh:mm a');
 		}
 		
 		$http({
@@ -42,8 +43,8 @@ app.controller('mainController',
 				atime: atime
 			})
 		}).success(function(data) {
-			this.tickets = data;
-			this.tableshow = true;
+			that.tickets = data;
+			that.tableshow = true;
 		});
 		
 		if ($location.path() !== '/tickets') $location.hash('tickets');
@@ -58,16 +59,17 @@ app.controller('mainController',
 		this.searchForm.$setPristine();
 	};
 	
-	this.buy = function(ticketid){
+	this.buy = function(ticketid, quantity) {
 		var username = $("#user_name").text();
 		console.log("current user: ", username);
+		console.log("buy ticket: ", ticketid, " quantity: ", quantity);
 		$http({
 		    method:'GET',
-		    url: buyticket,
+		    url: buyTicketUrl,
 		    params: {
 		    	tid: ticketid,
 			    username: username,
-			    qt:this.ticketqt
+			    qt: quantity
 		    }
 		});
 	};

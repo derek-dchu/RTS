@@ -19,7 +19,8 @@
 		<link href="<c:url value="/resources/bower_components/bootstrap-material-design/dist/css/roboto.min.css" />" rel="stylesheet">
 		<link href="<c:url value="/resources/bower_components/bootstrap-material-design/dist/css/material.min.css" />" rel="stylesheet">
 		<link href="<c:url value="/resources/bower_components/bootstrap-material-design/dist/css/ripples.min.css" />" rel="stylesheet">
-		
+		<link href="<c:url value="/resources/css/simple-sidebar.css" />" rel="stylesheet">
+
 		<link href="<c:url value="/resources/css/index.css" />" rel="stylesheet">
 	</head>
 
@@ -108,39 +109,55 @@
 		</section>
 
 		<!-- Ticket list page -->
-		<section id="ticket_page">
-			<div
-			<table class="table table-striped table-hover">
-				<thead>
-					<tr>
-						<th style="display:none;">ID</th>
-						<th>Departure</th>
-						<th>Destination</th>
-						<th>DepartTime</th>
-						<th>ArraiveTime</th>
-						<th>Available</th>
-						<th>Price</th>
-						<th>Select</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr ng-repeat="ticket in mainCtrl.tickets" >
-						<td style="display:none;">{{ticket.ticketid}}</td>
-						<td>{{ticket.dep}}</td>
-						<td>{{ticket.des}}</td>
-						<td>{{ticket.dtime}}</td>
-						<td>{{ticket.atime}}</td>
-						<td>{{ticket.total - ticket.sold}}</td>
-						<td>{{ticket.price}}</td>
-						<td><input type="radio" value="{{ticket.ticketid}}" ng-model="mainCtrl.selectedTicketid"/></td>
-					</tr>
-				</tbody>
-			</table>
+		<section id="ticket_page" class="sidebar-section">
+			<div class="sidebar-wrapper">
+				<ul class="sidebar-nav">
+					<li class="sidebar-brand">
+						<a herf="#">Modify Trip</a>
+					</li>
+				</ul>
+			</div>
+			<div class="page-content-wrapper ticktes">
+				<table class="table table-striped table-hover">
+					<thead>
+						<tr>
+							<th style="display:none;">ID</th>
+							<th>Departure</th>
+							<th>Destination</th>
+							<th>Depart At</th>
+							<th>Arrive By</th>
+							<th>Available</th>
+							<th>Price</th>
+							<th>Select</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="ticket in mainCtrl.tickets track by ticket.ticketid">
+							<td>{{ticket.dep}}</td>
+							<td>{{ticket.des}}</td>
+							<td>{{ticket.dtime}}</td>
+							<td>{{ticket.atime}}</td>
+							<td>{{ticket.total - ticket.sold}}</td>
+							<td>{{ticket.price}}</td>
+							<td><input type="radio" value="{{ ticket }}" ng-model="mainCtrl.selectedTicket" /></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			
 
-			<div>
-				<span>{{selectedTicketid}}</span>
-				<input type="text" ng-model="mainCtrl.ticketqt">
-				<button type="button" ng-click="mainCtrl.buy(selectedTicketid)">Buy</button>
+			<div id="buy_form">
+				<p>{{ mainCtrl.selectedTicket }}</p>
+				<form name="buy_form" class="form-horizontal" novalidate>
+					<fieldset>
+						<div class="form-group" ng-class="{'has-error': buy_form.ticket_quantity.$error}">
+							<label for="ticket_quantity" class="control-label">Quantity</label>
+							<input type="number" name="ticket_quantity" id="ticket_quantity" class="form-control" ng-model="ticketQuantity" min="0" max="{{ mainCtrl.selectedTicket.total - mainCtrl.selectedTicket.sold }}" required>
+						</div>
+					</fieldset>
+					
+					<button type="button" ng-click="mainCtrl.buy(selectedTicket.ticketid, ticketQuantity)">Buy</button>
+				</form>
 			</div>
 		</section>
 		
@@ -157,16 +174,16 @@
 					<div class="modal-body">
 						<form name="login_form" action="<c:url value='j_spring_security_check'/>" method="POST" class="form-horizontal" novalidate>
 							<fieldset>
-								<div class="form-group" ng-class="{'has-error': login_form.j_username.$error}">
+								<div class="form-group" ng-class="{'has-error': login_form.j_username.$error.email}">
 									<label for="login_email" class="col-lg-2 control-label">Email</label>
 									<div class="col-lg-10">
-										<input type="email" name="j_username" class="form-control" id="login_email" placeholder="Email" required>
+										<input type="email" name="j_username" class="form-control" id="login_email" placeholder="Email" ng-model="j_username" required>
 									</div>
 								</div>
 								<div class="form-group">
 									<label for="login_password" class="col-lg-2 control-label">Password</label>
 									<div class="col-lg-10">
-										<input type="password" name="j_password" class="form-control" id="login_password" placeholder="Password" required>
+										<input type="password" name="j_password" class="form-control" id="login_password" placeholder="Password" ng-model="j_password" required>
 										<div class="checkbox">
 											<label>
 												<input type="checkbox" name="_spring_security_remember_me">&nbsp;Remember me
