@@ -161,24 +161,25 @@ button {
 </style>
 </head>
 <body ng-app="app" ng-controller="myc">
-<h1 id="logedUsername" style="display: none;"> <sec:authentication property="name"/></h1>
-nav
-		<div class="navbar navbar-default">
-    		<div class="navbar-header">
-        		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
-            		<span class="icon-bar"></span>
-            		<span class="icon-bar"></span>
-            		<span class="icon-bar"></span>
-       			</button>
-        		<a class="navbar-brand" href="/RTS">RTS</a>
-    		</div>
-    		<div class="navbar-collapse collapse navbar-responsive-collapse">
-		        <ul class="nav navbar-nav navbar-right">
-		            <li><a><sec:authentication property="name"/></a></li>
-		            <li><a href="${logoutUrl}">Log Out</a></li>
-		        </ul>
-    		</div>
-		</div>
+
+<!-- NAV -->
+<h1 id="logedUsername" style="display: none;"> <sec:authentication property="name" var="userName"/></h1>
+<div class="navbar navbar-default">
+	<div class="navbar-header">
+		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+    		<span class="icon-bar"></span>
+    		<span class="icon-bar"></span>
+    		<span class="icon-bar"></span>
+			</button>
+		<a class="navbar-brand" href="/RTS">RTS</a>
+	</div>
+	<div class="navbar-collapse collapse navbar-responsive-collapse">
+        <ul class="nav navbar-nav navbar-right">
+            <li><a>${userName}</a></li>
+            <li><a href="${logoutUrl}">Log Out</a></li>
+        </ul>
+	</div>
+</div>
 		
 <br>
 <br>
@@ -220,12 +221,12 @@ nav
 	  </tbody>
 	</table>
 	<div>
-	<pagination class="pagination"  
-    items-per-page="itemsPerPage"
-    total-items="tickets.length" 
-    ng-model="currentPage" 
-    ng-change="figureOutTodosToDisplay(tickets)"></pagination>
-</div>
+		<pagination class="pagination"  
+	    items-per-page="itemsPerPage"
+	    total-items="tickets.length" 
+	    ng-model="currentPage" 
+	    ng-change="figureOutTodosToDisplay(tickets)"></pagination>
+	</div>
 </div>
 
 <br>
@@ -241,9 +242,9 @@ nav
 				<div class="col-lg-12"><input type="text" ng-model="tid" class="text-center form-control input-lg"></div>
 			</div>
 
-			<div class="form-group">
+			<div class="form-group" ng-class="{'has-error':ticketform.dep.$invalid}">
 				<div class="col-lg-4"></div>
-				<lable class="col-lg-4 label label-primary">Departure:</lable>
+				<lable ng-class="{'label-danger':ticketform.dep.$invalid}" class="col-lg-4 label label-primary">Departure:</lable>
 				<div class="col-lg-12 input-group">
 					<input type="text" name="dep" ng-model="dep" class="text-center form-control input-lg" required>
 					<span class="input-group-addon" ng-show="ticketform.dep.$invalid">
@@ -251,9 +252,9 @@ nav
 				</div>
 			</div>
 
-			<div class="form-group">
+			<div class="form-group" ng-class="{'has-error':ticketform.des.$invalid}">
 				<div class="col-lg-4"></div>
-				<lable class="col-lg-4 label label-primary">Destination:</lable>
+				<lable ng-class="{'label-danger':ticketform.des.$invalid}" class="col-lg-4 label label-primary">Destination:</lable>
 				<div class="col-lg-12 input-group">
 					<input type="text" name="des" ng-model="des" class="text-center form-control input-lg" required>
 					<span class="input-group-addon" ng-show="ticketform.des.$invalid">
@@ -288,9 +289,9 @@ nav
 		</div>
 
 		<div class="col-lg-2">
-			<div class="form-group">
+			<div class="form-group" ng-class="{'has-error':ticketform.total.$invalid}">
 				<div class="col-lg-4"></div>
-				<lable class="col-lg-4 label label-primary">Total:</lable>
+				<lable ng-class="{'label-danger':ticketform.total.$invalid}" class="col-lg-4 label label-primary">Total:</lable>
 				<div class="col-lg-12 input-group">
 					<input type="text" name="total" ng-model="total" class="text-center form-control input-lg" required>
 					<span class="input-group-addon" ng-show="ticketform.total.$invalid">
@@ -304,9 +305,9 @@ nav
 				<div class="col-lg-12"><input type="text" ng-model="sold" class="text-center form-control input-lg"></div>
 			</div>
 
-			<div class="form-group">
+			<div class="form-group" ng-class="{'has-error':ticketform.price.$invalid}">
 				<div class="col-lg-4"></div>
-				<lable class="col-lg-4 label label-primary">Price:</lable>
+				<lable ng-class="{'label-danger':ticketform.price.$invalid}" class="col-lg-4 label label-primary">Price:</lable>
 				<div class="col-lg-12 input-group">
 					<span class="input-group-addon">$</span>
 					<input type="text" name="price" ng-model="price" class="form-control text-center input-lg" required>
