@@ -19,7 +19,7 @@
 		<link href="<c:url value="/resources/bower_components/bootstrap-material-design/dist/css/roboto.min.css" />" rel="stylesheet">
 		<link href="<c:url value="/resources/bower_components/bootstrap-material-design/dist/css/material.min.css" />" rel="stylesheet">
 		<link href="<c:url value="/resources/bower_components/bootstrap-material-design/dist/css/ripples.min.css" />" rel="stylesheet">
-		<link href="<c:url value="/resources/css/simple-sidebar.css" />" rel="stylesheet">
+		<link href="<c:url value="/resources/css/sidebar.css" />" rel="stylesheet">
 
 		<link href="<c:url value="/resources/css/index.css" />" rel="stylesheet">
 
@@ -27,8 +27,9 @@
 		<script type="text/javascript">
 		window.onload = function() {
 			console.log("window height: ", $( window ).height());
+			sectionHeight = $( window ).height();
 			$.each($('section'), function() {
-				$(this).height( $( window ).height() );
+				$(this).height( sectionHeight );
 			});
 		};
 		</script>
@@ -119,7 +120,7 @@
 		</section>
 
 		<!-- Ticket list page -->
-		<section id="ticket_page" class="sidebar-section">
+		<section id="ticket_page" class="sidebar-section toggled">
 			<div class="sidebar-wrapper">
 				<ul class="sidebar-nav">
 					<li class="sidebar-brand">
@@ -379,5 +380,6 @@
 
 	<script src="<c:url value="/resources/js/Google-Chart-1.js" />"></script>
 	<script src="<c:url value="/resources/js/index.js" />"></script>
+	<script src="<c:url value="/resources/js/sidebar.js" />"></script>
 </body>
 </html>
