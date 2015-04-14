@@ -20,6 +20,11 @@ app.controller('mainController',
 	this.tickets = [];
 	this.tableshow = false;
 	this.selectedTicket = null;
+	this.selectedIndex = null;
+
+	/* ticket list order */
+	this.predicate = 'dtime';
+	this.reverse = false;
 	
 	this.searchTicket = function() {
 		var dtime = null,
@@ -75,8 +80,9 @@ app.controller('mainController',
 		});
 	};
 
-	this.drawChart = function(s,v){
-		$.drawChart(s,v);
+	this.selectTicket = function(ticket) {
+		that.selectedTicket = ticket;
+		$.drawChart(ticket.sold, ticket.available);
 	};
 
 }]);
@@ -133,4 +139,12 @@ app.service('anchorSmoothScroll', function() {
 
     };
     
+});
+
+/* Parse price from string to number */
+app.filter('num', function() {
+	return function(input) {
+		console.log(parseFloat(input));
+		return parseFloat(input);
+	}
 });

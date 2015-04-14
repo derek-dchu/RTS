@@ -10,9 +10,9 @@ header {
 	z-index: 1000;
 }
 
-section {
+/*section {
 	min-height: 675px;
-}
+}*/
 
 #landing_page {
 	display: table;
@@ -101,6 +101,10 @@ section {
 	margin: 0;
 	border-top-left-radius: 0;
 	border-bottom-left-radius: 0;
+}
+
+.ticket-list {
+	padding-top: 50px;
 }
 
 #buy_form {

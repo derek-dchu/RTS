@@ -17,11 +17,10 @@
 		<sec:form-login login-page="/index.html"
 			authentication-success-handler-ref="postSuccessAuthHandler"
 			authentication-failure-url="/index.html?login_error=1" />
-		<sec:logout invalidate-session="true" logout-success-url="/index.html"
+		<sec:logout invalidate-session="true" logout-success-url="/"
 			delete-cookies="JSESSIONID" /> 
-
 		<sec:remember-me key="remMeKey"
-			token-validity-seconds="20" />
+			token-validity-seconds="900" />
 
 	</sec:http>
 
@@ -38,7 +37,7 @@
 		</sec:authentication-provider>
 	</sec:authentication-manager>
 
-	<bean id="md5PasswordEncoder"  class="org.springframework.security.authentication.encoding.Md5PasswordEncoder"/>
+	<bean id="md5PasswordEncoder" class="org.springframework.security.authentication.encoding.Md5PasswordEncoder"/>
 	<!-- <bean id="encoder"
 		class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
 		<constructor-arg name="strength" value="10" />

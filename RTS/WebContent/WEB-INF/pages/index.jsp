@@ -123,50 +123,173 @@
 			<div class="sidebar-wrapper">
 				<ul class="sidebar-nav">
 					<li class="sidebar-brand">
-						<a herf="#">Modify Trip</a>
+						<a herf="javascript:void(0)">Modify Trip</a>
 					</li>
 				</ul>
 			</div>
 			<div class="page-content-wrapper ticket-list">
-				<table class="table table-striped table-hover">
-					<thead>
-						<tr>
-							<th style="display:none;">ID</th>
-							<th>Departure</th>
-							<th>Destination</th>
-							<th>Depart At</th>
-							<th>Arrive By</th>
-							<th>Available</th>
-							<th>Price</th>
-							<th>Select</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr ng-repeat="ticket in mainCtrl.tickets track by ticket.ticketid">
-							<td>{{ticket.dep}}</td>
-							<td>{{ticket.des}}</td>
-							<td>{{ticket.dtime}}</td>
-							<td>{{ticket.atime}}</td>
-							<td>{{ticket.total - ticket.sold}}</td>
-							<td>{{ticket.price}}</td>
-							<td><input type="radio" value="{{ ticket }}" ng-model="mainCtrl.selectedTicket" ng-change="mainCtrl.drawChart(ticket.sold,ticket.available)"/></td>
-						</tr>
-					</tbody>
-				</table>
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-lg-12">
+							<h4 class="text-primary">ONE WAY / SELECT A TICKET FOR PURCHASE</h4>
+							<table class="table table-striped table-hover">
+								<thead>
+									<tr>
+										<th style="display:none;">ID</th>
+										<th>Departure</th>
+										<th>Destination</th>
+										<th>
+											Depart At
+											<a href="javascript:void(0)" ng-click="mainCtrl.predicate = '-dtime'; mainCtrl.reverse = false">
+												<i class="mdi-navigation-arrow-drop-down">
+													<span></span>
+												</i>
+											</a>
+											<a href="javascript:void(0)" ng-click="mainCtrl.predicate = 'dtime'; mainCtrl.reverse = false">
+												<i class="mdi-navigation-arrow-drop-up">
+													<span></span>
+												</i>
+											</a>
+										</th>
+										<th>
+											Arrive By
+											<a href="javascript:void(0)" ng-click="mainCtrl.predicate = '-atime'; mainCtrl.reverse = false">
+												<i class="mdi-navigation-arrow-drop-down">
+													<span></span>
+												</i>
+											</a>
+											<a href="javascript:void(0)" ng-click="mainCtrl.predicate = 'atime'; mainCtrl.reverse = false">
+												<i class="mdi-navigation-arrow-drop-up">
+													<span></span>
+												</i>
+											</a>
+										</th>
+										<th>Available</th>
+										<th>
+											Price
+											<a href="javascript:void(0)" ng-click="mainCtrl.predicate = '-price'; mainCtrl.reverse = false">
+												<i class="mdi-navigation-arrow-drop-down">
+													<span></span>
+												</i>
+											</a>
+											<a href="javascript:void(0)" ng-click="mainCtrl.predicate = 'price'; mainCtrl.reverse = false">
+												<i class="mdi-navigation-arrow-drop-up">
+													<span></span>
+												</i>
+											</a>
+										</th>
+										<th>Select</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="ticket in mainCtrl.tickets | orderBy:mainCtrl.predicate:mainCtrl.reverse track by ticket.ticketid" ng-class="{success: $index == mainCtrl.selectedIndex}">
+										<td>{{ticket.dep}}</td>
+										<td>{{ticket.des}}</td>
+										<td>{{ticket.dtime}}</td>
+										<td>{{ticket.atime}}</td>
+										<td>{{ticket.total - ticket.sold}}</td>
+										<td>{{ticket.price | number:2 | num}}</td>
+										<td><input type="radio" value="{{ $index }}" ng-model="mainCtrl.selectedIndex" ng-change="mainCtrl.selectTicket(ticket)" /></td>
+									</tr>
+								</tbody>
+							</table>
 
-				<div id="buy_form">
-					<p>{{ mainCtrl.selectedTicket }}</p>
-					<p>{{buy_form.ticket_quantity.$error}}</p>
-					<form name="buy_form" class="form-horizontal" novalidate>
-						<fieldset>
-							<div class="form-group" ng-class="{'has-error': buy_form.ticket_quantity.$error.required || buy_form.ticket_quantity.$error.number || buy_form.ticket_quantity.$error.min || buy_form.ticket_quantity.$error.max}">
-								<label for="ticket_quantity" class="control-label">Quantity</label>
-								<input type="number" name="ticket_quantity" id="ticket_quantity" class="form-control" ng-model="ticketQuantity" min="0" max="{{ mainCtrl.selectedTicket.total - mainCtrl.selectedTicket.sold }}" required>
+							<div class="panel panel-primary">
+								<div class="panel-heading">
+									<h3 class="panel-title">Ticket info</h3>
+								</div>
+								<div class="panel-body">
+									<div class="col-lg-4">
+										<div class="list-group">
+											<div class="list-group-item">
+												<div class="row-action-primary">
+													<i class="mdi-maps-directions-train">
+														<span>From Station</span>
+													</i>
+												</div>
+												<div class="row-content">
+													<h4 class="list-group-item-heading">From</h4>
+														<p class="list-group-item-text text-primary">{{ mainCtrl.selectedTicket.dep }}</p>
+												</div>
+											</div>
+											<div class="list-group-separator"></div>
+											<div class="list-group-item">
+												<div class="row-action-primary">
+													<i class="mdi-maps-place">
+														<span>Too</span>
+													</i>
+												</div>
+												<div class="row-content">
+													<h4 class="list-group-item-heading">To</h4>
+														<p class="list-group-item-text text-primary">{{ mainCtrl.selectedTicket.des }}</p>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-4">
+										<div class="list-group">
+											<div class="list-group-item">
+												<div class="row-action-primary">
+													<i class="mdi-av-play-arrow">
+														<span>Depart At</span>
+													</i>
+												</div>
+												<div class="row-content">
+													<h4 class="list-group-item-heading">Depart At</h4>
+														<p class="list-group-item-text text-primary">{{ mainCtrl.selectedTicket.dtime }}</p>
+												</div>
+											</div>
+											<div class="list-group-separator"></div>
+											<div class="list-group-item">
+												<div class="row-action-primary">
+													<i class="mdi-av-stop">
+														<span>Arrive By</span>
+													</i>
+												</div>
+												<div class="row-content">
+													<h4 class="list-group-item-heading">Arrive By</h4>
+														<p class="list-group-item-text text-primary">{{ mainCtrl.selectedTicket.atime }}</p>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-4">
+										<div class="list-group">
+											<div class="list-group-item">
+												<div class="row-action-primary">
+													<i class="mdi-maps-local-atm">
+														<span>Price</span>
+													</i>
+												</div>
+												<div class="row-content">
+													<h4 class="list-group-item-heading">Price</h4>
+														<p class="list-group-item-text text-primary">{{ mainCtrl.selectedTicket.price | currency:"USD$":2 }}</p>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
 							</div>
-						</fieldset>
-						
-						<button type="button" ng-click="mainCtrl.buy(selectedTicket.ticketid, ticketQuantity)">Buy</button>
-					</form>
+
+							<div id="buy_form">
+								<p>{{ mainCtrl.selectedTicket.ticketid }}</p>
+								<p>{{ mainCtrl.selectedIndex }}</p>
+								<p>{{buy_form.ticket_quantity.$error}}</p>
+								<form name="buy_form" class="form-horizontal" novalidate>
+									<fieldset>
+										<div class="form-group" ng-class="{'has-error': buy_form.ticket_quantity.$error.required || buy_form.ticket_quantity.$error.number || buy_form.ticket_quantity.$error.min || buy_form.ticket_quantity.$error.max}">
+											<label for="ticket_quantity" class="control-label">Quantity</label>
+											<input type="number" name="ticket_quantity" id="ticket_quantity" class="form-control" ng-model="ticketQuantity" min="0" max="{{ mainCtrl.selectedTicket.total - mainCtrl.selectedTicket.sold }}" required quantity>
+										</div>
+									</fieldset>
+
+									
+									
+									<button type="button" class="btn btn-primary" ng-click="mainCtrl.buy(selectedTicket.ticketid, ticketQuantity)">Buy</button>
+								</form>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</section>
