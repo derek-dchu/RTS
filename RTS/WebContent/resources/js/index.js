@@ -15,7 +15,11 @@ app.controller('mainController',
 	
 	this.dep = "";
 	this.des = "";
-	this.time = "";
+
+	this.time = new Date();
+	/* eliminate second part */
+	this.time = new Date(this.time.getFullYear(), this.time.getMonth(), this.time.getDate(), this.time.getHours(), this.time.getMinutes());
+
 	this.timeType = this.timeTypes[0];
 	this.tickets = [];
 	this.tableshow = false;

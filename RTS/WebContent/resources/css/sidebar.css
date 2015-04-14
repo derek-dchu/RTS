@@ -74,6 +74,18 @@
     text-decoration: none;
 }
 
+.sidebar-nav li.form-group {
+    text-indent: 0;
+    text-align: left;
+    padding: 10px;
+}
+
+.sidebar-nav li.form-group input,
+.sidebar-nav li.form-group select {
+    width: 220px;
+    height: 40px;
+}
+
 .sidebar-nav > .sidebar-brand {
     height: 65px;
     font-size: 18px;

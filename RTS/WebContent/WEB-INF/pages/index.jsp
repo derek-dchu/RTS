@@ -25,13 +25,8 @@
 
 		<!-- Set section height onload -->
 		<script type="text/javascript">
-		window.onload = function() {
-			console.log("window height: ", $( window ).height());
-			sectionHeight = $( window ).height();
-			$.each($('section'), function() {
-				$(this).height( sectionHeight );
-			});
-		};
+		/* Set section height equals to window height onload and save the height in global as sectionHeight */
+		window.onload=function(){sectionHeight=$(window).height(),$.each($("section"),function(){$(this).height(sectionHeight)})};
 		</script>
 	</head>
 
@@ -103,16 +98,16 @@
 							<input id="to" type="text" ng-model="mainCtrl.des" placeholder="To" required>
 						</fieldset>
 						<fieldset class="form-group pull-left">
-							<label class="sr-only">Time</label>
-							<input id="time" type="datetime-local" ng-model="mainCtrl.time">
-						</fieldset>
-						<fieldset class="form-group pull-left">
 							<select id="time_type" ng-model="mainCtrl.timeType" ng-options="type.label for type in mainCtrl.timeTypes">
 							</select>
 						</fieldset>
+						<fieldset class="form-group pull-left">
+							<label class="sr-only">Time</label>
+							<input id="time" type="datetime-local" ng-model="mainCtrl.time" placeholder="yyyy-mm-ddTHH:MM">
+						</fieldset>
 						
 						<div class="form-group pull-left">
-							<button type="button" class="form-inline btn btn-danger" id="submit_search" ng-click="mainCtrl.searchTicket()">Search</button>
+							<button type="submit" class="form-inline btn btn-danger" id="submit_search" ng-click="mainCtrl.searchTicket()">Search</button>
 						</div>
 					</form>
 				</div>
@@ -122,11 +117,31 @@
 		<!-- Ticket list page -->
 		<section id="ticket_page" class="sidebar-section toggled">
 			<div class="sidebar-wrapper">
-				<ul class="sidebar-nav">
-					<li class="sidebar-brand">
-						<a herf="javascript:void(0)">Modify Trip</a>
-					</li>
-				</ul>
+				<form name="modify_form">
+					<ul class="sidebar-nav">
+						<li class="sidebar-brand form-group">
+							<legend class="text-primary">Modify Trip</legend>
+						</li>
+						<li class="form-group">
+							<label class="text-primary">Travel From</label>
+							<input name="from" type="text" ng-model="mainCtrl.dep" placeholder="address " required>
+						</li>
+						<li class="form-group">
+							<label class="text-primary">Travel To</label>
+							<input name="to" type="text" ng-model="mainCtrl.des" placeholder="address" required>
+						</li>
+						<li class="form-group">
+							<label class="text-primary">Travel Time</label>
+							<select ng-model="mainCtrl.timeType" ng-options="type.label for type in mainCtrl.timeTypes">
+							</select>
+							<input name="time" type="datetime-local" ng-model="mainCtrl.time" placeholder="yyyy-mm-ddThh:MM">
+						</li>
+						
+						<li class="form-group">
+							<button type="submit" class="form-inline btn btn-danger" id="submit_modify" ng-click="mainCtrl.searchTicket()">Modify</button>
+						</li>
+					</ul>
+				</form>
 			</div>
 			<div class="page-content-wrapper ticket-list">
 				<div class="container-fluid">
@@ -189,8 +204,17 @@
 										<td>{{ticket.dtime}}</td>
 										<td>{{ticket.atime}}</td>
 										<td>{{ticket.total - ticket.sold}}</td>
-										<td>{{ticket.price | number:2 | num}}</td>
-										<td><input type="radio" value="{{ $index }}" ng-model="mainCtrl.selectedIndex" ng-change="mainCtrl.selectTicket(ticket)" /></td>
+										<td>{{ticket.price | number | num}}</td>
+										<td>
+											<div class="radio radio-primary">
+												<label>
+													<input type="radio" value="{{ $index }}" ng-model="mainCtrl.selectedIndex" ng-change="mainCtrl.selectTicket(ticket)">
+													<span class="ripple"></span>
+													<span class="circle"></span>
+													<span class="check"></span>
+												</label>
+											</div>
+										</td>
 									</tr>
 								</tbody>
 							</table>
@@ -205,11 +229,11 @@
 											<div class="list-group-item">
 												<div class="row-action-primary">
 													<i class="mdi-maps-directions-train">
-														<span>From Station</span>
+														<span>Travel From</span>
 													</i>
 												</div>
 												<div class="row-content">
-													<h4 class="list-group-item-heading">From</h4>
+													<h4 class="list-group-item-heading">Travel From</h4>
 														<p class="list-group-item-text text-primary">{{ mainCtrl.selectedTicket.dep }}</p>
 												</div>
 											</div>
@@ -217,11 +241,11 @@
 											<div class="list-group-item">
 												<div class="row-action-primary">
 													<i class="mdi-maps-place">
-														<span>Too</span>
+														<span>Travel To</span>
 													</i>
 												</div>
 												<div class="row-content">
-													<h4 class="list-group-item-heading">To</h4>
+													<h4 class="list-group-item-heading">Travel To</h4>
 														<p class="list-group-item-text text-primary">{{ mainCtrl.selectedTicket.des }}</p>
 												</div>
 											</div>
@@ -283,8 +307,6 @@
 											<input type="number" name="ticket_quantity" id="ticket_quantity" class="form-control" ng-model="ticketQuantity" min="0" max="{{ mainCtrl.selectedTicket.total - mainCtrl.selectedTicket.sold }}" required quantity>
 										</div>
 									</fieldset>
-
-									
 									
 									<button type="button" class="btn btn-primary" ng-click="mainCtrl.buy(selectedTicket.ticketid, ticketQuantity)">Buy</button>
 								</form>
@@ -297,8 +319,8 @@
 
 		
 		<!-- Google Chart -->
-		<div id="chart_div"></div>
-		<div id="chart"></div>
+		<div id="chart_div" style="display:none"></div>
+		<div id="chart" style="display:none"></div>
 		
 		<!-- Login Form -->
 		<div class="modal" id="login_form">
