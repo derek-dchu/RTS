@@ -39,6 +39,39 @@
     transition: all 0.5s ease;
 }
 
-.sidebar-section.toggled .sidebar-wrapper {
-    width: 0;
+.sidebar-section.toggled{
+    padding-top: 50px;
+}
+
+.formshow{
+    visibility: hidden
+}
+
+table,th, td {
+    font-size: 130%;
+}
+
+table{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.table{
+    width: 80%;
+    height: 300px;
+}
+
+.label{
+    font-size: 90%;
+}
+
+form {
+    font-size: 120%;
+}
+input {
+    font-size: 110%;
+}
+
+button {
+    font-size: 110%;
 }

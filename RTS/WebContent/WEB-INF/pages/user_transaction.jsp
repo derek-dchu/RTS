@@ -21,7 +21,7 @@
 <script src="<c:url value="/resources/bower_components/bootstrap/dist/js/bootstrap.min.js" />"></script>
 <script src="<c:url value="/resources/bower_components/bootstrap-material-design/dist/js/ripples.min.js" />"></script>
 <script src="<c:url value="/resources/bower_components/bootstrap-material-design/dist/js/material.min.js" />"></script>
-<script src="//cdn.rawgit.com/cornflourblue/angu-fixed-header-table/master/angu-fixed-header-table.js"></script>
+<script src="<c:url value="/resources/js/angu-fixed-header-table.js" />"></script>
 
 <script>
 	$(document).ready(function() {
@@ -105,42 +105,8 @@
 </script>
 
 <style type="text/css">
-table,th, td {
-	/*border: 1px solid black;*/
-	font-size: 130%;
-}
 
-table{
-	margin-left: auto;
-    margin-right: auto;
-}
 
-.table{
-	width: 80%;
-    height: 300px;
-}
-
-.label{
-	font-size: 90%;
-}
-
-form {
-	font-size: 120%;
-}
-input {
-	font-size: 110%;
-}
-
-button {
-	font-size: 110%;
-}
-
-#floater {
-  margin: auto;  
-
-  position: absolute;  
-  top: 0; left: 0; bottom: 0; right: 0; 
-}
 </style>
 </head>
 
@@ -223,14 +189,14 @@ button {
 	</form>
 
 	<!-- side bar button -->
-	<div>
-		<a  style="margin-left:45%;" class="btn btn-primary btn-fab btn-raised mdi-action-grade" ng-click="sideshow()"></a>
+	<div class="row">
+		<a class="btn btn-primary btn-fab btn-raised mdi-action-grade page-wrapper" ng-mouseover="sideshow()"></a>
 	</div>
 </div>
 
 <div class="sidebar-wrapper">
 	<form class="form-horizontal" style="margin-top:5px;">
-		<div class="col-lg-2"></div>
+		<div class="col-lg-3"></div>
 		<div class="col-lg-2">
 			<div class="form-group">
 				<label class="text-primary">Departure</label>

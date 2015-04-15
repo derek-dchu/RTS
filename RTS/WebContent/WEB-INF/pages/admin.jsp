@@ -10,7 +10,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Result Page</title>
 <link href="<c:url value="/resources/bower_components/bootstrap/dist/css/bootstrap.min.css" />" rel="stylesheet">
-<!-- Include roboto.css to use the Roboto web font, material.css to include the theme and ripples.css to style the ripple effect -->
 <link href="<c:url value="/resources/bower_components/bootstrap-material-design/dist/css/roboto.min.css" />" rel="stylesheet">
 <link href="<c:url value="/resources/bower_components/bootstrap-material-design/dist/css/material.min.css" />" rel="stylesheet">
 <link href="<c:url value="/resources/bower_components/bootstrap-material-design/dist/css/ripples.min.css" />" rel="stylesheet">
@@ -20,6 +19,7 @@
 <script src="<c:url value="/resources/bower_components/bootstrap/dist/js/bootstrap.min.js" />"></script>
 <script src="<c:url value="/resources/bower_components/bootstrap-material-design/dist/js/ripples.min.js" />"></script>
 <script src="<c:url value="/resources/bower_components/bootstrap-material-design/dist/js/material.min.js" />"></script>
+<script src="<c:url value="/resources/js/angu-fixed-header-table.js" />"></script>
 <script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.12.1.js"></script>
 <script>
 	$(document).ready(function() {
@@ -29,7 +29,7 @@
 </script>
 		
 <script type="text/javascript">
-	var app = angular.module('app',['ui.bootstrap']);
+	var app = angular.module('app',['anguFixedHeaderTable']);
 
 	app.controller('myc',function($scope,$http,$filter){
 		var addticket ="http://localhost:8080/RTS/rest/admin/addticket";
@@ -91,8 +91,6 @@
 				.success(function(data){
 					$scope.tickets = data;
 					$scope.tableshow = true;
-					$scope.tickets = $filter('orderBy')($scope.tickets,'-ticketid',false);
-					$scope.figureOutTodosToDisplay($scope.tickets);
 				});
 			}
 		};
@@ -119,43 +117,37 @@
 			}
 			$scope.inputid = false;
 		};
-		
-		$scope.figureOutTodosToDisplay = function(data) {
-		    var begin = (($scope.currentPage - 1) * $scope.itemsPerPage);
-		    var end = begin + $scope.itemsPerPage;
-		    $scope.paget = data.slice(begin, end);
-		  };
 	});
 
 </script>
 <style type="text/css">
-table, th, td {
-	border: 1px solid black;
-	font-size: 110%;
+table,th, td {
+    font-size: 130%;
 }
 
 table{
-	margin-left: auto;
+    margin-left: auto;
     margin-right: auto;
 }
 
 .table{
-	width: 80%;
+    width: 80%;
+    height: 300px;
 }
 
 .label{
-	font-size: 90%;
+    font-size: 90%;
 }
 
 form {
-	font-size: 120%;
+    font-size: 120%;
 }
 input {
-	font-size: 110%;
+    font-size: 110%;
 }
 
 button {
-	font-size: 110%;
+    font-size: 110%;
 }
 
 </style>
@@ -188,7 +180,7 @@ button {
 
 <!-- Tickets Table -->
 <div ng-show="tableshow">
-	<table class="table table-hover table-center">
+	<table class="table table-hover table-center" fixed-header>
 	  <thead>
 	    <tr>
 	      <th>Ticket ID</th>
@@ -205,7 +197,7 @@ button {
 	    </tr>
 	  </thead>
 	  <tbody>
-	    <tr ng-class='{danger:ticket.enable==0}' ng-repeat="ticket in paget|filter:{ticketid:tid,dep:dep,des:des,dtime:dtime,atime:atime,total:total,sold:sold,price:price,enable:statu}" >
+	    <tr ng-class='{danger:ticket.enable==0}' ng-repeat="ticket in tickets|filter:{ticketid:tid,dep:dep,des:des,dtime:dtime,atime:atime,total:total,sold:sold,price:price,enable:statu}" >
 	      <td>{{ticket.ticketid}}</td>
 	      <td>{{ticket.dep}}</td>
 	      <td>{{ticket.des}}</td>
@@ -216,17 +208,19 @@ button {
 	      <td>{{ticket.sold}}</td>
 	      <td>{{ticket.price}}</td>
 	      <td>{{ticket.enable}}</td>
-	      <td><input type="radio" ng-model="$parent.radis" value="{{ticket}}" ng-change="$parent.radioSelect($parent.radis)"/></td>
+	      <td>
+	      	<div class="radio radio-primary">
+				<label>
+	      		<input type="radio" ng-model="$parent.radis" value="{{ticket}}" ng-change="$parent.radioSelect($parent.radis)"/>
+	      		<span class="ripple"></span>
+				<span class="circle"></span>
+				<span class="check"></span>
+	      		</label>
+	      	</div>
+	      </td>
 	    </tr>
 	  </tbody>
 	</table>
-	<div>
-		<pagination class="pagination"  
-	    items-per-page="itemsPerPage"
-	    total-items="tickets.length" 
-	    ng-model="currentPage" 
-	    ng-change="figureOutTodosToDisplay(tickets)"></pagination>
-	</div>
 </div>
 
 <br>
