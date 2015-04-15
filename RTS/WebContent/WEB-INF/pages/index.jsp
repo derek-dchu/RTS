@@ -88,7 +88,7 @@
 
         <!-- Ticket Search Form -->
 				<div class="col-xs-12 text-center search-form-container">
-					<form name="searchForm" class="form-inline clearfix" id="search_form">
+					<form name="search_form" class="form-inline clearfix" id="search_form" ng-submit="search_form.$valid && mainCtrl.searchTicket()">
 						<fieldset class="form-group pull-left">
 							<label class="sr-only">Departure Station</label>
 							<input id="from" type="text" ng-model="mainCtrl.dep" placeholder="From" required>
@@ -105,10 +105,10 @@
 							<label class="sr-only">Time</label>
 							<input id="time" type="datetime-local" ng-model="mainCtrl.time" placeholder="yyyy-mm-ddTHH:MM">
 						</fieldset>
-						
-						<div class="form-group pull-left">
-							<button type="submit" class="form-inline btn btn-danger" id="submit_search" ng-click="mainCtrl.searchTicket()">Search</button>
-						</div>
+
+						<fieldset class="form-group pull-left">
+							<button type="submit" class="form-inline btn btn-danger" id="submit_search">Search</button>
+						</fieldset>
 					</form>
 				</div>
 			</div>
@@ -156,12 +156,12 @@
 										<th>Destination</th>
 										<th>
 											Depart At
-											<a href="javascript:void(0)" ng-click="mainCtrl.predicate = '-dtime'; mainCtrl.reverse = false">
+											<a href="javascript:void(0)" ng-click="mainCtrl.setPredicate('-dtime', false)">
 												<i class="mdi-navigation-arrow-drop-down">
 													<span></span>
 												</i>
 											</a>
-											<a href="javascript:void(0)" ng-click="mainCtrl.predicate = 'dtime'; mainCtrl.reverse = false">
+											<a href="javascript:void(0)" ng-click="mainCtrl.setPredicate('dtime', false)">
 												<i class="mdi-navigation-arrow-drop-up">
 													<span></span>
 												</i>
@@ -169,12 +169,12 @@
 										</th>
 										<th>
 											Arrive By
-											<a href="javascript:void(0)" ng-click="mainCtrl.predicate = '-atime'; mainCtrl.reverse = false">
+											<a href="javascript:void(0)" ng-click="mainCtrl.setPredicate('-atime', false)">
 												<i class="mdi-navigation-arrow-drop-down">
 													<span></span>
 												</i>
 											</a>
-											<a href="javascript:void(0)" ng-click="mainCtrl.predicate = 'atime'; mainCtrl.reverse = false">
+											<a href="javascript:void(0)" ng-click="mainCtrl.setPredicate('atime', false)">
 												<i class="mdi-navigation-arrow-drop-up">
 													<span></span>
 												</i>
@@ -183,12 +183,12 @@
 										<th>Available</th>
 										<th>
 											Price
-											<a href="javascript:void(0)" ng-click="mainCtrl.predicate = '-price'; mainCtrl.reverse = false">
+											<a href="javascript:void(0)" ng-click="mainCtrl.setPredicate('price', true)">
 												<i class="mdi-navigation-arrow-drop-down">
 													<span></span>
 												</i>
 											</a>
-											<a href="javascript:void(0)" ng-click="mainCtrl.predicate = 'price'; mainCtrl.reverse = false">
+											<a href="javascript:void(0)" ng-click="mainCtrl.setPredicate('price', false)">
 												<i class="mdi-navigation-arrow-drop-up">
 													<span></span>
 												</i>
@@ -198,17 +198,17 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr ng-repeat="ticket in mainCtrl.tickets | orderBy:mainCtrl.predicate:mainCtrl.reverse track by ticket.ticketid" ng-class="{success: $index == mainCtrl.selectedIndex}">
+									<tr ng-repeat="ticket in mainCtrl.tickets | orderBy:mainCtrl.predicate:mainCtrl.reverse track by ticket.ticketid" ng-class="{success: ticket == mainCtrl.selectedTicket}">
 										<td>{{ticket.dep}}</td>
 										<td>{{ticket.des}}</td>
 										<td>{{ticket.dtime}}</td>
 										<td>{{ticket.atime}}</td>
 										<td>{{ticket.total - ticket.sold}}</td>
-										<td>{{ticket.price | number | num}}</td>
+										<td>{{ticket.price}}</td>
 										<td>
 											<div class="radio radio-primary">
 												<label>
-													<input type="radio" value="{{ $index }}" ng-model="mainCtrl.selectedIndex" ng-change="mainCtrl.selectTicket(ticket)">
+													<input type="radio" value="{{ ticket }}" ng-checked="ticket == mainCtrl.selectedTicket" ng-model="mainCtrl.selectedTicket" ng-change="mainCtrl.selectTicket(ticket)">
 													<span class="ripple"></span>
 													<span class="circle"></span>
 													<span class="check"></span>
@@ -218,6 +218,18 @@
 									</tr>
 								</tbody>
 							</table>
+
+							<!-- Show info when there is no matching tickets -->
+							<div class="table-info" ng-show="mainCtrl.tickets.length === 0">
+								<div class="alert alert-dismissable alert-warning">
+									<button type="button" class="close" data-dismiss="alert">
+										<i class="mdi-content-clear">
+										</i>
+									</button>
+									<strong>PROBLEM WITH YOUR ITINERARY</strong><br>
+									Please modify your itinerary and try searching again.
+								</div>
+							</div>
 
 							<div class="panel panel-primary">
 								<div class="panel-heading">
@@ -297,18 +309,20 @@
 							</div>
 
 							<div id="buy_form">
-								<p>{{ mainCtrl.selectedTicket.ticketid }}</p>
-								<p>{{ mainCtrl.selectedIndex }}</p>
-								<p>{{buy_form.ticket_quantity.$error}}</p>
-								<form name="buy_form" class="form-horizontal" novalidate>
+								<form name="buy_form" class="form-horizontal" ng-submit="mainCtrl.buy(ticketQuantity)" novalidate>
 									<fieldset>
-										<div class="form-group" ng-class="{'has-error': buy_form.ticket_quantity.$error.required || buy_form.ticket_quantity.$error.number || buy_form.ticket_quantity.$error.min || buy_form.ticket_quantity.$error.max}">
+										<div class="form-group" ng-class="{'has-error': mainCtrl.selectedTicket != null && buy_form.ticket_quantity.$dirty && buy_form.ticket_quantity.$invalid}">
 											<label for="ticket_quantity" class="control-label">Quantity</label>
-											<input type="number" name="ticket_quantity" id="ticket_quantity" class="form-control" ng-model="ticketQuantity" min="0" max="{{ mainCtrl.selectedTicket.total - mainCtrl.selectedTicket.sold }}" required quantity>
+											<input type="number" name="ticket_quantity" id="ticket_quantity" class="form-control" ng-model="ticketQuantity" min="0" max="{{ mainCtrl.selectedTicket.total - mainCtrl.selectedTicket.sold }}" required>
+											<div ng-messages="buy_form.ticket_quantity.$error" class="text-danger ng-messages">
+												<div ng-message="max" ng-show="buy_form.$submitted">Quantity exceeds maximum available volume</div>
+											</div>
 										</div>
 									</fieldset>
 									
-									<button type="button" class="btn btn-primary" ng-click="mainCtrl.buy(selectedTicket.ticketid, ticketQuantity)">Buy</button>
+									<fieldset class="form-group">
+										<button type="submit" class="btn btn-primary">Buy</button>
+									</fieldset>
 								</form>
 							</div>
 						</div>
@@ -329,7 +343,8 @@
 					<div class="modal-header clearfix">
 						<legend class="pull-left" style="width: inherit">Log In</legend>
 						<button type="button" class="close" data-dismiss="modal">
-							<i class="mdi-content-clear"></i>
+							<i class="mdi-content-clear">
+							</i>
 						</button>
 					</div>
 					<div class="modal-body">
@@ -353,7 +368,7 @@
 									</div>
 								</div>
 								<div class="form-group">
-									<div class="col-lg-10 col-lg-offset-2">
+									<div class="col-lg-8 col-lg-offset-2">
 										<button type="reset" class="btn btn-default btn-raised pull-left">Clear</button>
 										<button type="submit" class="btn btn-primary btn-raised pull-right">Go!</button>
 									</div>
@@ -368,7 +383,75 @@
 
 		<!--Registration Form -->
 		<div class="modal" id="reg_form">
-			<div class="modal-header clearfix"></div>
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header clearfix">
+						<legend class="pull-left" style="width: inherit">Registration</legend>
+						<button type="button" class="close" data-dismiss="modal">
+							<i class="mdi-content-clear">
+							</i>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form name="reg_form" class="form-horizontal" ng-submit="$valid && mainCtrl.regUser(reg_email, reg_password, reg_firstname, reg_lastname)" novalidate>
+							<fieldset>
+								<div class="form-group" ng-class="{'has-error': reg_email.$dirty && reg_email.$invalid}">
+									<label for="reg_email" class="col-lg-4 control-label">Email</label>
+									<div class="col-lg-6">
+										<input type="email" name="reg_email" class="form-control" id="reg_email" placeholder="Email" ng-model="reg_email" required>
+										<div ng-messages="reg_email.$error" class="text-danger ng-messages">
+											<div ng-message="required" ng-show="$submitted">Email is required</div>
+										</div>
+									</div>
+								</div>
+								<div class="form-group" ng-class="{'has-error': reg_email_confirm.$dirty && reg_email_confirm.$invalid}">
+									<label for="reg_email_confirm" class="col-lg-4 control-label">Confirm Email</label>
+									<div class="col-lg-6">
+										<input type="email" name="reg_email_confirm" class="form-control" id="reg_email_confirm" placeholder="Confirm Email" ng-model="reg_email_confirm" required confirm="reg_email">
+										<div ng-messages="reg_email_confirm.$error" class="text-danger ng-messages">
+											<div ng-message="confirm">Email doesn't match</div>
+										</div>
+									</div>
+								</div>
+								<div class="form-group" ng-class="{'has-error': reg_password.$dirty && reg_password.$invalid}">
+									<label for="reg_password" class="col-lg-4 control-label">Password</label>
+									<div class="col-lg-6">
+										<input type="password" name="reg_password" class="form-control" id="reg_password" placeholder="Password" ng-model="reg_password" required>
+									</div>
+								</div>
+								<div class="form-group" ng-class="{'has-error': reg_password_confirm.$dirty && reg_password_confirm.$invalid}">
+									<label for="reg_password_confirm" class="col-lg-4 control-label">Confirm Password</label>
+									<div class="col-lg-6">
+										<input type="password" name="reg_password_confirm" class="form-control" id="reg_password_confirm" placeholder="Confirm Password" ng-model="reg_password_confirm" required confirm="reg_password">
+										<div ng-messages="reg_password_confirm.$error" class="text-danger ng-messages">
+											<div ng-message="confirm">Password doesn't match</div>
+										</div>
+									</div>
+								</div>
+								<div class="form-group" ng-class="{'has-error': reg_firstname.$dirty && reg_firsrname.$invalid}">
+									<label for="reg_firstname" class="col-lg-4 control-label">First Name</label>
+									<div class="col-lg-6">
+										<input type="text" name="reg_firstname" class="form-control" id="reg_firstname" placeholder="First Name" ng-model="reg_firstname" required>
+									</div>
+								</div>
+								<div class="form-group" ng-class="{'has-error': reg_lastname.$dirty && reg_lastname.$invalid}">
+									<label for="reg_lastname" class="col-lg-4 control-label">Last Name</label>
+									<div class="col-lg-6">
+										<input type="text" name="reg_lastname" class="form-control" id="reg_lastname" placeholder="Last Name" ng-model="reg_lastname" required>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="col-lg-8 col-lg-offset-2">
+										<button type="reset" class="btn btn-default btn-raised pull-left">Clear</button>
+										<button type="submit" class="btn btn-primary btn-raised pull-right">Submit</button>
+									</div>
+								</div>
+							</fieldset>
+						</form>
+						<br />
+					</div>
+				</div>
+			</div>
 		</div>
 
         
@@ -380,15 +463,16 @@
 
 	<!-- load script here -->
 	<script src="<c:url value="/resources/bower_components/jquery/dist/jquery.js" />"></script>
-	<script src="<c:url value="/resources/bower_components/angularjs/angular.js" />"></script>
+	<script src="<c:url value="/resources/bower_components/angular/angular.js" />"></script>
+	<script src="<c:url value="/resources/bower_components/angular-messages/angular-messages.js" />"></script>
 	<script src="<c:url value="/resources/bower_components/bootstrap/dist/js/bootstrap.min.js" />"></script>
 		<script src="<c:url value="/resources/bower_components/bootstrap-material-design/dist/js/ripples.min.js" />"></script>
 	<script src="<c:url value="/resources/bower_components/bootstrap-material-design/dist/js/material.min.js" />"></script>
-	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-	<script type="text/javascript">
+	/*<script src="https://www.google.com/jsapi"></script>
+	<script>
 		google.load('visualization', '1.0', {'packages':['corechart']});
 		google.load("visualization", "1.0", {'packages':['bar']});
-	</script>
+	</script>*/
 	<script>
 		$(document).ready(function() {
 			// Initialize material-design-boostrap

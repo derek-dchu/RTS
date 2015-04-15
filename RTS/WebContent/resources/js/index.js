@@ -1,4 +1,4 @@
-var app = angular.module('indexPage', []);
+var app = angular.module('indexPage', ['ngMessages']);
 	
 app.controller('mainController', 
 		['$http', '$filter', '$location', 'anchorSmoothScroll', '$scope',
@@ -6,6 +6,21 @@ app.controller('mainController',
 	var that = this;
 	var searchTicketUrl ="/RTS/rest/search/searchticket";
 	var buyTicketUrl = "/RTS/rest/buy";
+	var regUserUrl = "http://localhost:8080/RTS/rest/sys/reg";
+		
+	this.regUser = function(email, password, firstName, lastName) {
+		$http({
+		    method:'POST',
+		    url: regUserUrl,
+		    headers:{'Content-Type':'application/x-www-form-urlencoded'},
+		    data: $.param({
+			    	firstName: firstName,
+			    	lastName: lastName,
+			    	email: email,
+			    	password: password
+		    })
+		});
+	};
 	
 	this.timeTypes = [
 		{label: "Any Time", value: null},
@@ -22,9 +37,8 @@ app.controller('mainController',
 
 	this.timeType = this.timeTypes[0];
 	this.tickets = [];
-	this.tableshow = false;
 	this.selectedTicket = null;
-	this.selectedIndex = null;
+	//this.selectedIndex = null;
 
 	/* ticket list order */
 	this.predicate = 'dtime';
@@ -53,24 +67,24 @@ app.controller('mainController',
 			})
 		}).success(function(data) {
 			that.tickets = data;
-			that.tableshow = true;
+
+			/* to fix orderBy problem, convert price to float here */
+			that.tickets.forEach(function(elm, ind, arr) {
+				elm.price = parseFloat(elm.price);
+			});
+
 			$.drawStuff(that.tickets);
+		}).error(function(error) {
+			this.tickets = [];
 		});
 
 		if ($location.path() !== '/tickets') $location.hash('tickets');
 		anchorSmoothScroll.scrollTo('ticket_page');
 	};
 	
-	this.resetForm = function(){
-		this.dep = "";
-		this.des = "";
-		this.time = "";
-		this.timeType = this.timeTypes[0];
-		this.searchForm.$setPristine();
-	};
-	
-	this.buy = function(ticketid, quantity) {
+	this.buy = function(quantity) {
 		var username = $("#user_name").text();
+		var ticketid = that.selectedTicket.ticketid;
 		console.log("current user: ", username);
 		console.log("buy ticket: ", ticketid, " quantity: ", quantity);
 		$http({
@@ -87,6 +101,11 @@ app.controller('mainController',
 	this.selectTicket = function(ticket) {
 		that.selectedTicket = ticket;
 		$.drawChart(ticket.sold, ticket.available);
+	};
+
+	this.setPredicate = function(predicate, isReverse) {
+		that.predicate = predicate;
+		that.reverse = isReverse;
 	};
 
 }]);
@@ -145,10 +164,29 @@ app.service('anchorSmoothScroll', function() {
     
 });
 
-/* Parse price from string to number */
-app.filter('num', function() {
-	return function(input) {
-		console.log(parseFloat(input));
-		return parseFloat(input);
-	}
+/* Confirmation validator */
+app.directive('confirm', function() {
+    return {
+        require: "ngModel",
+        scope: {
+            otherModel: "=confirm"
+        },
+        link: function(scope, element, attributes, ngModel) {
+            ngModel.$validators.confirm = function(modelValue, viewValue) {
+            	if (ngModel.$isEmpty(modelValue)) {
+            		// consider empty models to be valid
+            		return true;
+            	}
+
+            	if (modelValue === scope.otherModel.$modelValue) {
+            		return true;
+            	}
+            	return false;
+            };
+ 
+            scope.$watch("otherModel", function() {
+                ngModel.$validate();
+            });
+        }
+    };
 });
