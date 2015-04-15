@@ -6,9 +6,11 @@ app.controller('mainController',
 	var that = this;
 	var searchTicketUrl ="/RTS/rest/search/searchticket";
 	var buyTicketUrl = "/RTS/rest/buy";
-	var regUserUrl = "http://localhost:8080/RTS/rest/sys/reg";
+	var regUserUrl = "/RTS/rest/sys/reg";
 		
 	this.regUser = function(email, password, firstName, lastName) {
+		$('#reg_submit').addClass('disabled').html('please wait...');
+
 		$http({
 		    method:'POST',
 		    url: regUserUrl,
@@ -19,6 +21,10 @@ app.controller('mainController',
 			    	email: email,
 			    	password: password
 		    })
+		}).success(function() {
+			$('#reg_submit').removeClass('disabled').html('submit');
+		}).error(function() {
+			$('#reg_submit').removeClass('disabled').html('submit');
 		});
 	};
 	

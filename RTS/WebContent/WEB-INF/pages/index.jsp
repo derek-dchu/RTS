@@ -315,7 +315,7 @@
 											<label for="ticket_quantity" class="control-label">Quantity</label>
 											<input type="number" name="ticket_quantity" id="ticket_quantity" class="form-control" ng-model="ticketQuantity" min="0" max="{{ mainCtrl.selectedTicket.total - mainCtrl.selectedTicket.sold }}" required>
 											<div ng-messages="buy_form.ticket_quantity.$error" class="text-danger ng-messages">
-												<div ng-message="max" ng-show="buy_form.$submitted">Quantity exceeds maximum available volume</div>
+												<div ng-message="max" ng-show="buy_form.$dirty">Quantity exceeds maximum available volume</div>
 											</div>
 										</div>
 									</fieldset>
@@ -393,48 +393,51 @@
 						</button>
 					</div>
 					<div class="modal-body">
-						<form name="reg_form" class="form-horizontal" ng-submit="$valid && mainCtrl.regUser(reg_email, reg_password, reg_firstname, reg_lastname)" novalidate>
+						<form name="reg_form" class="form-horizontal" ng-submit="reg_form.$valid && mainCtrl.regUser(reg_email, reg_password, reg_firstname, reg_lastname)" novalidate>
 							<fieldset>
-								<div class="form-group" ng-class="{'has-error': reg_email.$dirty && reg_email.$invalid}">
+								<div class="form-group" ng-class="{'has-error': reg_form.reg_email.$dirty && reg_form.reg_email.$invalid}">
 									<label for="reg_email" class="col-lg-4 control-label">Email</label>
 									<div class="col-lg-6">
 										<input type="email" name="reg_email" class="form-control" id="reg_email" placeholder="Email" ng-model="reg_email" required>
-										<div ng-messages="reg_email.$error" class="text-danger ng-messages">
-											<div ng-message="required" ng-show="$submitted">Email is required</div>
+										<div ng-messages="reg_form.$dirty && reg_form.reg_email.$error" class="text-danger ng-messages">
+											<div ng-message="required">Email is required</div>
 										</div>
 									</div>
 								</div>
-								<div class="form-group" ng-class="{'has-error': reg_email_confirm.$dirty && reg_email_confirm.$invalid}">
+								<div class="form-group" ng-class="{'has-error': reg_form.reg_email_confirm.$dirty && reg_form.reg_email_confirm.$invalid}">
 									<label for="reg_email_confirm" class="col-lg-4 control-label">Confirm Email</label>
 									<div class="col-lg-6">
-										<input type="email" name="reg_email_confirm" class="form-control" id="reg_email_confirm" placeholder="Confirm Email" ng-model="reg_email_confirm" required confirm="reg_email">
-										<div ng-messages="reg_email_confirm.$error" class="text-danger ng-messages">
+										<input type="email" name="reg_email_confirm" class="form-control" id="reg_email_confirm" placeholder="Confirm Email" ng-model="reg_email_confirm" required confirm="reg_form.reg_email">
+										<div ng-messages="reg_form.reg_email_confirm.$error" class="text-danger ng-messages">
 											<div ng-message="confirm">Email doesn't match</div>
 										</div>
 									</div>
 								</div>
-								<div class="form-group" ng-class="{'has-error': reg_password.$dirty && reg_password.$invalid}">
+								<div class="form-group" ng-class="{'has-error': reg_form.reg_password.$dirty && reg_form.reg_password.$invalid}">
 									<label for="reg_password" class="col-lg-4 control-label">Password</label>
 									<div class="col-lg-6">
 										<input type="password" name="reg_password" class="form-control" id="reg_password" placeholder="Password" ng-model="reg_password" required>
+										<div ng-messages="reg_form.$dirty && reg_form.reg_password.$error" class="text-danger ng-messages">
+											<div ng-message="required">Password is required</div>
+										</div>
 									</div>
 								</div>
-								<div class="form-group" ng-class="{'has-error': reg_password_confirm.$dirty && reg_password_confirm.$invalid}">
+								<div class="form-group" ng-class="{'has-error': reg_form.reg_password_confirm.$dirty && reg_form.reg_password_confirm.$invalid}">
 									<label for="reg_password_confirm" class="col-lg-4 control-label">Confirm Password</label>
 									<div class="col-lg-6">
-										<input type="password" name="reg_password_confirm" class="form-control" id="reg_password_confirm" placeholder="Confirm Password" ng-model="reg_password_confirm" required confirm="reg_password">
-										<div ng-messages="reg_password_confirm.$error" class="text-danger ng-messages">
+										<input type="password" name="reg_password_confirm" class="form-control" id="reg_password_confirm" placeholder="Confirm Password" ng-model="reg_password_confirm" required confirm="reg_form.reg_password">
+										<div ng-messages="reg_form.reg_password_confirm.$error" class="text-danger ng-messages">
 											<div ng-message="confirm">Password doesn't match</div>
 										</div>
 									</div>
 								</div>
-								<div class="form-group" ng-class="{'has-error': reg_firstname.$dirty && reg_firsrname.$invalid}">
+								<div class="form-group" ng-class="{'has-error': reg_form.reg_firstname.$dirty && reg_form.reg_firsrname.$invalid}">
 									<label for="reg_firstname" class="col-lg-4 control-label">First Name</label>
 									<div class="col-lg-6">
 										<input type="text" name="reg_firstname" class="form-control" id="reg_firstname" placeholder="First Name" ng-model="reg_firstname" required>
 									</div>
 								</div>
-								<div class="form-group" ng-class="{'has-error': reg_lastname.$dirty && reg_lastname.$invalid}">
+								<div class="form-group" ng-class="{'has-error': reg_form.reg_lastname.$dirty && reg_form.reg_lastname.$invalid}">
 									<label for="reg_lastname" class="col-lg-4 control-label">Last Name</label>
 									<div class="col-lg-6">
 										<input type="text" name="reg_lastname" class="form-control" id="reg_lastname" placeholder="Last Name" ng-model="reg_lastname" required>
@@ -443,7 +446,7 @@
 								<div class="form-group">
 									<div class="col-lg-8 col-lg-offset-2">
 										<button type="reset" class="btn btn-default btn-raised pull-left">Clear</button>
-										<button type="submit" class="btn btn-primary btn-raised pull-right">Submit</button>
+										<button id="reg_submit" type="submit" class="btn btn-primary btn-raised pull-right">Submit</button>
 									</div>
 								</div>
 							</fieldset>
@@ -468,11 +471,11 @@
 	<script src="<c:url value="/resources/bower_components/bootstrap/dist/js/bootstrap.min.js" />"></script>
 		<script src="<c:url value="/resources/bower_components/bootstrap-material-design/dist/js/ripples.min.js" />"></script>
 	<script src="<c:url value="/resources/bower_components/bootstrap-material-design/dist/js/material.min.js" />"></script>
-	/*<script src="https://www.google.com/jsapi"></script>
+	<!-- <script src="https://www.google.com/jsapi"></script>
 	<script>
 		google.load('visualization', '1.0', {'packages':['corechart']});
 		google.load("visualization", "1.0", {'packages':['bar']});
-	</script>*/
+	</script> -->
 	<script>
 		$(document).ready(function() {
 			// Initialize material-design-boostrap
