@@ -54,11 +54,11 @@ app.controller('mainController',
 		var dtime = null,
 			atime = null;
 		if (that.timeType.value === "D") {
-			dtime = $filter('date')(that.time,'yyyy/MM/dd hh:mm a');
+			dtime = $filter('date')(that.time,'yyyy/MM/dd HH:mm');
 		}
 		
 		if (that.timeType.value === "A") {
-			atime = $filter('date')(that.time,'yyyy/MM/dd hh:mm a');
+			atime = $filter('date')(that.time,'yyyy/MM/dd HH:mm');
 		}
 		
 		$http({
@@ -89,6 +89,8 @@ app.controller('mainController',
 	};
 	
 	this.buy = function(quantity) {
+		$('#buy_submit').addClass('disabled').html('please wait...');
+		
 		var username = $("#user_name").text();
 		var ticketid = that.selectedTicket.ticketid;
 		console.log("current user: ", username);
@@ -101,6 +103,10 @@ app.controller('mainController',
 			    username: username,
 			    qt: quantity
 		    }
+		}).success(function() {
+			$('#buy_submit').removeClass('disabled').html('buy');
+		}).error(function() {
+			$('#buy_submit').removeClass('disabled').html('buy');
 		});
 	};
 

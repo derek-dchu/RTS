@@ -119,6 +119,10 @@
 			<div class="sidebar-wrapper">
 				<form name="modify_form">
 					<ul class="sidebar-nav">
+						<sec:authorize access="isAuthenticated()">
+							<li><a href="javascript:void(0)" data-toggle="modal" data-target="#cc_form">Add Credit Card</a></li>
+						</sec:authorize>
+
 						<li class="sidebar-brand form-group">
 							<legend class="text-primary">Modify Trip</legend>
 						</li>
@@ -321,7 +325,9 @@
 									</fieldset>
 									
 									<fieldset class="form-group">
-										<button type="submit" class="btn btn-primary">Buy</button>
+										<p class="text-primary pull-left">Total Price:&nbsp</p>
+										<p class="pull-left">{{ mainCtrl.selectedTicket == null || ticketQuantity == undefined ? 0 : (ticketQuantity-0) * mainCtrl.selectedTicket.price | currency:"USD$":2 }}</p>
+										<button type="submit" id="buy_submit" class="btn btn-primary pull-right">Buy</button>
 									</fieldset>
 								</form>
 							</div>
@@ -469,7 +475,7 @@
 	<script src="<c:url value="/resources/bower_components/angular/angular.js" />"></script>
 	<script src="<c:url value="/resources/bower_components/angular-messages/angular-messages.js" />"></script>
 	<script src="<c:url value="/resources/bower_components/bootstrap/dist/js/bootstrap.min.js" />"></script>
-		<script src="<c:url value="/resources/bower_components/bootstrap-material-design/dist/js/ripples.min.js" />"></script>
+	<script src="<c:url value="/resources/bower_components/bootstrap-material-design/dist/js/ripples.min.js" />"></script>
 	<script src="<c:url value="/resources/bower_components/bootstrap-material-design/dist/js/material.min.js" />"></script>
 	<!-- <script src="https://www.google.com/jsapi"></script>
 	<script>
