@@ -37,7 +37,7 @@
 		var canceltransaction = "http://localhost:8080/RTS/rest/transaction/cancel";
 
 		var username = document.getElementById("logedUsername").innerHTML ; 
-		$scope.textshow = false;
+		$scope.textshow = true;
 		$scope.trid = 0;
 		$scope.qt = 0;
 		$scope.transactions = [];
@@ -60,9 +60,9 @@
 			$scope.trid = selectTran.tid;
 			$scope.qt = selectTran.qt;
 			if(selectTran.status === 'b'){
-				$scope.textshow = true;
-			}else{
 				$scope.textshow = false;
+			}else{
+				$scope.textshow = true;
 			}
 		};
 
@@ -97,7 +97,7 @@
 		};
 
 		$scope.reset = function(){
-			$scope.textshow = false;
+			$scope.textshow = true;
 			$scope.radis = false;
 			$scope.amount = "";
 		};
@@ -204,36 +204,23 @@ button {
 	</div>
 
 	<br>
-	<br>
-	<br>
-	<br>
-	<br>
 
 	<!-- Cancel Form -->
-	<form ng-submit="cancel()" ng-show="textshow" class="form-horizontal" name="form" novalidate>
-		<div class="row">
-			<div class="col-lg-4"></div>
-			<div class="col-lg-2" style="margin-left: 4%;">
-				<div class="form-group" style="margin-left: 30px;" ng-class="{'has-error':form.amount.$invalid}">
-					<label ng-class="{'label-danger':form.amount.$invalid}" class="col-lg-4 label label-primary" style="margin-left: 80px;">Amount:</label>
-					<div class="col-lg-12">
-						<input type="number" ng-model="amount" name="amount" min="0" max="{{qt}}" class="text-center form-control input-lg" required>
-					</div>
+	<form ng-submit="cancel()" ng-class="{'formshow': textshow}"  name="form" novalidate>
+	<div class="row">
+		<div class="col-lg-4"></div>
+		<div class="col-lg-2" style="margin-left: 4%;">
+			<div class="form-group" style="margin-left: 30px;" ng-class="{'has-error':form.amount.$invalid}">
+				<label ng-class="{'label-danger':form.amount.$invalid}" class="col-lg-4 label label-primary" style="margin-left: 80px;">Amount:</label>
+				<div class="col-lg-12">
+					<input type="number" ng-model="amount" name="amount" min="0" max="{{qt}}" class="text-center form-control input-lg" required>
 				</div>
+				<button class="btn btn-primary btn-flat" type="button" ng-click="reset()" style="margin-left: 15px;">Reset</button>
+				<button class="btn btn-flat btn-danger" ng-disabled="form.amount.$invalid" style="margin-left: 10px;" type="button" ng-click="cancel()">Submit</button>
 			</div>
 		</div>
-		<div class="row">
-			<div class="col-lg-5"></div>
-			<div class="col-lg-1" style="margin-left: 1%;">
-				<button class="btn btn-flat btn-danger" ng-disabled="form.amount.$invalid" type="button" ng-show="textshow" ng-click="cancel()">Submit</button>
-				<button class="btn btn-primary btn-flat" type="button" ng-click="reset()">Reset</button>
-			</div>
 		</div>
 	</form>
-
-	<br>
-	<br>
-	<br>
 
 	<!-- side bar button -->
 	<div>
