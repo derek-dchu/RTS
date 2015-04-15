@@ -1,0 +1,14 @@
+<html>
+    <body>
+        <h3>Hi ${name}, welcome to the RTS!</h3>
+
+        <div>
+            Confirm your email by clicking following link
+            <p><a href="http://localhost:8080/RTS/sys/confirm.html?code=${content.code}" target="_blank">Confirm My Email</a></p>     
+        </div>
+        <div>
+            Or copy following link into browser directly
+            <p>http://localhost:8080/RTS/sys/confirm.html?code=${content.code}</p>
+        </div>
+    </body>
+</html>

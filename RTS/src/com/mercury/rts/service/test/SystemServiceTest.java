@@ -32,16 +32,16 @@ public class SystemServiceTest {
 	UserDaoImpl userDao;
 
 	//@Test
-	public void testSendEmail() {
+	/*public void testSendEmail() {
 		User user = new User();
 		user.setEmail("mercurysystems000@gmail.com");
 		String subject = "RTS Admin: Test";
 		String content = "testing system service: send email";
 		String response = sysServ.sendEmail(user, subject, content);
 		assertNull(response);
-	}
+	}*/
 
-	@Test
+	//@Test
 	public void testChangeUserStatus() {
 		User user = userDao.getUserById(1);
 		String response = sysServ.changeUserStatus(user, 0);
@@ -49,7 +49,7 @@ public class SystemServiceTest {
 		assertEquals(0, user.getEnable());
 	}
 
-	@Test
+	//@Test
 	public void testListTicket() {
 		List<Ticket> list = sysServ.listTicket();
 		assertEquals(2, list.size());
@@ -65,7 +65,7 @@ public class SystemServiceTest {
 		assertNull(response);
 	}
 	
-	@Test
+	//@Test
 	public void testConfirmUser() {
 		ConfirmationCode cc = new ConfirmationCode();
 		cc.setUserid(1);

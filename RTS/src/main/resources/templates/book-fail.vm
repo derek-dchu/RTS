@@ -1,0 +1,12 @@
+<html>
+    <body>
+        <h3>Hi ${name},</h3>
+
+        <div>
+            <p>The ticket(s) you booked from ${content.ticket.getDep()} to 
+            ${content.ticket.getDes()} on ${content.ticket.getDtime()} are sold out.</p>
+            <p>Please Choose to some other ones. Thank you for your understanding, 
+            we apology for that.</p>
+        </div>
+    </body>
+</html>

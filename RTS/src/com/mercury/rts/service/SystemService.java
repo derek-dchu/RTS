@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mercury.rts.mail.MailAppBean;
+import com.mercury.rts.mail.RegContent;
 import com.mercury.rts.persistence.dao.impl.ConfirmationCodeDaoImpl;
 import com.mercury.rts.persistence.dao.impl.TicketDaoImpl;
 import com.mercury.rts.persistence.dao.impl.UserDaoImpl;
@@ -34,7 +35,7 @@ public class SystemService {
 	@Autowired
 	ConfirmationCodeDaoImpl confirmationCodeDao;
 	
-	public String sendEmail(User user, String subject, String content) {
+	public String sendEmail(String template, User user, String subject, Object content) {
 		String firstName = "customer";
 		String lastName = "";
 		if (user.getFirstName() != null) { firstName = user.getFirstName(); }
@@ -42,7 +43,7 @@ public class SystemService {
 		
 		String username = String.format("%s %s", firstName, lastName);
 		try {
-			mailApp.sendMail(user.getEmail(), subject, username, content);
+			mailApp.sendMail(template, user.getEmail(), subject, username, content);
 			return null;
 		} catch (MailParseException e) {
 			logger.error(e.getMessage());
@@ -97,13 +98,13 @@ public class SystemService {
 	
 	public String sendConfirmation(User user, String code) {
 		String subject = "RTS Admin: please confirm your email";
-		String content = String.format(
-				"Confirm your email by clicking following link%n <a href=\"localhost:8080/RTS/sys/confirm.html?code=%s\">.", 
-				code);
-		return sendEmail(user, subject, content);
+		RegContent content = new RegContent();
+		content.setCode(code);
+		return sendEmail("registration-confirmation", user, subject, content);
 	}
 	
 	public String confirmUser(String code) {
+		if (code == null || code.isEmpty()) return "";
 		try {
 			ConfirmationCode cc = confirmationCodeDao.getConfirmationCodeByCode(code);
 			User user = userDao.getUserById(cc.getUserid());

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.mercury.rts.mail.BookContent;
 import com.mercury.rts.persistence.dao.impl.TicketDaoImpl;
 import com.mercury.rts.persistence.dao.impl.TransactionDaoImpl;
 import com.mercury.rts.persistence.dao.impl.UserDaoImpl;
@@ -58,21 +59,20 @@ public class BuyTicket {
 		
 		String successSubject = "You has booked the ticket successfully";
 		String failSubject = "Booking failed";
-		String successContent = "You have purchased "+quantity+" tickets from "+ticket.getDep()+" to "
-				+ticket.getDes()+" on "+ticket.getDtime()+".\n Please arrive the station on time. " +
-				"The ticket can be refunded 30 mins before the departure time. Thank you.";
-		String failContent = "The ticket(s) you booked from "+ticket.getDep()+" to "
-				+ticket.getDes()+" on "+ticket.getDtime()+" are sold out. " +
-				"Please Choose to some other ones.  Thank you for your understanding, we apology for that";
+		BookContent successContent = new BookContent();
+		successContent.setQuantity(quantity);
+		successContent.setTicket(ticket);
+		BookContent failContent = new BookContent();
+		failContent.setTicket(ticket);
 		if(quantity <= available) {
 			tx.setStatus("B");
 			ticket.setAvailable(available-quantity);
 			ticket.setSold(ticket.getSold()+quantity);
 			tdi.saveTicket(ticket);
 			trdi.saveTransaction(tx);
-			ss.sendEmail(user, successSubject, successContent);
+			ss.sendEmail("book-success", user, successSubject, successContent);
 		} else {
-			ss.sendEmail(user, failSubject, failContent);
+			ss.sendEmail("book-fail", user, failSubject, failContent);
 		}
 		return s;
 	}

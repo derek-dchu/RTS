@@ -20,8 +20,8 @@
 	<!-- Simple Trigger, run every 10 seconds -->
 	<bean id="simpleTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
 		<property name="jobDetail" ref="runMeJob" />
-		<property name="repeatInterval" value="100000000000" />
-		<property name="startDelay" value="100000000000" />
+		<property name="repeatInterval" value="10000" />
+		<property name="startDelay" value="10000" />
 	</bean>
  
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">

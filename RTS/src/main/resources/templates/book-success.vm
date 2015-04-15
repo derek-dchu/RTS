@@ -1,0 +1,12 @@
+<html>
+    <body>
+        <h3>Hi ${name},</h3>
+
+        <div>
+            <p>You have purchased ${content.quantity} tickets from ${content.ticket.getDep()} to
+            ${content.ticket.getDes()} on ${content.ticket.getDtime()}</p>
+            <p>Please arrive the station on time.</p>
+            <p>The ticket can be refunded 30 mins before the departure time. Thank you.</p>
+        </div>
+    </body>
+</html>
