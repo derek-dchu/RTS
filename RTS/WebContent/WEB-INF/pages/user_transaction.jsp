@@ -105,8 +105,8 @@
 </script>
 
 <style type="text/css">
-table, th, td {
-	border: 1px solid black;
+table,th, td {
+	/*border: 1px solid black;*/
 	font-size: 130%;
 }
 
@@ -225,7 +225,7 @@ button {
 		<div class="row">
 			<div class="col-lg-5"></div>
 			<div class="col-lg-1" style="margin-left: 1%;">
-				<button class="btn btn-flat btn-danger" ng-disabled="form.amount.$invalid" type="button" ng-show="textshow" ng-click="cancel()">Cancel</button>
+				<button class="btn btn-flat btn-danger" ng-disabled="form.amount.$invalid" type="button" ng-show="textshow" ng-click="cancel()">Submit</button>
 				<button class="btn btn-primary btn-flat" type="button" ng-click="reset()">Reset</button>
 			</div>
 		</div>
