@@ -15,7 +15,7 @@
 <link href="<c:url value="/resources/bower_components/bootstrap-material-design/dist/css/ripples.min.css" />" rel="stylesheet">
 
 <script src="<c:url value="/resources/bower_components/jquery/dist/jquery.min.js" />"></script>
-<script src="<c:url value="/resources/bower_components/angularjs/angular.min.js" />"></script>
+<script src="<c:url value="/resources/bower_components/angular/angular.min.js" />"></script>
 <script src="<c:url value="/resources/bower_components/bootstrap/dist/js/bootstrap.min.js" />"></script>
 <script src="<c:url value="/resources/bower_components/bootstrap-material-design/dist/js/ripples.min.js" />"></script>
 <script src="<c:url value="/resources/bower_components/bootstrap-material-design/dist/js/material.min.js" />"></script>

@@ -17,7 +17,7 @@
 <link href="<c:url value="/resources/css/sidebar2.css" />" rel="stylesheet">
 
 <script src="<c:url value="/resources/bower_components/jquery/dist/jquery.min.js" />"></script>
-<script src="<c:url value="/resources/bower_components/angularjs/angular.min.js" />"></script>
+<script src="<c:url value="/resources/bower_components/angular/angular.min.js" />"></script>
 <script src="<c:url value="/resources/bower_components/bootstrap/dist/js/bootstrap.min.js" />"></script>
 <script src="<c:url value="/resources/bower_components/bootstrap-material-design/dist/js/ripples.min.js" />"></script>
 <script src="<c:url value="/resources/bower_components/bootstrap-material-design/dist/js/material.min.js" />"></script>
@@ -172,7 +172,7 @@
 	<br>
 
 	<!-- Cancel Form -->
-	<form ng-submit="cancel()" ng-class="{'formshow': textshow}"  name="form" novalidate>
+	<form ng-submit="cancel()" ng-class="{'formshow': false}"  name="form" novalidate>
 	<div class="row">
 		<div class="col-lg-4"></div>
 		<div class="col-lg-2" style="margin-left: 4%;">
