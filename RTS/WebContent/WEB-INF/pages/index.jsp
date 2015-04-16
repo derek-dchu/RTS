@@ -313,7 +313,7 @@
 							</div>
 
 							<div id="buy_form">
-								<form name="buy_form" class="form-horizontal" ng-submit="mainCtrl.buy(ticketQuantity)" novalidate>
+								<form name="buy_form" class="form-horizontal" ng-submit="buy_form.$valid && mainCtrl.buy(ticketQuantity)" novalidate>
 									<fieldset>
 										<div class="form-group" ng-class="{'has-error': mainCtrl.selectedTicket != null && buy_form.ticket_quantity.$dirty && buy_form.ticket_quantity.$invalid}">
 											<label for="ticket_quantity" class="control-label">Quantity</label>
@@ -325,9 +325,16 @@
 									</fieldset>
 									
 									<fieldset class="form-group">
-										<p class="text-primary pull-left">Total Price:&nbsp</p>
-										<p class="pull-left">{{ mainCtrl.selectedTicket == null || ticketQuantity == undefined ? 0 : (ticketQuantity-0) * mainCtrl.selectedTicket.price | currency:"USD$":2 }}</p>
-										<button type="submit" id="buy_submit" class="btn btn-primary pull-right">Buy</button>
+										<div style="margin: 10px 1px">
+											<p class="text-primary pull-left">Total Price:&nbsp</p>
+											<p class="pull-left">{{ mainCtrl.selectedTicket == null || ticketQuantity == undefined ? 0 : (ticketQuantity-0) * mainCtrl.selectedTicket.price | currency:"USD$":2 }}</p>
+										</div>
+										<sec:authorize access="isAuthenticated()">
+											<button style="margin-top: -10px;" type="submit" id="buy_submit" class="btn btn-primary pull-right">Buy</button>
+										</sec:authorize>
+										<sec:authorize access="isAnonymous()">
+											<a style="margin-top: -10px;" class="btn btn-primary pull-right" href="javascript:void(0)" data-toggle="modal" data-target="#login_form">Buy</a>
+										</sec:authorize>
 									</fieldset>
 								</form>
 							</div>
