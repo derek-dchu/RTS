@@ -34,10 +34,10 @@
 	<body ng-app="indexPage" ng-controller="mainController as mainCtrl">
 	
 		<!--Loading  -->
-		<!-- <div class='dt-loading'>
+		<div class='dt-loading'>
 			<div class='laying'></div>
 			<div class='layout'></div>
-		</div> -->
+		</div>
 
 		<!-- Popup alert -->
 		<div class="head-alert">

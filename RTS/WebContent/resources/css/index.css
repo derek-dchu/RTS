@@ -186,7 +186,7 @@ body, login-form {
 }
 /*---------------------------*/
 	
-.dt-loading{background:rgba(0,0,0,1);width:100%;height:100%;z-index:101;text-align:center;position:fixed;top:0;bottom:0;left:0;right:0;padding:20% 0}
+.dt-loading{background:rgba(0,0,0,1);width:100%;height:100%;z-index:9999;text-align:center;position:fixed;top:0;bottom:0;left:0;right:0;padding:20% 0}
 .laying{background-color:rgba(0,0,0,0);border:5px solid rgba(97,225,255,0.9);opacity:.9;border-right:5px solid rgba(0,0,0,0);border-left:5px solid rgba(0,0,0,0);border-radius:50px;box-shadow:0 0 35px #187BD8;width:50px;height:50px;margin:0 auto;-moz-animation:spinPulse 1s infinite ease-in-out;-webkit-animation:spinPulse 1s infinite ease-in-out;-o-animation:spinPulse 1s infinite ease-in-out;animation:spinPulse 1s infinite ease-in-out}
 .layout{background-color:rgba(0,0,0,0);border:5px solid rgba(97,145,255,0.9);opacity:.9;border-left:5px solid rgba(0,0,0,0);border-right:5px solid rgba(0,0,0,0);border-radius:50px;box-shadow:0 0 15px #187BD8;width:30px;height:30px;margin:0 auto;position:relative;top:-40px;-moz-animation:spinoffPulse 1s infinite linear;-webkit-animation:spinoffPulse 1s infinite linear;-o-animation:spinoffPulse 1s infinite linear;animation:spinoffPulse 1s infinite linear}
 @-moz-keyframes spinPulse{
