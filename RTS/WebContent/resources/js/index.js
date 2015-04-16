@@ -1,14 +1,20 @@
+
+(function($, angular) {
+	
 var app = angular.module('indexPage', ['ngMessages']);
 	
 app.controller('mainController', 
 		['$http', '$filter', '$location', 'anchorSmoothScroll', '$scope',
 		 function($http, $filter, $location, anchorSmoothScroll, $scope) {
 	var that = this;
-	var searchTicketUrl ="/RTS/rest/search/searchticket";
-	var buyTicketUrl = "/RTS/rest/buy";
-	var regUserUrl = "/RTS/rest/sys/reg";
+	var host = $location.host();
+	var port = $location.port();
+	var root = "http://" + host + ":" + port;
+	var searchTicketUrl = root + "/RTS/rest/search/searchticket";
+	var buyTicketUrl = root + "/RTS/rest/buy";
+	var regUserUrl = root + "/RTS/rest/sys/reg";
 		
-	this.regUser = function(email, password, firstName, lastName) {
+	this.regUser = function(email, password, firstName, lastName, number, name, expiry, cvc) {
 		$('#reg_submit').addClass('disabled').html('please wait...');
 
 		$http({
@@ -19,7 +25,10 @@ app.controller('mainController',
 			    	firstName: firstName,
 			    	lastName: lastName,
 			    	email: email,
-			    	password: password
+			    	password: password,
+			    	cnum: parseInt(number.split(' ').join('')),
+			    	cdate: parseInt(expiry.split(' / ').join('')),
+			    	cvc: parseInt(cvc)
 		    })
 		}).success(function() {
 			$('#reg_submit').removeClass('disabled').html('submit');
@@ -44,7 +53,6 @@ app.controller('mainController',
 	this.timeType = this.timeTypes[0];
 	this.tickets = [];
 	this.selectedTicket = null;
-	//this.selectedIndex = null;
 
 	/* ticket list order */
 	this.predicate = 'dtime';
@@ -196,9 +204,41 @@ app.directive('confirm', function() {
             	return false;
             };
  
-            scope.$watch("otherModel", function() {
+            scope.$watch("otherModel.$modelValue", function() {
                 ngModel.$validate();
             });
         }
     };
 });
+
+/* Luhn algorithm validator, by Avraham Plotnitzky. */
+app.directive('creditcardNumber', function() {
+	var luhnCheckFast = function(sequence) {
+		var ca, sum = 0, mul = 1;
+	    var len = sequence.length;
+	    while (len--)
+	    {
+	        ca = parseInt(sequence.charAt(len),10) * mul;
+	        sum += ca - (ca>9)*9;// sum += ca - (-(ca>9))|9
+	        // 1 <--> 2 toggle.
+	        mul ^= 3; // (mul = 3 - mul);
+	    };
+	    return (sum%10 === 0) && (sum > 0);
+	}
+
+	return {
+		require: "ngModel",
+		link: function(scope, element, attributes, ngModel) {
+			ngModel.$validators.creditCardNumber = function(modelValue, viewValue) {
+				if (ngModel.$isEmpty(modelValue)) {
+					return true;
+				}
+				var accountNumber = modelValue.split(' ').join('');
+				if (luhnCheckFast(accountNumber)) return true;
+				return false;
+			}
+		}
+	}
+});
+
+} )(jQuery, angular);

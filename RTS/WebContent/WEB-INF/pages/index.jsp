@@ -335,13 +335,34 @@
 					</div>
 				</div>
 			</div>
+
+			<!-- Google Chart -->
+			<div class="container-fluent" style="padding: 0 35px;">
+				<div class="row">
+					<div class="col-sm-12 col-lg-6">
+						<div class="panel panel-primary">
+							<div class="panel-heading">
+								<h3 class="panel-title">Information</h3>
+							</div>
+							<div class="panel-body">
+								<div id="info_chart"></div>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-12 col-lg-6">
+						<div class="panel panel-primary">
+							<div class="panel-heading">
+								<h3 class="panel-title">Ticket Statics</h3>
+							</div>
+							<div class="panel-body">
+								<div id="sold_chart"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</section>
 
-		
-		<!-- Google Chart -->
-		<div id="chart_div" style="display:none"></div>
-		<div id="chart" style="display:none"></div>
-		
 		<!-- Login Form -->
 		<div class="modal" id="login_form">
 			<div class="modal-dialog">
@@ -373,6 +394,7 @@
 										</div>
 									</div>
 								</div>
+
 								<div class="form-group">
 									<div class="col-lg-8 col-lg-offset-2">
 										<button type="reset" class="btn btn-default btn-raised pull-left">Clear</button>
@@ -381,7 +403,6 @@
 								</div>
 							</fieldset>
 						</form>
-						<br />
 					</div>
 				</div>
 			</div>
@@ -399,7 +420,7 @@
 						</button>
 					</div>
 					<div class="modal-body">
-						<form name="reg_form" class="form-horizontal" ng-submit="reg_form.$valid && mainCtrl.regUser(reg_email, reg_password, reg_firstname, reg_lastname)" novalidate>
+						<form name="reg_form" id="reg_form" class="form-horizontal" ng-submit="reg_form.$valid && mainCtrl.regUser(reg_email, reg_password, reg_firstname, reg_lastname, number, name, expiry, cvc)" novalidate>
 							<fieldset>
 								<div class="form-group" ng-class="{'has-error': reg_form.reg_email.$dirty && reg_form.reg_email.$invalid}">
 									<label for="reg_email" class="col-lg-4 control-label">Email</label>
@@ -449,6 +470,45 @@
 										<input type="text" name="reg_lastname" class="form-control" id="reg_lastname" placeholder="Last Name" ng-model="reg_lastname" required>
 									</div>
 								</div>
+
+								<!-- credit card info -->
+								<div class="form-group">
+									<label class="col-sm-12 control-lable" style="text-align:center">Credit Card</label>
+									<br/>
+									<br/>
+									<div class="card-wrapper" ng-class="{invalid: reg_form.number.$dirty && reg_form.number.$invalid, valid: reg_form.number.$valid}"></div>
+									<div class="container-fluent creditcard-form">
+										<div class="row">
+											<div class="col-sm-6">
+												<div class="form-group" ng-class="{'has-error': reg_form.number.$dirty && reg_form.number.$invalid}">
+													<input class="form-control" placeholder="Card number" type="text" name="number" ng-model="number" ng-minlength="19" required creditcard-number ng-model-options="{ debounce: 1000 }">
+													<div ng-messages="reg_form.number.$error" class="text-danger ng-messages">
+														<div ng-message="minlength">Account number is too short</div>
+														<div ng-message="creditCardNumber">Account number is invalid</div>
+													</div>
+												</div>
+											</div>
+											<div class="col-sm-6">
+												<div class="form-group">
+													<input class="form-control" placeholder="Full name" type="text" name="name" ng-model="name">
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-sm-6">
+												<div class="form-group">
+													<input class="form-control" placeholder="MM/YY" type="text" name="expiry" ng-model="expiry">
+												</div>
+											</div>
+											<div class="col-sm-6">
+												<div class="form-group">
+													<input class="form-control" placeholder="CVC" type="text" name="cvc" ng-model="cvc">
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+
 								<div class="form-group">
 									<div class="col-lg-8 col-lg-offset-2">
 										<button type="reset" class="btn btn-default btn-raised pull-left">Clear</button>
@@ -457,7 +517,6 @@
 								</div>
 							</fieldset>
 						</form>
-						<br />
 					</div>
 				</div>
 			</div>
@@ -472,16 +531,21 @@
 
 	<!-- load script here -->
 	<script src="<c:url value="/resources/bower_components/jquery/dist/jquery.js" />"></script>
+
+	<script type="text/javascript">
+		$(window).resize(function(){sectionHeight=$(window).height(),$.each($("section"),function(){$(this).height(sectionHeight)})});
+	</script>
+
 	<script src="<c:url value="/resources/bower_components/angular/angular.js" />"></script>
 	<script src="<c:url value="/resources/bower_components/angular-messages/angular-messages.js" />"></script>
 	<script src="<c:url value="/resources/bower_components/bootstrap/dist/js/bootstrap.min.js" />"></script>
 	<script src="<c:url value="/resources/bower_components/bootstrap-material-design/dist/js/ripples.min.js" />"></script>
 	<script src="<c:url value="/resources/bower_components/bootstrap-material-design/dist/js/material.min.js" />"></script>
-	<!-- <script src="https://www.google.com/jsapi"></script>
+	<script src="https://www.google.com/jsapi"></script>
 	<script>
 		google.load('visualization', '1.0', {'packages':['corechart']});
 		google.load("visualization", "1.0", {'packages':['bar']});
-	</script> -->
+	</script>
 	<script>
 		$(document).ready(function() {
 			// Initialize material-design-boostrap
@@ -493,7 +557,20 @@
 		});
 	</script>
 
-	<script src="<c:url value="/resources/js/Google-Chart-1.js" />"></script>
+    <!-- Credit Card -->
+    <script src="<c:url value="/resources/bower_components/card/lib/js/card.js" />"></script>
+    <script>
+			var card = new Card({
+			    form: '#reg_form',
+			    container: '.card-wrapper',
+			
+			    formSelectors: {
+			        nameInput: 'input[name="name"]'
+			    }
+			});
+			</script>
+    
+	<script src="<c:url value="/resources/js/google-chart.js" />"></script>
 	<script src="<c:url value="/resources/js/index.js" />"></script>
 	<script src="<c:url value="/resources/js/sidebar.js" />"></script>
 </body>

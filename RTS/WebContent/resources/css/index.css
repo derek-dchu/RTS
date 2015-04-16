@@ -118,6 +118,21 @@ header {
 	padding: 20px;
 }
 
+.creditcard-form {
+	margin: 30px auto;
+	width: 350px;
+}
+.creditcard-form.invalid .jp-card {
+	-webkit-box-shadow: 0px 0px 15px 0px rgba(244,67,54,0.84);
+	-moz-box-shadow: 0px 0px 15px 0px rgba(244,67,54,0.84);
+	box-shadow: 0px 0px 15px 0px rgba(244,67,54,0.84);
+}
+.creditcard-form.valid .jp-card {
+	-webkit-box-shadow: 0px 0px 15px 0px rgba(76,175,80,0.84);
+	-moz-box-shadow: 0px 0px 15px 0px rgba(76,175,80,0.84);
+	box-shadow: 0px 0px 15px 0px rgba(76,175,80,0.84);
+}
+
 /* Fix popup scrollbar problem */
 /*-----------------------------------------------*/
 html {

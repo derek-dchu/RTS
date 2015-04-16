@@ -18,6 +18,7 @@ import com.mercury.rts.persistence.dao.impl.ConfirmationCodeDaoImpl;
 import com.mercury.rts.persistence.dao.impl.TicketDaoImpl;
 import com.mercury.rts.persistence.dao.impl.UserDaoImpl;
 import com.mercury.rts.persistence.model.ConfirmationCode;
+import com.mercury.rts.persistence.model.CreditCard;
 import com.mercury.rts.persistence.model.Ticket;
 import com.mercury.rts.persistence.model.User;
 
@@ -27,13 +28,15 @@ public class SystemService {
 	private static Logger logger = Logger.getLogger(SystemService.class);
 	
 	@Autowired
-	MailAppBean mailApp;
+	private MailAppBean mailApp;
 	@Autowired
-	UserDaoImpl userDao;
+	private UserDaoImpl userDao;
 	@Autowired
-	TicketDaoImpl ticketDao;
+	private TicketDaoImpl ticketDao;
 	@Autowired
-	ConfirmationCodeDaoImpl confirmationCodeDao;
+	private ConfirmationCodeDaoImpl confirmationCodeDao;
+	@Autowired
+	private UserService userServ;
 	
 	public String sendEmail(String template, User user, String subject, Object content) {
 		String firstName = "customer";
@@ -73,7 +76,7 @@ public class SystemService {
 		}
 	}
 	
-	public String reg(User user) {
+	public String reg(User user, CreditCard creditCard) {
 		user.setEnable(0);
 		user.setRole("ROLE_USER");
 		Md5PasswordEncoder encoder = new Md5PasswordEncoder();
@@ -81,7 +84,7 @@ public class SystemService {
 
 		try{
 			userDao.saveUser(user);
-			
+			userServ.saveCreditCard(user, creditCard);
 			String code = UUID.randomUUID().toString();
 			ConfirmationCode cc = new ConfirmationCode();
 			cc.setUserid(user.getUserid());

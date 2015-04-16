@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name="rts_credit")
 public class CreditCard implements Serializable {
-	private int cnum;
+	private long cnum;
 	private int cid;
 	private int cdate;
 	private User user;
@@ -19,15 +19,15 @@ public class CreditCard implements Serializable {
 
 	@Id
 	@Column(name="cnum")
-	public int getCnum() {
+	public long getCnum() {
 		return cnum;
 	}
 
-	public void setCnum(int cnum) {
+	public void setCnum(long cnum) {
 		this.cnum = cnum;
 	}
 
-	@Column(name="cid")
+	@Column(name="cvc")
 	public int getCid() {
 		return cid;
 	}

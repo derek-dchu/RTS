@@ -32,7 +32,7 @@ create table rts_transaction (
 
 create table rts_credit (
 	cnum		number(16)		primary key,
-	cid			number(3),
+	cvc			number(3),
 	cdate		number(4),
 	userid		number(10)		references rts_user(userid)
 );
