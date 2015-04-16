@@ -4,8 +4,8 @@
 var app = angular.module('indexPage', ['ngMessages']);
 	
 app.controller('mainController', 
-		['$http', '$filter', '$location', 'anchorSmoothScroll', '$scope',
-		 function($http, $filter, $location, anchorSmoothScroll, $scope) {
+		['$http', '$filter', '$location', 'anchorSmoothScroll', '$scope', '$timeout',
+		 function($http, $filter, $location, anchorSmoothScroll, $scope, $timeout) {
 	var that = this;
 	var host = $location.host();
 	var port = $location.port();
@@ -31,8 +31,11 @@ app.controller('mainController',
 			    	cvc: parseInt(cvc)
 		    })
 		}).success(function() {
+			$('#reg_form').modal('hide');
+			$('#alert_reg_success').show();
 			$('#reg_submit').removeClass('disabled').html('submit');
 		}).error(function() {
+			$('#alert_reg_fail').show();
 			$('#reg_submit').removeClass('disabled').html('submit');
 		});
 	};
@@ -112,9 +115,16 @@ app.controller('mainController',
 			    qt: quantity
 		    }
 		}).success(function() {
-			$('#buy_submit').removeClass('disabled').html('buy');
+			$('#alert_buy_success').show();
+
+			/* set timeout to prevent flash button (respond too quickly) */
+			$timeout(function() {
+				$('#buy_submit').removeClass('disabled').html('buy');
+			}, 1000);
 		}).error(function() {
-			$('#buy_submit').removeClass('disabled').html('buy');
+			$timeout(function() {
+				$('#buy_submit').removeClass('disabled').html('buy');
+			}, 1000);
 		});
 	};
 

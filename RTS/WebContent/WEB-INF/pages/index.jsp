@@ -38,6 +38,30 @@
 			<div class='layout'></div>
 		</div> -->
 
+		<!-- Popup alert -->
+		<div class="head-alert">
+			<div class="container-fluid">
+				<div id="alert_reg_fail" class="alert alert-dismissable alert-danger">
+					<button type="button" class="close" data-dismiss="alert">
+						<i class="mdi-content-clear"></i>
+					</button>
+					<strong>Oh snap!</strong> Please try submitting again with another email.
+				</div>
+				<div id="alert_reg_success" class="alert alert-dismissable alert-success">
+					<button type="button" class="close" data-dismiss="alert">
+						<i class="mdi-content-clear"></i>
+					</button>
+					<strong>Well done!</strong> You successfully registrate with our system. Please check for your <a href="{{ 'http://www.' + reg_form.reg_email.$modelValue.split('@')[1] }}" class="alert-link" target="_blank">confirmation email</a>.
+				</div>
+				<div id="alert_buy_success" class="alert alert-dismissable alert-success">
+					<button type="button" class="close" data-dismiss="alert">
+						<i class="mdi-content-clear"></i>
+					</button>
+					<strong>Well done!</strong> You successfully place an order.</a>.
+				</div>
+			</div>
+		</div>
+
 		<!-- Header -->
 		<header>
 			<!-- nav -->
@@ -344,7 +368,7 @@
 			</div>
 
 			<!-- Google Chart -->
-			<div class="container-fluent" style="padding: 0 35px;">
+			<div class="container-fluid" style="padding: 0 35px;">
 				<div class="row">
 					<div class="col-sm-12 col-lg-6">
 						<div class="panel panel-primary">
@@ -371,7 +395,7 @@
 		</section>
 
 		<!-- Login Form -->
-		<div class="modal" id="login_form">
+		<div class="modal fade" id="login_form">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header clearfix">
@@ -416,11 +440,11 @@
 		</div>
 
 		<!--Registration Form -->
-		<div class="modal" id="reg_form">
+		<div class="modal fade" id="reg_form" role="dialog" tabindex="-1" aria-labelledby="reg_form_label" aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header clearfix">
-						<legend class="pull-left" style="width: inherit">Registration</legend>
+						<legend class="modal-title pull-left" id="reg_form_label" style="width: inherit">Registration</legend>
 						<button type="button" class="close" data-dismiss="modal">
 							<i class="mdi-content-clear">
 							</i>
@@ -484,7 +508,7 @@
 									<br/>
 									<br/>
 									<div class="card-wrapper" ng-class="{invalid: reg_form.number.$dirty && reg_form.number.$invalid, valid: reg_form.number.$valid}"></div>
-									<div class="container-fluent creditcard-form">
+									<div class="container-fluid creditcard-form">
 										<div class="row">
 											<div class="col-sm-6">
 												<div class="form-group" ng-class="{'has-error': reg_form.number.$dirty && reg_form.number.$invalid}">
@@ -550,8 +574,7 @@
 	<script src="<c:url value="/resources/bower_components/bootstrap-material-design/dist/js/material.min.js" />"></script>
 	<script src="https://www.google.com/jsapi"></script>
 	<script>
-		google.load('visualization', '1.0', {'packages':['corechart']});
-		google.load("visualization", "1.0", {'packages':['bar']});
+		google.load('visualization', '1.0', {'packages':['corechart', 'bar']});
 	</script>
 	<script>
 		$(document).ready(function() {
