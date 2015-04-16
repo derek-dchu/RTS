@@ -5,6 +5,7 @@
 
 <!-- define variable -->
 <c:url value="/j_spring_security_logout" var="logoutUrl"/>
+<c:url value="/user_transaction.html" var="userTransaction"/>
 <sec:authentication property="name" var="userName"/>
 
 <!DOCTYPE html>
@@ -80,7 +81,12 @@
 					</form>
 					<ul class="nav navbar-nav navbar-right">
 						<sec:authorize access="isAuthenticated()">
-							<li><a><span id="user_name">${userName}</span></a></li>
+							<li class="dropdown">
+								<a data-target="#" class="dropdown-toggle" data-toggle="dropdown"><span id="user_name">${userName}</span></a>
+								<ul class="dropdown-menu" style="background-color: rgba(0,0,0,0.5);">
+                    				<li><a href="${userTransaction}" style="color: white">View Transaction</a></li>
+                    			</ul>
+							</li>
 							<li><a href="${logoutUrl}">Log Out</a></li>
 						</sec:authorize>
 						<sec:authorize access="isAnonymous()">
@@ -143,10 +149,6 @@
 			<div class="sidebar-wrapper">
 				<form name="modify_form">
 					<ul class="sidebar-nav">
-						<sec:authorize access="isAuthenticated()">
-							<li><a href="javascript:void(0)" data-toggle="modal" data-target="#cc_form">Add Credit Card</a></li>
-						</sec:authorize>
-
 						<li class="sidebar-brand form-group">
 							<legend class="text-primary">Modify Trip</legend>
 						</li>
@@ -168,6 +170,10 @@
 						<li class="form-group">
 							<button type="submit" class="form-inline btn btn-danger" id="submit_modify" ng-click="mainCtrl.searchTicket()">Modify</button>
 						</li>
+
+						<sec:authorize access="isAuthenticated()">
+							<li><a href="${userTransaction}" style="color: white">View Transaction</a></li>
+						</sec:authorize>
 					</ul>
 				</form>
 			</div>
