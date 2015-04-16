@@ -2,7 +2,7 @@ create table rts_user (
 	userid		number(10) 		primary key,
 	firstname	varchar2(20),
 	lastname	varchar2(20),
-	email		varchar2(100),
+	email		varchar2(100),  not null unique,
 	password	varchar2(100) 	not null,
 	role		varchar2(20),
 	enable		number(1)
