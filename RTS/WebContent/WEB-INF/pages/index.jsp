@@ -14,30 +14,35 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>RTS | A simple yet effective rail-way ticket system</title>
+
+		<!-- Load spinner first -->
+		<link href="<c:url value="/resources/css/load-spinner.css" />" rel="stylesheet">
 		
 		<link href="<c:url value="/resources/bower_components/bootstrap/dist/css/bootstrap.min.css" />" rel="stylesheet">
 		<!-- Include roboto.css to use the Roboto web font, material.css to include the theme and ripples.css to style the ripple effect -->
 		<link href="<c:url value="/resources/bower_components/bootstrap-material-design/dist/css/roboto.min.css" />" rel="stylesheet">
 		<link href="<c:url value="/resources/bower_components/bootstrap-material-design/dist/css/material.min.css" />" rel="stylesheet">
 		<link href="<c:url value="/resources/bower_components/bootstrap-material-design/dist/css/ripples.min.css" />" rel="stylesheet">
-		<link href="<c:url value="/resources/css/sidebar.css" />" rel="stylesheet">
 
+		<link href="<c:url value="/resources/css/sidebar.css" />" rel="stylesheet">
 		<link href="<c:url value="/resources/css/index.css" />" rel="stylesheet">
 
 		<!-- Set section height onload -->
+		<script src="<c:url value="/resources/bower_components/jquery/dist/jquery.js" />"></script>
+		<script src="<c:url value="/resources/bower_components/angular/angular.js" />"></script>
 		<script type="text/javascript">
 		/* Set section height equals to window height onload and save the height in global as sectionHeight */
-		window.onload=function(){sectionHeight=$(window).height(),$.each($("section"),function(){$(this).height(sectionHeight)})};
+		//window.onload=function(){sectionHeight=$(window).height(),$.each($("section"),function(){$(this).height(sectionHeight)})};
+		$(document).ready(function(){sectionHeight=$(window).height(),$.each($("section"),function(){$(this).height(sectionHeight)})});
 		</script>
 	</head>
 
 	<body ng-app="indexPage" ng-controller="mainController as mainCtrl">
 	
 		<!--Loading  -->
-		<div class='dt-loading'>
-			<div class='laying'></div>
-			<div class='layout'></div>
-		</div>
+		<!-- <div id="loader-wrapper">
+			<div id="loader"></div>
+		</div> -->
 
 		<!-- Popup alert -->
 		<div class="head-alert">
@@ -102,10 +107,6 @@
 		
 		<!-- Landing Page -->
 		<section id="landing_page">
-			<!-- background image -->
-			<!-- <div class="bg-img">
-				<img src="<c:url value="/resources/img/bg-large.jpg" />" alt="backgroud image" />
-			</div> -->
 
 			<!-- Introduction Area -->
 			<div class="intro-container darken">
@@ -567,13 +568,11 @@
 
 
 	<!-- load script here -->
-	<script src="<c:url value="/resources/bower_components/jquery/dist/jquery.js" />"></script>
-
+	
 	<script type="text/javascript">
 		$(window).resize(function(){sectionHeight=$(window).height(),$.each($("section"),function(){$(this).height(sectionHeight)})});
 	</script>
 
-	<script src="<c:url value="/resources/bower_components/angular/angular.js" />"></script>
 	<script src="<c:url value="/resources/bower_components/angular-messages/angular-messages.js" />"></script>
 	<script src="<c:url value="/resources/bower_components/bootstrap/dist/js/bootstrap.min.js" />"></script>
 	<script src="<c:url value="/resources/bower_components/bootstrap-material-design/dist/js/ripples.min.js" />"></script>
@@ -609,5 +608,10 @@
 	<script src="<c:url value="/resources/js/google-chart.js" />"></script>
 	<script src="<c:url value="/resources/js/index.js" />"></script>
 	<script src="<c:url value="/resources/js/sidebar.js" />"></script>
+
+	<!-- close spinner -->
+	<!-- <script type="text/javascript">
+		$(window).load(function(){$("#loader-wrapper").fadeOut("slow");});
+	</script> -->
 </body>
 </html>
