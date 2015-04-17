@@ -16,25 +16,32 @@
 		<title>RTS | A simple yet effective rail-way ticket system</title>
 
 		<!-- Load spinner first -->
-		<link href="<c:url value="/resources/css/load-spinner.css" />" rel="stylesheet">
-		
 		<link href="<c:url value="/resources/bower_components/bootstrap/dist/css/bootstrap.min.css" />" rel="stylesheet">
 		<!-- Include roboto.css to use the Roboto web font, material.css to include the theme and ripples.css to style the ripple effect -->
 		<link href="<c:url value="/resources/bower_components/bootstrap-material-design/dist/css/roboto.min.css" />" rel="stylesheet">
 		<link href="<c:url value="/resources/bower_components/bootstrap-material-design/dist/css/material.min.css" />" rel="stylesheet">
 		<link href="<c:url value="/resources/bower_components/bootstrap-material-design/dist/css/ripples.min.css" />" rel="stylesheet">
 
-		<link href="<c:url value="/resources/css/sidebar.css" />" rel="stylesheet">
-		<link href="<c:url value="/resources/css/index.css" />" rel="stylesheet">
+		<link href="<c:url value="/resources/dist/css/index.min.css" />" rel="stylesheet">
 
+		<script src="<c:url value="/resources/bower_components/jquery/dist/jquery.min.js" />"></script>
 		<!-- Set section height onload -->
-		<script src="<c:url value="/resources/bower_components/jquery/dist/jquery.js" />"></script>
-		<script src="<c:url value="/resources/bower_components/angular/angular.js" />"></script>
 		<script type="text/javascript">
 		/* Set section height equals to window height onload and save the height in global as sectionHeight */
 		//window.onload=function(){sectionHeight=$(window).height(),$.each($("section"),function(){$(this).height(sectionHeight)})};
 		$(document).ready(function(){sectionHeight=$(window).height(),$.each($("section"),function(){$(this).height(sectionHeight)})});
 		</script>
+		<script type="text/javascript">
+			// hide alert instead of removing it
+			$(function(){
+					$("[data-hide]").on("click", function(){
+					$(this).closest("." + $(this).attr("data-hide")).hide();
+				});
+			});
+		</script>
+
+		<script src="<c:url value="/resources/bower_components/angular/angular.min.js" />"></script>
+		
 	</head>
 
 	<body ng-app="indexPage" ng-controller="mainController as mainCtrl">
@@ -48,19 +55,19 @@
 		<div class="head-alert">
 			<div class="container-fluid">
 				<div id="alert_reg_fail" class="alert alert-dismissable alert-danger">
-					<button type="button" class="close" data-dismiss="alert">
+					<button type="button" class="close" data-hide="alert">
 						<i class="mdi-content-clear"></i>
 					</button>
 					<strong>Oh snap!</strong> Please try submitting again with another email.
 				</div>
 				<div id="alert_reg_success" class="alert alert-dismissable alert-success">
-					<button type="button" class="close" data-dismiss="alert">
+					<button type="button" class="close" data-hide="alert">
 						<i class="mdi-content-clear"></i>
 					</button>
 					<strong>Well done!</strong> You successfully registrate with our system. Please check for your <a href="{{ 'http://www.' + reg_form.reg_email.$modelValue.split('@')[1] }}" class="alert-link" target="_blank">confirmation email</a>.
 				</div>
 				<div id="alert_buy_success" class="alert alert-dismissable alert-success">
-					<button type="button" class="close" data-dismiss="alert">
+					<button type="button" class="close" data-hide="alert">
 						<i class="mdi-content-clear"></i>
 					</button>
 					<strong>Well done!</strong> You successfully place an order.</a>.
@@ -560,15 +567,7 @@
 			</div>
 		</div>
 
-        
-        
-
-
-
-
-
 	<!-- load script here -->
-	
 	<script type="text/javascript">
 		$(window).resize(function(){sectionHeight=$(window).height(),$.each($("section"),function(){$(this).height(sectionHeight)})});
 	</script>
@@ -577,37 +576,20 @@
 	<script src="<c:url value="/resources/bower_components/bootstrap/dist/js/bootstrap.min.js" />"></script>
 	<script src="<c:url value="/resources/bower_components/bootstrap-material-design/dist/js/ripples.min.js" />"></script>
 	<script src="<c:url value="/resources/bower_components/bootstrap-material-design/dist/js/material.min.js" />"></script>
-	<script src="https://www.google.com/jsapi"></script>
-	<script>
-		google.load('visualization', '1.0', {'packages':['corechart', 'bar']});
-	</script>
 	<script>
 		$(document).ready(function() {
 			// Initialize material-design-boostrap
 			$.material.init();
-
-			setTimeout(function() {
-				 $(".dt-loading").fadeOut('slow');
-				}, 3000);
 		});
 	</script>
-
-    <!-- Credit Card -->
-    <script src="<c:url value="/resources/bower_components/card/lib/js/card.js" />"></script>
-    <script>
-			var card = new Card({
-			    form: '#reg_form',
-			    container: '.card-wrapper',
-			
-			    formSelectors: {
-			        nameInput: 'input[name="name"]'
-			    }
-			});
-			</script>
-    
-	<script src="<c:url value="/resources/js/google-chart.js" />"></script>
-	<script src="<c:url value="/resources/js/index.js" />"></script>
-	<script src="<c:url value="/resources/js/sidebar.js" />"></script>
+	<script src="https://www.google.com/jsapi"></script>
+	<script>
+		google.load('visualization', '1.0', {'packages':['corechart', 'bar']});
+	</script>
+	<script src="<c:url value="/resources/dist/js/index.min.js" />"></script>
+	<script>
+		var card = new Card({form:'#reg_form',container:'.card-wrapper',formSelectors:{nameInput: 'input[name="name"]'}});
+	</script>
 
 	<!-- close spinner -->
 	<!-- <script type="text/javascript">
