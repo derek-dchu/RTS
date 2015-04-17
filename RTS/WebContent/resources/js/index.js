@@ -1,3 +1,4 @@
+'use strict';
 
 (function($, angular) {
 	
@@ -86,16 +87,16 @@ app.controller('mainController',
 			that.tickets = data;
 
 			/* to fix orderBy problem, convert price to float here */
-			that.tickets.forEach(function(elm, ind, arr) {
+			that.tickets.forEach(function(elm) {
 				elm.price = parseFloat(elm.price);
 			});
 
 			$.drawStuff(that.tickets);
-		}).error(function(error) {
+		}).error(function() {
 			this.tickets = [];
 		});
 
-		if ($location.path() !== '/tickets') $location.hash('tickets');
+		if ($location.path() !== '/tickets') { $location.hash('tickets'); }
 		anchorSmoothScroll.scrollTo('ticket_page');
 	};
 	
@@ -150,33 +151,47 @@ app.service('anchorSmoothScroll', function() {
         var startY = currentYPosition();
         var stopY = elmYPosition(eID);
         var distance = stopY > startY ? stopY - startY : startY - stopY;
+        var i;
         if (distance < 100) {
             scrollTo(0, stopY); return;
         }
         var speed = Math.round(distance / 100);
-        if (speed >= 20) speed = 20;
+        if (speed >= 20) {
+        	speed = 20; 
+        }
         var step = Math.round(distance / 25);
         var leapY = stopY > startY ? startY + step : startY - step;
         var timer = 0;
         if (stopY > startY) {
-            for ( var i=startY; i<stopY; i+=step ) {
+            for ( i=startY; i<stopY; i+=step ) {
                 setTimeout("window.scrollTo(0, "+leapY+")", timer * speed);
-                leapY += step; if (leapY > stopY) leapY = stopY; timer++;
-            } return;
+                leapY += step; if (leapY > stopY) leapY = stopY;
+                timer++;
+            } 
+            return;
         }
-        for ( var i=startY; i>stopY; i-=step ) {
+        for ( i=startY; i>stopY; i-=step ) {
             setTimeout("window.scrollTo(0, "+leapY+")", timer * speed);
-            leapY -= step; if (leapY < stopY) leapY = stopY; timer++;
+            leapY -= step; 
+            if (leapY < stopY) {
+            	leapY = stopY; 
+            	timer++;
+            }
         }
         
         function currentYPosition() {
             // Firefox, Chrome, Opera, Safari
-            if (self.pageYOffset) return self.pageYOffset;
+            if (self.pageYOffset) {
+            	return self.pageYOffset;
+            }
             // Internet Explorer 6 - standards mode
-            if (document.documentElement && document.documentElement.scrollTop)
+            if (document.documentElement && document.documentElement.scrollTop) {
                 return document.documentElement.scrollTop;
+            }
             // Internet Explorer 6, 7 and 8
-            if (document.body.scrollTop) return document.body.scrollTop;
+            if (document.body.scrollTop) { 
+            	return document.body.scrollTop;
+            }
             return 0;
         }
         
@@ -184,10 +199,11 @@ app.service('anchorSmoothScroll', function() {
             var elm = document.getElementById(eID);
             var y = elm.offsetTop;
             var node = elm;
-            while (node.offsetParent && node.offsetParent != document.body) {
+            while (node.offsetParent && node.offsetParent !== document.body) {
                 node = node.offsetParent;
                 y += node.offsetTop;
-            } return y;
+            }
+            return y;
         }
 
     };
@@ -202,7 +218,7 @@ app.directive('confirm', function() {
             otherModel: "=confirm"
         },
         link: function(scope, element, attributes, ngModel) {
-            ngModel.$validators.confirm = function(modelValue, viewValue) {
+            ngModel.$validators.confirm = function(modelValue) {
             	if (ngModel.$isEmpty(modelValue)) {
             		// consider empty models to be valid
             		return true;
@@ -226,29 +242,30 @@ app.directive('creditcardNumber', function() {
 	var luhnCheckFast = function(sequence) {
 		var ca, sum = 0, mul = 1;
 	    var len = sequence.length;
-	    while (len--)
-	    {
+	    while (len--) {
 	        ca = parseInt(sequence.charAt(len),10) * mul;
 	        sum += ca - (ca>9)*9;// sum += ca - (-(ca>9))|9
 	        // 1 <--> 2 toggle.
 	        mul ^= 3; // (mul = 3 - mul);
-	    };
+	    }
 	    return (sum%10 === 0) && (sum > 0);
-	}
+	};
 
 	return {
 		require: "ngModel",
 		link: function(scope, element, attributes, ngModel) {
-			ngModel.$validators.creditCardNumber = function(modelValue, viewValue) {
+			ngModel.$validators.creditCardNumber = function(modelValue) {
 				if (ngModel.$isEmpty(modelValue)) {
 					return true;
 				}
 				var accountNumber = modelValue.split(' ').join('');
-				if (luhnCheckFast(accountNumber)) return true;
+				if (luhnCheckFast(accountNumber)) {
+					return true;
+				}
 				return false;
-			}
+			};
 		}
-	}
+	};
 });
 
 } )(jQuery, angular);

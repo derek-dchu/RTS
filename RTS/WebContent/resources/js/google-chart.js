@@ -1,3 +1,5 @@
+'use strict';
+
 (function($, google) {
 
 	$.drawChart = function(sold, available) {
@@ -20,7 +22,7 @@
 		// Instantiate and draw our chart, passing in some options.
 		var chart = new google.visualization.PieChart(document.querySelector('#sold_chart'));
 		chart.draw(dataTable, options);
-	}
+	};
 
 	/**
 	*    @Param: data List of tickets
@@ -47,6 +49,6 @@
 		//instantiate and draw our chart, passing in the options
 		var chart = new google.visualization.ColumnChart(document.querySelector('#info_chart'));
 		chart.draw(dataTable, options);
-	}
+	};
 
 })(jQuery, google);
