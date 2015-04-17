@@ -31,9 +31,12 @@
 <script type="text/javascript">
 	var app = angular.module('app',['anguFixedHeaderTable']);
 
-	app.controller('myc',function($scope,$http,$filter){
-		var addticket ="http://localhost:8080/RTS/rest/admin/addticket";
-		var listticket = "http://localhost:8080/RTS/rest/admin/listticket";
+	app.controller('myc',function($scope,$http,$location,$filter){
+		var host = $location.host();
+		var port = $location.port();
+		var root = "http://" + host + ":" + port;
+		var addticket = root + "/RTS/rest/admin/addticket";
+		var listticket = root + "/RTS/rest/admin/listticket";
 		$scope.tableshow = false;
 		$scope.formshow = false;
 		$scope.inputid = false;
@@ -107,6 +110,8 @@
 	    	$scope.sold = selectTicket.sold;
 	    	$scope.price = selectTicket.price;
 	    	$scope.statu = selectTicket.enable;
+	    	$scope.dtime = selectTicket.dtime;
+	    	$scope.atime = selectTicket.atime;
 		};
 
 		$scope.showForm = function(){

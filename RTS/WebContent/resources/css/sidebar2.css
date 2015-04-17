@@ -19,7 +19,8 @@
 }
 
 .sidebar-section .page-wrapper{
-    text-align:center;
+    margin-left:45%;
+    margin-top:10%;
     position: fixed;
     -webkit-transition: margin-top 0.5s ease;
     -moz-transition: margin-top 0.5s ease;

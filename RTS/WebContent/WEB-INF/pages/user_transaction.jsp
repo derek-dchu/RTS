@@ -32,9 +32,12 @@
 
 <script type="text/javascript">
 	var app = angular.module('app',['anguFixedHeaderTable']);
-	app.controller('myc',function($scope,$http,$filter){
-		var listalltransaction = "http://localhost:8080/RTS/rest/transaction";
-		var canceltransaction = "http://localhost:8080/RTS/rest/transaction/cancel";
+	app.controller('myc',function($scope,$http,$filter,$location){
+		var host = $location.host();
+		var port = $location.port();
+		var root = "http://" + host + ":" + port;
+		var listalltransaction = root + "/RTS/rest/transaction";
+		var canceltransaction = root + "/RTS/rest/transaction/cancel";
 
 		var username = document.getElementById("logedUsername").innerHTML ; 
 		$scope.textshow = true;
@@ -59,7 +62,7 @@
 			var selectTran = JSON.parse(data);
 			$scope.trid = selectTran.tid;
 			$scope.qt = selectTran.qt;
-			if(selectTran.status === 'b'){
+			if(selectTran.status === 'b' || selectTran.status === 'B'){
 				$scope.textshow = false;
 			}else{
 				$scope.textshow = true;
@@ -172,7 +175,7 @@
 	<br>
 
 	<!-- Cancel Form -->
-	<form ng-submit="cancel()" ng-class="{'formshow': false}"  name="form" novalidate>
+	<form ng-submit="cancel()" ng-class="{'formshow': textshow}"  name="form" novalidate>
 	<div class="row">
 		<div class="col-lg-4"></div>
 		<div class="col-lg-2" style="margin-left: 4%;">

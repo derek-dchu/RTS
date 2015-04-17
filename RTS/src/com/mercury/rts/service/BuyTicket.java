@@ -34,7 +34,7 @@ public class BuyTicket {
 	
 	public Transaction buyTicketEnqueue(String username, int tid, int quantity){
 		Date date = new Date();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd hh:mm a");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
 		
 		User user = udi.getUserByEmail(username);
 		Ticket ticket = tdi.findById(tid);
@@ -65,7 +65,7 @@ public class BuyTicket {
 		BookContent failContent = new BookContent();
 		failContent.setTicket(ticket);
 		if(quantity <= available) {
-			tx.setStatus("B");
+			tx.setStatus("b");
 			ticket.setAvailable(available-quantity);
 			ticket.setSold(ticket.getSold()+quantity);
 			tdi.saveTicket(ticket);

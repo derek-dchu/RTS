@@ -36,7 +36,7 @@ public class CustomUserDetailsService implements UserDetailsService{
 			user = (UserDetails) new org.springframework.security.core.userdetails.User(
 					u.getEmail(),
 					u.getPassword(),
-					true,
+					(u.getEnable()==1),
 					true,
 					true,
 					true,

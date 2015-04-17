@@ -11,6 +11,7 @@
 		pre-post-annotations="enabled" />
 	<sec:http use-expressions="true">
 		<sec:intercept-url pattern="/admin.html" access="hasRole('ROLE_ADMIN')" />
+		<sec:intercept-url pattern="/user_transaction.html" access="hasRole('ROLE_USER')" />
 		<sec:intercept-url pattern="/index.html" access="permitAll()" />
 		<sec:form-login login-page="/index.html"
 			authentication-success-handler-ref="postSuccessAuthHandler"
