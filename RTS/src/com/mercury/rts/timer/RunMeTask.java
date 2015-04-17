@@ -3,7 +3,6 @@ package com.mercury.rts.timer;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mercury.rts.persistence.model.Transaction;
-import com.mercury.rts.service.AdminService;
 import com.mercury.rts.service.BuyTicket;
 import com.mercury.rts.util.TransactionQueue;
 

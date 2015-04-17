@@ -2,7 +2,6 @@ package com.mercury.rts.resources;
 
 import java.util.List;
 
-import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
