@@ -369,31 +369,31 @@
 									</fieldset>
 								</form>
 							</div>
-						</div>
-					</div>
-				</div>
-			</div>
 
-			<!-- Google Chart -->
-			<div class="container-fluid" style="padding: 0 35px;">
-				<div class="row">
-					<div class="col-sm-12 col-lg-6">
-						<div class="panel panel-primary">
-							<div class="panel-heading">
-								<h3 class="panel-title">Information</h3>
-							</div>
-							<div class="panel-body">
-								<div id="info_chart"></div>
-							</div>
-						</div>
-					</div>
-					<div class="col-sm-12 col-lg-6">
-						<div class="panel panel-primary">
-							<div class="panel-heading">
-								<h3 class="panel-title">Ticket Statics</h3>
-							</div>
-							<div class="panel-body">
-								<div id="sold_chart"></div>
+							<!-- Google Chart -->
+							<div class="container-fluid" style="padding: 0 35px;">
+								<div class="row">
+									<div class="col-sm-12 col-lg-6">
+										<div class="panel panel-primary">
+											<div class="panel-heading">
+												<h3 class="panel-title">Information</h3>
+											</div>
+											<div class="panel-body">
+												<div id="info_chart"></div>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-12 col-lg-6">
+										<div class="panel panel-primary">
+											<div class="panel-heading">
+												<h3 class="panel-title">Ticket Statics</h3>
+											</div>
+											<div class="panel-body">
+												<div id="sold_chart"></div>
+											</div>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
