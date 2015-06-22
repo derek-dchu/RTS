@@ -1,18 +1,18 @@
 package com.mercury.rts.common.db;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @Repository
 public class GenericDaoImpl<T, ID extends Serializable> implements GenericDao<T, ID> {
@@ -20,87 +20,77 @@ public class GenericDaoImpl<T, ID extends Serializable> implements GenericDao<T,
     private Class<T> klass;
     private static Logger log = Logger.getLogger(GenericDaoImpl.class);
 
-    @Autowired
-    private SessionFactory appSessionFactory;
+    private SessionFactory sessionFactory;
     public GenericDaoImpl() {}
-    public GenericDaoImpl(Class<T> klass) {
+    public GenericDaoImpl(SessionFactory sessionFactory, Class<T> klass) {
+        this.sessionFactory = sessionFactory;
         this.klass = klass;
     }
 
+    @Transactional
     @SuppressWarnings("unchecked")
     public T findById(ID id) {
-        SessionInfo sessionInfo = getSessionInfo();
-        T object = (T) sessionInfo.getSession().get(klass, id);
-        sessionInfo.cleanup();
+        T object = (T) sessionFactory.getCurrentSession().get(klass, id);
         return object;
     }
 
+    @Transactional
     public void save(T object) {
         log.debug("----------->" + this.toString());
-        SessionInfo sessionInfo = getSessionInfo();
-        sessionInfo.getSessionForWriting().saveOrUpdate(object);
-        sessionInfo.cleanup();
+        sessionFactory.getCurrentSession().saveOrUpdate(object);
     }
 
+    @Transactional
     public void delete(T object) {
         log.debug("----------->" + this.toString());
-        SessionInfo sessionInfo = getSessionInfo();
-        sessionInfo.getSessionForWriting().delete(object);
-        sessionInfo.cleanup();
+        sessionFactory.getCurrentSession().delete(object);
     }
 
+    @Transactional
     @SuppressWarnings("unchecked")
 	public List<T> findAllByMulti(Map<String, Object> condition) {
-    	SessionInfo sessionInfo = getSessionInfo();
-    	Criteria criteria = sessionInfo.getSession().createCriteria(klass);
+    	Criteria criteria = sessionFactory.getCurrentSession().createCriteria(klass);
     	for(Map.Entry<String, Object> e : condition.entrySet()) {
     		if(e.getKey() != null) {
     		criteria.add(Restrictions.eq(e.getKey(), e.getValue()));
     		}
     	}
-    	List<T> retval=(List<T>) criteria.list();
-    	sessionInfo.cleanup();
-		return retval;
+    	return (List<T>) criteria.list();
     }
+
+    @Transactional
     public List<T> findAllBy(String property, List<?> values) {
-//        SessionInfo sessionInfo = getSessionInfo();
-//        List<T> retval = (List<T>) sessionInfo.getSession().createCriteria(klass)
-//                .add(Restrictions.in(property, values))
-//                .list();
-//        sessionInfo.cleanup();
         return (List<T>) findAllBy(property, values, null);
     }
 
+    @Transactional
     @SuppressWarnings("unchecked")
 	public List<T> findAllBy(String property, List<?> values, Order order) {
-        SessionInfo sessionInfo = getSessionInfo();
-        Criteria criteria = sessionInfo.getSession().createCriteria(klass)
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(klass)
                 .add(Restrictions.in(property, values));
         if (order != null) {
             criteria.addOrder(order);
         }
-        List<T> retval = (List<T>) criteria.list();
-        sessionInfo.cleanup();
-        return retval;
+        return (List<T>) criteria.list();
     }
 
+    @Transactional
     @SuppressWarnings("serial")
 	public List<T> findAllBy(String property, final Object value) {
         log.debug("Turning object into list");
         return findAllBy(property, new ArrayList<Object>() { { add(value); } }, null);
     }
 
+    @Transactional
     @SuppressWarnings("serial")
 	public List<T> findAllBy(String property, final Object value, Order order) {
         log.debug("Turning object into list");
         return findAllBy(property, new ArrayList<Object>() { { add(value); } }, order);
     }
 
+    @Transactional
     public List<T> findAll() {
-        SessionInfo sessionInfo = getSessionInfo();
-        List<T> retval = findAll(null);
-        sessionInfo.cleanup();
-        return retval;
+        return findAll(null);
     }
 
     @SuppressWarnings("unchecked")
@@ -115,6 +105,7 @@ public class GenericDaoImpl<T, ID extends Serializable> implements GenericDao<T,
         return retval;
     }
 
+    @Transactional
     public T findBy(String property, final Object value) {
         List<T> results = findAllBy(property, value);
         if (results == null || results.isEmpty()) {
@@ -124,25 +115,15 @@ public class GenericDaoImpl<T, ID extends Serializable> implements GenericDao<T,
     }
 
     public void flush() {
-        appSessionFactory.getCurrentSession().flush();
-
+        sessionFactory.getCurrentSession().flush();
     }
 
-    protected SessionInfo getSessionInfo() {
-        try {
-            return new SessionInfo(appSessionFactory.getCurrentSession(), false);
-        } catch (HibernateException he) {
-            log.debug(he);
-            return new SessionInfo(appSessionFactory.openSession(), false);
-        }
-    }
-
-	public void setAppSessionFactory(SessionFactory appSessionFactory) {
-		this.appSessionFactory = appSessionFactory;
+	public void setSessionFactory(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
 	}
 
-	public SessionFactory getAppSessionFactory() {
-		return appSessionFactory;
+	public SessionFactory getSessionFactory() {
+		return sessionFactory;
 	}
 
 }

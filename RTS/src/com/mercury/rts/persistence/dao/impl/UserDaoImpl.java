@@ -5,11 +5,14 @@ import java.util.List;
 import com.mercury.rts.common.db.GenericDaoImpl;
 import com.mercury.rts.persistence.dao.UserDao;
 import com.mercury.rts.persistence.model.User;
+import org.hibernate.SessionFactory;
 
 public class UserDaoImpl extends GenericDaoImpl<User, Integer> implements UserDao {
-	public UserDaoImpl() {
-		super(User.class);
-	}
+
+	public UserDaoImpl() {}
+	public UserDaoImpl(SessionFactory sessionFactory) {
+        super(sessionFactory, User.class);
+    }
 
 	@Override
 	public User getUserById(int id) {
