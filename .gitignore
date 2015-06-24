@@ -112,3 +112,6 @@ buildNumber.properties
 .mvn/timing.properties
 
 
+
+application.properties
+log4j-application.log
