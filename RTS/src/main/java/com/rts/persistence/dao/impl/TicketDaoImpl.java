@@ -4,13 +4,10 @@ import com.rts.common.db.GenericDaoImpl;
 import com.rts.persistence.dao.TicketDao;
 import com.rts.persistence.model.Ticket;
 import org.hibernate.SessionFactory;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
-@Repository
-@Transactional
 public class TicketDaoImpl extends GenericDaoImpl<Ticket, Integer> implements TicketDao {
 
 	public TicketDaoImpl() {}
@@ -44,4 +41,7 @@ public class TicketDaoImpl extends GenericDaoImpl<Ticket, Integer> implements Ti
 		return findAll();
 	}
 
+	public List<Ticket> listAllTicketsUnderCondition(Map<String, Object> condition) {
+		return findAllByMulti(condition);
+	}
 }

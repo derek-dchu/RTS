@@ -1,10 +1,10 @@
 package com.rts.service;
 
+import com.rts.mail.MailApp;
 import com.rts.mail.RegContent;
-import com.rts.mail.MailAppBean;
-import com.rts.persistence.dao.impl.ConfirmationCodeDaoImpl;
-import com.rts.persistence.dao.impl.TicketDaoImpl;
-import com.rts.persistence.dao.impl.UserDaoImpl;
+import com.rts.persistence.dao.ConfirmationCodeDao;
+import com.rts.persistence.dao.TicketDao;
+import com.rts.persistence.dao.UserDao;
 import com.rts.persistence.model.ConfirmationCode;
 import com.rts.persistence.model.CreditCard;
 import com.rts.persistence.model.Ticket;
@@ -27,13 +27,13 @@ public class SystemService {
 	private static Logger logger = Logger.getLogger(SystemService.class);
 	
 	@Autowired
-	private MailAppBean mailApp;
+	private MailApp mailApp;
 	@Autowired
-	private UserDaoImpl userDao;
+	private UserDao userDao;
 	@Autowired
-	private TicketDaoImpl ticketDao;
+	private TicketDao ticketDao;
 	@Autowired
-	private ConfirmationCodeDaoImpl confirmationCodeDao;
+	private ConfirmationCodeDao confirmationCodeDao;
 	@Autowired
 	private UserService userServ;
 	
@@ -45,7 +45,11 @@ public class SystemService {
 		
 		String username = String.format("%s %s", firstName, lastName);
 		try {
-			mailApp.sendMail(template, user.getEmail(), subject, username, content);
+			if (template != null) {
+				mailApp.sendMail(template, user.getEmail(), subject, username, content);
+			} else {
+				mailApp.sendMail(user.getEmail(), subject, username, content);
+			}
 			return null;
 		} catch (MailParseException e) {
 			logger.error(e.getMessage());
@@ -88,7 +92,7 @@ public class SystemService {
 			ConfirmationCode cc = new ConfirmationCode();
 			cc.setUserid(user.getUserid());
 			cc.setCode(code);
-			confirmationCodeDao.save(cc);
+			confirmationCodeDao.saveConfirmationCodeByCode(cc);
 			sendConfirmation(user, code);
 			return null;
 		}

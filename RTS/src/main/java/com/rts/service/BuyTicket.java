@@ -1,9 +1,9 @@
 package com.rts.service;
 
 import com.rts.mail.BookContent;
-import com.rts.persistence.dao.impl.TicketDaoImpl;
-import com.rts.persistence.dao.impl.TransactionDaoImpl;
-import com.rts.persistence.dao.impl.UserDaoImpl;
+import com.rts.persistence.dao.TicketDao;
+import com.rts.persistence.dao.TransactionDao;
+import com.rts.persistence.dao.UserDao;
 import com.rts.persistence.model.Ticket;
 import com.rts.persistence.model.Transaction;
 import com.rts.persistence.model.User;
@@ -20,13 +20,13 @@ import java.util.Date;
 public class BuyTicket {
 
 	@Autowired
-	private TicketDaoImpl tdi;
+	private TicketDao tdi;
 	
 	@Autowired
-	private UserDaoImpl udi;
+	private UserDao udi;
 	
 	@Autowired
-	private TransactionDaoImpl trdi;
+	private TransactionDao trdi;
 	
 	@Autowired
 	private SystemService ss;
@@ -36,7 +36,7 @@ public class BuyTicket {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
 		
 		User user = udi.getUserByEmail(username);
-		Ticket ticket = tdi.findById(tid);
+		Ticket ticket = tdi.getTicketById(tid);
 		
 		Transaction tx = new Transaction();
 		tx.setQt(quantity);
@@ -52,7 +52,7 @@ public class BuyTicket {
 	public String buyTicketDequeue(Transaction tx){
 		String s = null;
 		int quantity = tx.getQt();
-		Ticket ticket = tdi.findById(tx.getTicket().getTicketid());
+		Ticket ticket = tdi.getTicketById(tx.getTicket().getTicketid());
 		int available = ticket.getAvailable();
 		User user = tx.getUser();
 		

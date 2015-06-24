@@ -4,11 +4,7 @@ import com.rts.common.db.GenericDaoImpl;
 import com.rts.persistence.dao.ConfirmationCodeDao;
 import com.rts.persistence.model.ConfirmationCode;
 import org.hibernate.SessionFactory;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
-@Repository
-@Transactional
 public class ConfirmationCodeDaoImpl extends
         GenericDaoImpl<ConfirmationCode, String> implements ConfirmationCodeDao {
 	
@@ -21,4 +17,7 @@ public class ConfirmationCodeDaoImpl extends
 		return findById(code);
 	}
 
+    public void saveConfirmationCodeByCode(ConfirmationCode cc) {
+        save(cc);
+    }
 }

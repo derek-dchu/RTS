@@ -2,11 +2,15 @@ package com.rts.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean;
 
 import javax.sql.DataSource;
 import java.util.Properties;
 
+@Configuration
+@Profile("dev")
 public class TestPersistenceConfig extends PersistenceConfig {
 
     @Override

@@ -15,7 +15,7 @@ public class TestDataSourceConfig {
     @Bean
     public DataSource dataSource(Environment e) {
         BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+        dataSource.setDriverClassName(e.getProperty("test.mysql.driver"));
         dataSource.setUrl(e.getProperty("test.mysql.url"));
         dataSource.setUsername(e.getProperty("test.mysql.username"));
         dataSource.setPassword(e.getProperty("test.mysql.password"));

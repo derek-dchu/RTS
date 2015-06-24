@@ -1,12 +1,11 @@
 package com.rts.service;
 
 
-import com.rts.persistence.dao.impl.TicketDaoImpl;
-import com.rts.persistence.dao.impl.UserDaoImpl;
+import com.rts.persistence.dao.TicketDao;
+import com.rts.persistence.dao.UserDao;
 import com.rts.persistence.model.Ticket;
 import com.rts.persistence.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,13 +14,12 @@ import java.util.List;
 @Service
 @Transactional
 public class AdminService {
+
 	@Autowired
-	@Qualifier("TicketDaoImpl")
-	private TicketDaoImpl tdi;
+	private TicketDao tdi;
 	
 	@Autowired
-	@Qualifier("UserDaoImpl")
-	private UserDaoImpl udi;
+	private UserDao udi;
 	
 	public String changeUserStatus(User user,int status) throws Exception{
 		try {

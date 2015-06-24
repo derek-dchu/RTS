@@ -19,7 +19,7 @@ import java.util.Properties;
 @Configuration
 @PropertySource("application.properties")
 @EnableTransactionManagement
-@ComponentScan
+@ComponentScan(basePackages = "com.rts.persistence")
 public class PersistenceConfig {
 
     @Autowired

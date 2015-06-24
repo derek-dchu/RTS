@@ -4,13 +4,9 @@ import com.rts.common.db.GenericDaoImpl;
 import com.rts.persistence.dao.UserDao;
 import com.rts.persistence.model.User;
 import org.hibernate.SessionFactory;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Repository
-@Transactional
 public class UserDaoImpl extends GenericDaoImpl<User, Integer> implements UserDao {
 
 	public UserDaoImpl() {}

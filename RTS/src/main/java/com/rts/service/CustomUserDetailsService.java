@@ -1,10 +1,9 @@
 package com.rts.service;
 
-import com.rts.persistence.dao.impl.UserDaoImpl;
+import com.rts.persistence.dao.UserDao;
 import com.rts.persistence.model.User;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,15 +15,13 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
 
-//import org.springframework.security.core.userdetails.User;
 @Service
 @Transactional(readOnly = true)
 public class CustomUserDetailsService implements UserDetailsService{
 	private Logger logger = Logger.getLogger(this.getClass());
 
 	@Autowired
-	@Qualifier("UserDaoImpl")
-	private UserDaoImpl udi;
+	private UserDao udi;
 
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		UserDetails user = null;  

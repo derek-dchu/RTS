@@ -1,14 +1,10 @@
 package com.rts.persistence.dao.impl;
 
 import com.rts.common.db.GenericDaoImpl;
-import com.rts.persistence.model.Transaction;
 import com.rts.persistence.dao.TransactionDao;
+import com.rts.persistence.model.Transaction;
 import org.hibernate.SessionFactory;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
-@Repository
-@Transactional
 public class TransactionDaoImpl extends GenericDaoImpl<Transaction,Integer> implements TransactionDao {
 	
 	public TransactionDaoImpl() {}
