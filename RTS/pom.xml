@@ -7,10 +7,14 @@
   <groupId>com.rts</groupId>
   <artifactId>RTS</artifactId>
   <version>1.0-SNAPSHOT</version>
+  <packaging>war</packaging>
+
+  <name>Rail-way Ticket System</name>
 
   <build>
     <sourceDirectory>src/main/java</sourceDirectory>
-    <testSourceDirectory>src/test/javaa</testSourceDirectory>
+    <testSourceDirectory>src/test/java</testSourceDirectory>
+    <finalName>rts</finalName>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -23,6 +27,13 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <configuration>
+          <failOnMissingWebXml>false</failOnMissingWebXml>
+        </configuration>
       </plugin>
     </plugins>
   </build>
@@ -96,6 +107,11 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-web</artifactId>
+      <version>${org.springframework.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-webmvc</artifactId>
       <version>${org.springframework.version}</version>
     </dependency>
     <dependency>
