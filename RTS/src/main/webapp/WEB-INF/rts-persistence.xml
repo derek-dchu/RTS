@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xmlns:jee="http://www.springframework.org/schema/jee"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xmlns:context="http://www.springframework.org/schema/context" 
+	   xsi:schemaLocation="
+		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	       http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
+	  	   http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd        
+	  	   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+	       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+ 	<tx:annotation-driven />
+  	
+    	
+    <bean id="baseSessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean" abstract="true">
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.OracleDialect</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.format_sql">true</prop>
+ 				<prop key="hibernate.cache.use_second_level_cache">false</prop>
+				<prop key="hibernate.cache.use_query_cache">false</prop>
+				<prop key="hibernate.id.new_generator_mappings">true</prop>
+            </props>
+        </property>
+    </bean>
+	
+	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+    <property name="sessionFactory">
+        <ref bean="appSessionFactory" />
+    </property>
+	</bean>
+    
+   	<!-- Datasource configuration -->
+	<jee:jndi-lookup id="appDataSource" jndi-name="jdbc/rts" resource-ref="true" />	
+    <bean id="appSessionFactory" parent="baseSessionFactory">
+        <property name="dataSource" ref="appDataSource" />
+        <property name="packagesToScan" value="com.mercury.rts.persistence.model"/>
+    </bean>
+    
+    <bean id="GenericDaoImpl" class="com.mercury.rts.common.db.GenericDaoImpl" abstract="true" scope="prototype"></bean>
+    <bean id="UserDaoImpl" parent="GenericDaoImpl" class="com.mercury.rts.persistence.dao.impl.UserDaoImpl"></bean>
+    <bean id="CreditCardDaoImpl" parent="GenericDaoImpl" class="com.mercury.rts.persistence.dao.impl.CreditCardDaoImpl"></bean>
+	<bean id="TransactionDaoImpl" parent="GenericDaoImpl" class="com.mercury.rts.persistence.dao.impl.TransactionDaoImpl"></bean>
+	<bean id="TicketDaoImpl" parent="GenericDaoImpl" class="com.mercury.rts.persistence.dao.impl.TicketDaoImpl"></bean>
+	<bean id="ConfirmationCodeDaoImpl" parent="GenericDaoImpl" class="com.mercury.rts.persistence.dao.impl.ConfirmationCodeDaoImpl"></bean>
+</beans>

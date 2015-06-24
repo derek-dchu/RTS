@@ -1,4 +1,4 @@
-package com.rts.config;
+package com.rts.web.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;

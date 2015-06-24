@@ -1,6 +1,6 @@
-package com.rts.web.init;
+package com.rts.config.initializer;
 
-import com.rts.config.*;
+import com.rts.web.config.MvcConfig;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
@@ -12,12 +12,12 @@ import javax.servlet.ServletRegistration;
 
 public class WebAppInitializer implements WebApplicationInitializer {
 
-    private static final String MAPPING_URL = "/rts/**/*.html";
+    private static final String MAPPING_URL = "*.html";
 
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
         AnnotationConfigWebApplicationContext rootContext = new AnnotationConfigWebApplicationContext();
-        rootContext.register(DataSourceConfig.class, PersistenceConfig.class, EmailConfig.class, ServiceConfig.class);
+        rootContext.setConfigLocation("com.rts.config");
 
         servletContext.addListener(new ContextLoaderListener(rootContext));
 

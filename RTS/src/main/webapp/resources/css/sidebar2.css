@@ -1,0 +1,76 @@
+.sidebar-section .sidebar-wrapper {
+    z-index: 1000;
+    position: fixed;
+    top: 90%;
+    left: 0;
+    width: 120%;
+    height: 100%;
+    margin-left: -250px;
+    overflow-y: auto;
+    background: #000;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+.sidebar-section.toggled .sidebar-wrapper {
+    top: 100%;
+}
+
+.sidebar-section .page-wrapper{
+    margin-left:45%;
+    margin-top:10%;
+    position: fixed;
+    -webkit-transition: margin-top 0.5s ease;
+    -moz-transition: margin-top 0.5s ease;
+    -o-transition: margin-top 0.5s ease;
+    transition: margin-top 0.5s ease;
+}
+
+.sidebar-section.toggled .page-wrapper{
+    margin-top: 12%;
+}
+
+.sidebar-section {
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+.sidebar-section.toggled{
+    padding-top: 50px;
+}
+
+.formshow{
+    visibility: hidden
+}
+
+table,th, td {
+    font-size: 130%;
+}
+
+table{
+    margin: 0 auto;
+}
+
+.table{
+    width: 1500px;
+    height: 300px;
+}
+
+.label{
+    font-size: 90%;
+}
+
+form {
+    font-size: 120%;
+}
+input {
+    font-size: 110%;
+}
+
+button {
+    font-size: 110%;
+}
