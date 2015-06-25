@@ -3,19 +3,17 @@ package com.rts.resource;
 import com.rts.persistence.model.Ticket;
 import com.rts.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 
-@Component
 @Path("/admin")
 @Transactional
 public class AdminRest {
 	@Autowired
-	private AdminService as;
+	private AdminService adminService;
 	
 	@POST
 	@Path("/addticket")
@@ -52,14 +50,13 @@ public class AdminRest {
 		}
 
 
-		return as.addOrUpdateTicket(ticket);
+		return adminService.addOrUpdateTicket(ticket);
 	}
 	
 	@GET
 	@Path("/listticket")
 	@Produces({MediaType.APPLICATION_JSON})
 	public List<Ticket> listAllTicket(){
-		return as.listAllTicket();
+		return adminService.listAllTicket();
 	}
-	
 }

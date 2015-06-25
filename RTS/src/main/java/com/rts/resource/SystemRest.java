@@ -1,17 +1,15 @@
 package com.rts.resource;
 
-import com.rts.service.SystemService;
 import com.rts.persistence.model.CreditCard;
 import com.rts.persistence.model.User;
+import com.rts.service.SystemService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 
 
-@Component
 @Path("/sys")
 public class SystemRest {
 	@Autowired

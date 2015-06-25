@@ -17,33 +17,33 @@ import java.util.Collection;
 
 @Service
 @Transactional(readOnly = true)
-public class CustomUserDetailsService implements UserDetailsService{
-	private Logger logger = Logger.getLogger(this.getClass());
+public class CustomUserDetailsService implements UserDetailsService {
+	private static Logger logger = Logger.getLogger(CustomUserDetailsService.class);
 
 	@Autowired
-	private UserDao udi;
+	private UserDao userDao;
 
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		UserDetails user = null;  
+		UserDetails user;
 		try {
-			User u = udi.getUserByEmail(username);
-			Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+            User u = userDao.getUserByEmail(username);
+			Collection<GrantedAuthority> authorities = new ArrayList<>();
 			authorities.add(new SimpleGrantedAuthority(u.getRole()));
-			user = (UserDetails) new org.springframework.security.core.userdetails.User(
+			user = new org.springframework.security.core.userdetails.User(
 					u.getEmail(),
 					u.getPassword(),
 					(u.getEnable()==1),
 					true,
 					true,
 					true,
-					authorities 
+					authorities
 			);
-		System.out.println(u.getEmail()+" "+u.getPassword()+" "+u.getRole());
+		    System.out.println(u.getEmail()+" "+u.getPassword()+" "+u.getRole());
+            return user;
 		} catch (Exception e) {
-			logger.error("Error in retrieving user" + e.getMessage());
+			logger.error("Error in retrieving user: " + e.getMessage());
 			e.printStackTrace();
 			throw new UsernameNotFoundException("Error in retrieving user");
 		}
-		return user;
 	}		  
 }

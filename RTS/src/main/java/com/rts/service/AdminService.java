@@ -16,15 +16,15 @@ import java.util.List;
 public class AdminService {
 
 	@Autowired
-	private TicketDao tdi;
+	private TicketDao ticketDao;
 	
 	@Autowired
-	private UserDao udi;
+	private UserDao userDao;
 	
 	public String changeUserStatus(User user,int status) throws Exception{
 		try {
 			user.setEnable(status);
-			udi.saveUser(user);
+			userDao.saveUser(user);
 			return null;
 		} catch (Exception e) {
 			return e.toString();
@@ -33,7 +33,7 @@ public class AdminService {
 	
 	public String addOrUpdateTicket(Ticket ticket) throws Exception{
 		try {
-			tdi.saveTicket(ticket);
+			ticketDao.saveTicket(ticket);
 			return null;
 		} catch (Exception e) {
 			return e.toString();
@@ -41,6 +41,6 @@ public class AdminService {
 	}
 	
 	public List<Ticket> listAllTicket(){
-		return tdi.listAllTickets();
+		return ticketDao.listAllTickets();
 	}
 }

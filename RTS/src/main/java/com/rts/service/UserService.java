@@ -23,16 +23,16 @@ public class UserService {
 	private static Logger logger = Logger.getLogger(UserService.class);
 	
 	@Autowired
-	private UserDao udi;
+	private UserDao userDao;
 	
 	@Autowired
-	private TicketDao tdi;
+	private TicketDao ticketDao;
 	
 	@Autowired
-	private TransactionDao trdi;
+	private TransactionDao transactionDao;
 	
 	public List<Ticket> searchTicket(String dep, String des, String dtime, String atime) {
-		Map<String, Object> condition = new HashMap<String, Object>(0);
+		Map<String, Object> condition = new HashMap<>(0);
 		condition.put("enable", 1);
 		condition.put("dep", dep);
 		condition.put("des", des);
@@ -47,7 +47,7 @@ public class UserService {
 		
 		try {
 			logger.debug(String.format("Search for tickets: %s", condition.entrySet()));
-			return tdi.listAllTicketsUnderCondition(condition);
+			return ticketDao.listAllTicketsUnderCondition(condition);
 		} catch (HibernateException e) {
 			logger.error(e.getMessage());
 			return null;
@@ -59,16 +59,16 @@ public class UserService {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd hh:mm");
 		
 		try {
-			Transaction transaction = trdi.getTransactionById(tx);
+			Transaction transaction = transactionDao.getTransactionById(tx);
 			Ticket ticket = transaction.getTicket();
 			
 			if(amount == transaction.getQt()){
 				ticket.setSold(ticket.getSold() - amount);
 				ticket.setAvailable(ticket.getAvailable() + amount);
-				tdi.saveTicket(ticket);
+				ticketDao.saveTicket(ticket);
 				transaction.setStatus("c");
 				transaction.setTtime(sdf.format(date));
-				trdi.saveTransaction(transaction);
+				transactionDao.saveTransaction(transaction);
 			}else if(amount > transaction.getQt()){
 				
 			}else{
@@ -80,8 +80,8 @@ public class UserService {
 				t.setTicket(ticket);
 				t.setUser(transaction.getUser());
 				t.setTtime(sdf.format(date));
-				tdi.saveTicket(ticket);
-				trdi.saveTransaction(t);
+				ticketDao.saveTicket(ticket);
+				transactionDao.saveTransaction(t);
 			}
 			return null;
 		} catch (HibernateException e) {
@@ -96,13 +96,13 @@ public class UserService {
 	}
 	
 	public User findUserByEmail(String username){
-		return udi.getUserByEmail(username);
+		return userDao.getUserByEmail(username);
 	}
 	
 	public String saveCreditCard(User user, CreditCard creditCard){
 		try {
 			user.addCreditCard(creditCard);
-			udi.saveUser(user);
+			userDao.saveUser(user);
 			return null;
 		} catch (HibernateException e) {
 			logger.error(e.getMessage());
@@ -113,7 +113,7 @@ public class UserService {
 	public String removeCreditCard(User user, CreditCard creditCard){
 		try {
 			user.removeCreditCard(creditCard);
-			udi.saveUser(user);
+			userDao.saveUser(user);
 			return null;
 		} catch (HibernateException e) {
 			logger.error(e.getMessage());

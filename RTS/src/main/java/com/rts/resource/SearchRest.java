@@ -3,7 +3,6 @@ package com.rts.resource;
 import com.rts.persistence.model.Ticket;
 import com.rts.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
@@ -12,7 +11,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 
-@Component
 @Path("/search")
 public class SearchRest {
 	@Autowired

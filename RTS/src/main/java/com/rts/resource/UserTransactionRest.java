@@ -3,7 +3,6 @@ package com.rts.resource;
 import com.rts.persistence.model.Transaction;
 import com.rts.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.ws.rs.*;
@@ -11,7 +10,6 @@ import javax.ws.rs.core.MediaType;
 import java.util.Set;
 
 
-@Component
 @Path("/transaction")
 @Transactional
 public class UserTransactionRest {

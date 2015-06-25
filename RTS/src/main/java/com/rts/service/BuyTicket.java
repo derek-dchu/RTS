@@ -20,23 +20,23 @@ import java.util.Date;
 public class BuyTicket {
 
 	@Autowired
-	private TicketDao tdi;
+	private TicketDao ticketDao;
 	
 	@Autowired
-	private UserDao udi;
+	private UserDao userDao;
 	
 	@Autowired
-	private TransactionDao trdi;
+	private TransactionDao transactionDao;
 	
 	@Autowired
-	private SystemService ss;
+	private SystemService systemService;
 	
 	public Transaction buyTicketEnqueue(String username, int tid, int quantity){
 		Date date = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
 		
-		User user = udi.getUserByEmail(username);
-		Ticket ticket = tdi.getTicketById(tid);
+		User user = userDao.getUserByEmail(username);
+		Ticket ticket = ticketDao.getTicketById(tid);
 		
 		Transaction tx = new Transaction();
 		tx.setQt(quantity);
@@ -52,7 +52,7 @@ public class BuyTicket {
 	public String buyTicketDequeue(Transaction tx){
 		String s = null;
 		int quantity = tx.getQt();
-		Ticket ticket = tdi.getTicketById(tx.getTicket().getTicketid());
+		Ticket ticket = ticketDao.getTicketById(tx.getTicket().getTicketid());
 		int available = ticket.getAvailable();
 		User user = tx.getUser();
 		
@@ -67,11 +67,11 @@ public class BuyTicket {
 			tx.setStatus("b");
 			ticket.setAvailable(available-quantity);
 			ticket.setSold(ticket.getSold()+quantity);
-			tdi.saveTicket(ticket);
-			trdi.saveTransaction(tx);
-			ss.sendEmail("book-success", user, successSubject, successContent);
+			ticketDao.saveTicket(ticket);
+			transactionDao.saveTransaction(tx);
+			systemService.sendEmail("book-success", user, successSubject, successContent);
 		} else {
-			ss.sendEmail("book-fail", user, failSubject, failContent);
+			systemService.sendEmail("book-fail", user, failSubject, failContent);
 		}
 		return s;
 	}
