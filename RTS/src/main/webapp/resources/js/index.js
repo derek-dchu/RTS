@@ -9,10 +9,10 @@ app.controller('mainController',
 	var that = this;
 	var host = $location.host();
 	var port = $location.port();
-	var root = "http://" + host + ":" + port;
-	var searchTicketUrl = root + "/RTS/rest/search/searchticket";
-	var buyTicketUrl = root + "/RTS/rest/buy";
-	var regUserUrl = root + "/RTS/rest/sys/reg";
+	var root = "http://" + host + ":" + port + "/rts";
+	var searchTicketUrl = root + "/rest/search/searchticket";
+	var buyTicketUrl = root + "/rest/buy";
+	var regUserUrl = root + "/rest/sys/reg";
 		
 	this.regUser = function(email, password, firstName, lastName, number, name, expiry, cvc) {
 		$('#reg_submit').addClass('disabled').html('please wait...');

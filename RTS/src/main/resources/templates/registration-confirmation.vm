@@ -8,7 +8,7 @@
         </div>
         <div>
             Or copy following link into browser directly
-            <p>http://localhost:8080/RTS/sys/confirm.html?code=${content.code}</p>
+            <p>http://localhost:8080/rts/sys/confirm.html?code=${content.code}</p>
         </div>
     </body>
 </html>

@@ -4,7 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <!-- define variable -->
-<c:url value="/j_spring_security_logout" var="logoutUrl"/>
+<c:url value="/logout" var="logoutUrl"/>
 <c:url value="/user_transaction.html" var="userTransaction"/>
 <sec:authentication property="name" var="userName"/>
 
@@ -78,7 +78,7 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="/RTS">RTS</a>
+					<a class="navbar-brand" href="/rts">RTS</a>
 				</div>
 				<div class="navbar-collapse collapse navbar-responsive-collapse">
 					<form class="navbar-form navbar-left">
@@ -96,8 +96,8 @@
 						</sec:authorize>
 						<sec:authorize access="isAnonymous()">
 							<ul class="breadcrumb bg-transparent">
-								<li><a href="javascript:void(0)" data-toggle="modal" data-target="#login_form">Log In</a></li>
-								<li><a href="javascript:void(0)" data-toggle="modal" data-target="#reg_form">Reg</a></li>
+								<li><a href="javascript:void(0)" data-toggle="modal" data-target="#login_form_wrapper">Log In</a></li>
+								<li><a href="javascript:void(0)" data-toggle="modal" data-target="#reg_form_wrapper">Reg</a></li>
 							</ul>
 						</sec:authorize>
 					</ul>
@@ -402,7 +402,7 @@
 		</section>
 
 		<!-- Login Form -->
-		<div class="modal fade" id="login_form">
+		<div class="modal fade" id="login_form_wrapper">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header clearfix">
@@ -413,7 +413,7 @@
 						</button>
 					</div>
 					<div class="modal-body">
-						<form name="login_form" action="<c:url value='j_spring_security_check'/>" method="POST" class="form-horizontal" novalidate>
+						<form name="login_form" id="login_form" action="<c:url value='j_spring_security_check'/>" method="POST" class="form-horizontal" novalidate>
 							<fieldset>
 								<div class="form-group" ng-class="{'has-error': login_form.j_username.$error.email}">
 									<label for="login_email" class="col-lg-2 control-label">Email</label>
@@ -447,7 +447,7 @@
 		</div>
 
 		<!--Registration Form -->
-		<div class="modal fade" id="reg_form" role="dialog" tabindex="-1" aria-labelledby="reg_form_label" aria-hidden="true">
+		<div class="modal fade" id="reg_form_wrapper" role="dialog" tabindex="-1" aria-labelledby="reg_form_label" aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header clearfix">

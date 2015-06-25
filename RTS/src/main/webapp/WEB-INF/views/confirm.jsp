@@ -28,11 +28,12 @@
 		<script type="text/javascript">
 			$(document).ready(function() {
 			    window.setInterval(function() {
-			    var timeLeft = $(".count").html();                     
-			        if(eval(timeLeft) == 0) {
-			                window.location= ("/RTS");        
+					var count = $('.count');
+			        var timeLeft = eval(count.text());
+			        if(timeLeft == 0) {
+			                window.location= ("/rts");
 			        } else {
-			            $(".count").html(parseInt(timeLeft) - 1);
+			            count.html(parseInt(timeLeft) - 1);
 			        }
 			    }, 1000); 
 			});   

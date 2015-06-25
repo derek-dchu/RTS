@@ -5,7 +5,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <html>
 <head>
-<c:url value="/j_spring_security_logout" var="logoutUrl"/>
+<c:url value="/logout" var="logoutUrl"/>
 <sec:authentication property="name" var="userName"/>
 
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -35,9 +35,9 @@
 	app.controller('myc',function($scope,$http,$filter,$location){
 		var host = $location.host();
 		var port = $location.port();
-		var root = "http://" + host + ":" + port;
-		var listalltransaction = root + "/RTS/rest/transaction";
-		var canceltransaction = root + "/RTS/rest/transaction/cancel";
+		var root = "http://" + host + ":" + port + "/rts";
+		var listalltransaction = root + "/rest/transaction";
+		var canceltransaction = root + "/rest/transaction/cancel";
 
 		var username = document.getElementById("logedUsername").innerHTML ; 
 		$scope.textshow = true;
@@ -124,7 +124,7 @@
     		<span class="icon-bar"></span>
     		<span class="icon-bar"></span>
 			</button>
-		<a class="navbar-brand" href="/RTS">RTS</a>
+		<a class="navbar-brand" href="/rts">RTS</a>
 	</div>
 	<div class="navbar-collapse collapse navbar-responsive-collapse">
         <ul class="nav navbar-nav navbar-right">

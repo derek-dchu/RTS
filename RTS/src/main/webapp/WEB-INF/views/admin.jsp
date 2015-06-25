@@ -5,7 +5,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <html>
 <head>
-<c:url value="/j_spring_security_logout" var="logoutUrl"/>
+<c:url value="/logout" var="logoutUrl"/>
 
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Result Page</title>
@@ -34,9 +34,9 @@
 	app.controller('myc',function($scope,$http,$location,$filter){
 		var host = $location.host();
 		var port = $location.port();
-		var root = "http://" + host + ":" + port;
-		var addticket = root + "/RTS/rest/admin/addticket";
-		var listticket = root + "/RTS/rest/admin/listticket";
+		var root = "http://" + host + ":" + port + "/rts";
+		var addticket = root + "/rest/admin/addticket";
+		var listticket = root + "/rest/admin/listticket";
 		$scope.tableshow = false;
 		$scope.formshow = false;
 		$scope.inputid = false;
@@ -168,7 +168,7 @@ button {
     		<span class="icon-bar"></span>
     		<span class="icon-bar"></span>
 			</button>
-		<a class="navbar-brand" href="/RTS">RTS</a>
+		<a class="navbar-brand" href="/rts">RTS</a>
 	</div>
 	<div class="navbar-collapse collapse navbar-responsive-collapse">
         <ul class="nav navbar-nav navbar-right">
