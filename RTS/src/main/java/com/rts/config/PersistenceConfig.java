@@ -17,9 +17,8 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
-@PropertySource("application.properties")
 @EnableTransactionManagement
-@ComponentScan(basePackages = "com.rts.persistence")
+@ComponentScan(basePackages = {"com.rts.persistence"})
 public class PersistenceConfig {
 
     @Autowired
