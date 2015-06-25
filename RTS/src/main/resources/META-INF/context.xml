@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+  <Resource name="jdbc/rts"
+            auth="Container"
+            type="javax.sql.DataSource"
+            username="java"
+            password="123456"
+            driverClassName="com.mysql.jdbc.Driver"
+            url="jdbc:mysql://localhost:3306/rts"
+            maxTotal="8"
+            maxIdle="4"/>
+</Context>
