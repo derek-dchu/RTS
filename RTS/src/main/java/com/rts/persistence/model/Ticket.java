@@ -25,12 +25,13 @@ public class Ticket implements Serializable {
 	private Set<Transaction> transactions;
 	
 	public Ticket() {
-		transactions = new HashSet<Transaction>();
+		transactions = new HashSet<>();
 	}
 	
 	@Id
-	@SequenceGenerator(name ="seq_ticketid", sequenceName = "seq_ticketid", allocationSize=1, initialValue=1000000000)
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_ticketid")
+//	@SequenceGenerator(name ="seq_ticketid", sequenceName = "seq_ticketid", allocationSize=1, initialValue=1000000000)
+//	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_ticketid")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(nullable=false)
 	public int getTicketid() {
 		return ticketid;
