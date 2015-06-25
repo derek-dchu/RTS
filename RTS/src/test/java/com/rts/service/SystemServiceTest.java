@@ -27,8 +27,8 @@ import static org.junit.Assert.assertNull;
 @ContextConfiguration(classes = {
         TestDataSourceConfig.class,
 		TestPersistenceConfig.class,
-		ServiceConfig.class,
-		EmailConfig.class}, loader = AnnotationConfigContextLoader.class)
+		EmailConfig.class,
+        ServiceConfig.class}, loader = AnnotationConfigContextLoader.class)
 @ActiveProfiles("dev")
 @Transactional
 @TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
