@@ -28,19 +28,9 @@ public class controller {
 		return "admin";
 	}
 	
-	@RequestMapping("/user")
-	public String goMain3(){
-		return "user";
-	}
-	
 	@RequestMapping("/user_transaction")
 	public String goMain4(){
 		return "user_transaction";
-	}
-	
-	@RequestMapping("/searchticket")
-	public String searchTicket(){
-		return "searchticket";
 	}
 	
 	@RequestMapping("/sys/confirm")
